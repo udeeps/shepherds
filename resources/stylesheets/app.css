@@ -1,0 +1,109 @@
+/* -------------------------------------------------- 
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Listing page styles
+*/
+
+
+/* -------------------------------------------------- 
+   To-do list and notes for development phase
+-----------------------------------------------------
+:: Find good colours for the 
+*/
+
+
+/* -----------------------------------------
+   Shared Styles
+----------------------------------------- */
+
+a {
+color: #15bb7e;
+}
+
+a:hover {
+color: #3de1a5;
+}
+
+.gppbutton {
+background-color: #15bb7e;
+border-color: #078658;
+}
+
+.gppbutton:hover {
+background-color: #3de1a5;
+}
+
+.header {
+padding: 25px 0px 0px;
+}
+
+.header h2 {
+font-size: 2em;
+}
+
+.header p {
+margin: 0px;
+}
+
+.footer h4 {
+font-size: 1.3em;
+}
+
+.content ul {
+list-style: none;
+}
+
+.listing li {
+color: #000;
+}
+
+.listing h5 {
+color: #15bb7e;
+}
+
+.listing li:hover {
+background-color: #d6d6d6;
+color: #000;
+}
+
+dl.sub-nav dd.active a {
+background-color: #15bb7e;
+}
+
+/* -----------------------------------------
+   Listing page styles
+----------------------------------------- */
+
+.status {
+text-align: center;
+height: 100%;
+padding-top: 15px;
+border: 1px solid #000;
+color: #fff;
+padding: 15px 0px 15px 0px;
+}
+
+.finished {
+background-color: #1c900c;
+}
+
+.underway {
+background-color: #988800;
+}
+
+.notstarted {
+background-color: #3f3f3f;
+}
+
+.waiting {
+background-color: #a2490d;
+}
+
+
+
+/* -----------------------------------------
+   Page Name 2
+----------------------------------------- */
+
+
