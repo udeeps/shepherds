@@ -16,6 +16,7 @@ class Login extends CI_Controller
 	
 	public function index()
 	{
+		session_destroy();
 		if( isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true ){
 			//redirect('account');
 		}else{
@@ -36,7 +37,7 @@ class Login extends CI_Controller
 			//show client login
 			$formType = 'client_login_form';
 		}
-		
+		 echo $formType;
 		$data = $this->get_form($formType);
 		$this->load->view('login/login_view', $data);
 	}
@@ -48,7 +49,7 @@ class Login extends CI_Controller
 		return $this->gpp_form->gpp_get_form($type);
 	}
 	
-	public function form_validate()
+	public function form_validate($loginType)
 	{
 		$this->form_validation->set_rules('email_address', 'Email address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
 		$this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
@@ -56,29 +57,46 @@ class Login extends CI_Controller
 		if( $this->form_validation->run() !== FALSE )
 		{
 			$this->load->model('auth_model');
-			$result = $this->auth_model->verify_user($this->input->post('email_address'), $this->input->post('password'));
+			$result = $this->auth_model->verify_user($this->input->post('email_address'), $this->input->post('password'), $loginType);
 			
 			if($result !== false)
 			{
 				//user exists
+				var_dump($result);
 				$_SESSION['loggedIn'] = true;
 				$_SESSION['userLevel'] = $result['userLevel'];
-				$_SESSION['realName'] = ( property_exists($result['query'], 'workerName') ) ? $result['query']->workerName : $result['query']->adminName;
-				echo $_SESSION['realName'];
-				//redirect('account');
+				//$_SESSION['realName'] = ( property_exists($result['query'], 'workerName') ) ? $result['query']->workerName : $result['query']->adminName;
+				//echo $_SESSION['realName'];
+				$this->get_account($_SESSION['userLevel']);
 			}
 		}
 	}
 	
-	public function get_account()
+	public function get_account($accountType)
 	{
-		
+		if($accountType == 'customer'){
+			$this->load->view('account/account_view');
+		}
 	}
 	
 	public function log_out()
 	{
+		$redirect = '';
+		
+		switch( $_SESSION['userLevel'] )
+		{
+			case 'admin':
+				$redirect = 'login';
+				break;
+			case 'worker':
+				$redirect = 'login';
+				break;
+			case 'customer':
+				$redirect = 'customer/login';
+				break;
+		}
 		session_destroy();
-		redirect();
+		redirect($redirect);
 	}
 }
 ?>

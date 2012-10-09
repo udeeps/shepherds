@@ -36,7 +36,7 @@
   <div class="row"> <!-- Start App Content -->
     <hr />
     <div class="six columns">
-      <?php echo form_open('login/form_validate'); ?>
+      <?php echo form_open('login/form_validate/'.$validate); ?>
         <label>Address</label>
         <div class="row">
           <div class="twelve columns">
