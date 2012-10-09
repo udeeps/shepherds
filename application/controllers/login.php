@@ -39,8 +39,6 @@ class Login extends CI_Controller
 		
 		$data = $this->get_form($formType);
 		$this->load->view('login/login_view', $data);
-		
-		session_destroy();
 	}
 	
 	public function get_form($type)
@@ -63,10 +61,9 @@ class Login extends CI_Controller
 			if($result !== false)
 			{
 				//user exists
-				var_dump($result);
 				$_SESSION['loggedIn'] = true;
 				$_SESSION['userLevel'] = $result['userLevel'];
-				$_SESSION['realName'] = ($result['query']->workerName) ? $result['query']->workerName : $result['query']->adminName;
+				$_SESSION['realName'] = ( property_exists($result['query'], 'workerName') ) ? $result['query']->workerName : $result['query']->adminName;
 				echo $_SESSION['realName'];
 				//redirect('account');
 			}
@@ -76,6 +73,12 @@ class Login extends CI_Controller
 	public function get_account()
 	{
 		
+	}
+	
+	public function log_out()
+	{
+		session_destroy();
+		redirect();
 	}
 }
 ?>
