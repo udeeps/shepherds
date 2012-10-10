@@ -59,7 +59,7 @@ class Login extends CI_Controller
 			$this->load->model('auth_model');
 			$result = $this->auth_model->verify_user($this->input->post('email_address'), $this->input->post('password'), $loginType);
 			
-			if($result !== false)
+			if($result != false)
 			{
 				//user exists
 				var_dump($result);
