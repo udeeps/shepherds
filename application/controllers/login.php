@@ -14,43 +14,30 @@ class Login extends CI_Controller
 		session_start();
 	}
 	
-	public function index()
+	public function index($loginType = '')
 	{
 		session_destroy();
 		if( isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true ){
-			//redirect('account');
+			$this->get_account($_SESSION['userLevel']);
 		}else{
 			$_SESSION['loggedIn'] = false;
 		}
 		
 		if( !isset($_SESSION['original_referer']) ){
 			$_SESSION['original_referer'] = uri_string();
+			
+			if( $_SESSION['original_referer'] == 'login' )
+			{
+				//show GPP login
+				$formType = 'gpp_login_form';
+			}
+			else
+			{
+				//show client login
+				$formType = 'client_login_form';
+			}
 		}
 		
-		if( $_SESSION['original_referer'] == 'login' )
-		{
-			//show GPP login
-			$formType = 'gpp_login_form';
-		}
-		else
-		{
-			//show client login
-			$formType = 'client_login_form';
-		}
-		 echo $formType;
-		$data = $this->get_form($formType);
-		$this->load->view('login/login_view', $data);
-	}
-	
-	public function get_form($type)
-	{
-		$this->load->library('gpp_form');
-		
-		return $this->gpp_form->gpp_get_form($type);
-	}
-	
-	public function form_validate($loginType)
-	{
 		$this->form_validation->set_rules('email_address', 'Email address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
 		$this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
 		
@@ -70,11 +57,22 @@ class Login extends CI_Controller
 				$this->get_account($_SESSION['userLevel']);
 			}
 		}
+		
+		//echo $formType;
+		$data = $this->get_form($formType);
+		$this->load->view('login/login_view', $data);
+	}
+	
+	public function get_form($type)
+	{
+		$this->load->library('gpp_form');
+		
+		return $this->gpp_form->gpp_get_form($type);
 	}
 	
 	public function get_account($accountType)
 	{
-		if($accountType == 'customer'){
+		if($accountType == 'admin'){
 			$this->load->view('account/account_view');
 		}
 	}

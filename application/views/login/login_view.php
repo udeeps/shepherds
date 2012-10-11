@@ -36,7 +36,10 @@
   <div class="row"> <!-- Start App Content -->
     <hr />
     <div class="six columns">
-      <?php echo form_open('login/form_validate/'.$validate); ?>
+	
+	<?php echo validation_errors(); ?>
+
+      <?php echo form_open('login/index/'.$validate); ?>
         <label>Address</label>
         <div class="row">
           <div class="twelve columns">
@@ -51,9 +54,6 @@
           <?php echo form_submit($submit); ?>
       </form>   
     </div>
-	<div id="errors">
-		<?php echo validation_errors(); ?>
-	</div>
     <div class="six columns">
       <h4>Welcome to the GPP Maintenance App!</h4>
       <p>This piece of text is here to both welcome the customers to the system as well as give them a brief introduction about it. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>

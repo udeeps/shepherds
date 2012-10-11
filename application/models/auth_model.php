@@ -10,16 +10,16 @@ class Auth_model extends CI_Model
 	}
 	
 	public function verify_user($credential, $password, $loginType)
-	{	
-		if($loginType == '1'){
+	{
+		if( $loginType == '1' ){
 			$q1 = $this->db
-					->where('workercredential', $credential)
+					->where('workerEmail', $credential)
 					->where('workerPwd', sha1($password) )
 					->limit(1)
 					->get('workers');
 					
 			$q2 = $this->db
-					->where('admincredential', $credential)
+					->where('adminEmail', $credential)
 					->where('adminPwd', sha1($password) )
 					->limit(1)
 					->get('admins');
