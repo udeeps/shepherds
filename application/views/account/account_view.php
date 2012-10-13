@@ -51,7 +51,7 @@
     </div> <!-- End search -->
 
     <div class="three columns">
-      <p>Logged in as username</p>
+      <p>Logged in as <?php echo $name; ?></p>
       <p><a href="index.html">Log out</a></p>
     </div>
   </div> <!-- End Header -->

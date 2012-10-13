@@ -49,12 +49,22 @@ class Login extends CI_Controller
 			if($result != false)
 			{
 				//user exists
-				var_dump($result);
+				//var_dump($result);
 				$_SESSION['loggedIn'] = true;
 				$_SESSION['userLevel'] = $result['userLevel'];
-				//$_SESSION['realName'] = ( property_exists($result['query'], 'workerName') ) ? $result['query']->workerName : $result['query']->adminName;
-				//echo $_SESSION['realName'];
-				$this->get_account($_SESSION['userLevel']);
+				if($result['userLevel'] == 'admin'){
+					$_SESSION['name'] = $result['query']->adminName;
+					$_SESSION['email'] = $result['query']->adminEmail;
+					redirect('account');
+				}else if($result['userLevel'] == 'worker'){
+					$_SESSION['name'] = $result['query']->workerName;
+					$_SESSION['email'] = $result['query']->workerEmail;
+					redirect('account');
+				}else{
+					$_SESSION['name'] = $result['query']->customerName;
+					$_SESSION['email'] = $result['query']->customerEmail;
+					redirect('account');
+				}
 			}
 		}
 		
@@ -70,10 +80,12 @@ class Login extends CI_Controller
 		return $this->gpp_form->gpp_get_form($type);
 	}
 	
-	public function get_account($accountType)
+	public function get_account($accountType, $info)
 	{
 		if($accountType == 'admin'){
-			$this->load->view('account/account_view');
+			$data = array('name' => $info->adminName,
+							'email' => $info->adminEmail);
+			$this->load->view('account/account_view', $data);
 		}
 	}
 	
