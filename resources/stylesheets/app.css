@@ -38,6 +38,11 @@ background-color: #3de1a5;
 padding: 25px 0px 0px;
 }
 
+.header > div > a{
+font-size: 1.8em;
+font-weight: bold;
+}
+
 .header h2 {
 font-size: 2em;
 }

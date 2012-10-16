@@ -22,13 +22,16 @@ class Login extends CI_Controller
 		}else{
 			$_SESSION['loggedIn'] = false;
 		}
-		
-		if( uri_string() == 'login' ){
-			//show GPP login
-			$formType = 'gpp_login_form';
-		}else{
-			//show client login
-			$formType = 'client_login_form';
+		if(!isset($_SESSION['uri'])){
+			if( uri_string() == 'login' ){
+				$_SESSION['uri'] = 'gpp_login_form';
+				//show GPP login
+				//$formType = 'gpp_login_form';
+			}else{
+				$_SESSION['uri'] = 'client_login_form';
+				//show client login
+				//$formType = 'client_login_form';
+			}
 		}
 		
 		$this->form_validation->set_rules('email_address', 'Email address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
@@ -61,7 +64,7 @@ class Login extends CI_Controller
 			}
 		}
 		
-		$data = $this->get_form($formType);
+		$data = $this->get_form($_SESSION['uri']);
 		$this->load->view('login/login_view', $data);
 	}
 	
@@ -69,7 +72,7 @@ class Login extends CI_Controller
 	{
 		$this->load->library('gpp_form');
 		
-		return $this->gpp_form->gpp_get_form($type);
+		return $this->gpp_form->get_login_form($type);
 	}
 	
 	public function log_out()

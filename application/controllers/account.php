@@ -18,16 +18,20 @@ class Account extends CI_Controller
 		switch($_SESSION['userLevel'])
 		{
 			case 'admin':
-				$this->load->view('account/account_view');
+				$data = array('name' => $_SESSION['name'], 'email' => $_SESSION['email']);
+				$this->load->view('account/admin_account_view', $data);
 				break;
 			case 'worker':
-				echo 'worker';
+				$data = array('name' => $_SESSION['name'], 'email' => $_SESSION['email']);
+				$this->load->view('account/worker_account_view', $data);
 				break;
 			case 'customer':
-				print_r($_SESSION);
+				$data = array('name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
+				$this->load->view('account/customer_account_view', $data);
 				break;
 		}
 	}
+	
 }
 
 ?>

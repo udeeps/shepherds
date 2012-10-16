@@ -7,7 +7,7 @@ class Gpp_form {
 		
     }
 	
-	public function gpp_get_form($type)
+	public function get_login_form($type)
 	{
 		switch($type)
 		{
@@ -44,10 +44,7 @@ class Gpp_form {
 		}
 	}
 	
-	public function get_gpp_login()
-	{
-		
-	}
+	
 }
 
 /* End of file GPP_Form.php */
