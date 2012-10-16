@@ -16,26 +16,19 @@ class Login extends CI_Controller
 	
 	public function index($loginType = '')
 	{
-		session_destroy();
+		//session_destroy();
 		if( isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true ){
-			$this->get_account($_SESSION['userLevel']);
+			redirect('account');
 		}else{
 			$_SESSION['loggedIn'] = false;
 		}
 		
-		if( !isset($_SESSION['original_referer']) ){
-			$_SESSION['original_referer'] = uri_string();
-			
-			if( $_SESSION['original_referer'] == 'login' )
-			{
-				//show GPP login
-				$formType = 'gpp_login_form';
-			}
-			else
-			{
-				//show client login
-				$formType = 'client_login_form';
-			}
+		if( uri_string() == 'login' ){
+			//show GPP login
+			$formType = 'gpp_login_form';
+		}else{
+			//show client login
+			$formType = 'client_login_form';
 		}
 		
 		$this->form_validation->set_rules('email_address', 'Email address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
@@ -49,26 +42,25 @@ class Login extends CI_Controller
 			if($result != false)
 			{
 				//user exists
-				//var_dump($result);
 				$_SESSION['loggedIn'] = true;
 				$_SESSION['userLevel'] = $result['userLevel'];
-				if($result['userLevel'] == 'admin'){
+				if($_SESSION['userLevel'] == 'admin'){
 					$_SESSION['name'] = $result['query']->adminName;
 					$_SESSION['email'] = $result['query']->adminEmail;
 					redirect('account');
-				}else if($result['userLevel'] == 'worker'){
+				}else if($_SESSION['userLevel'] == 'worker'){
 					$_SESSION['name'] = $result['query']->workerName;
 					$_SESSION['email'] = $result['query']->workerEmail;
 					redirect('account');
 				}else{
-					$_SESSION['name'] = $result['query']->customerName;
-					$_SESSION['email'] = $result['query']->customerEmail;
+					$_SESSION['customerName'] = $result['query']->customerName;
+					$_SESSION['name'] = $result['query']->ordererName;
+					$_SESSION['email'] = $result['query']->ordererEmail;
 					redirect('account');
 				}
 			}
 		}
 		
-		//echo $formType;
 		$data = $this->get_form($formType);
 		$this->load->view('login/login_view', $data);
 	}
@@ -78,15 +70,6 @@ class Login extends CI_Controller
 		$this->load->library('gpp_form');
 		
 		return $this->gpp_form->gpp_get_form($type);
-	}
-	
-	public function get_account($accountType, $info)
-	{
-		if($accountType == 'admin'){
-			$data = array('name' => $info->adminName,
-							'email' => $info->adminEmail);
-			$this->load->view('account/account_view', $data);
-		}
 	}
 	
 	public function log_out()

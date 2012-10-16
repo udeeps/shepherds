@@ -35,7 +35,7 @@ class Auth_model extends CI_Model
 			}
 			return false;
 		}else{
-			$this->db->select('orderer.ordererName, customers.customerId, customers.customerName')
+			$this->db->select('orderer.ordererName, orderer.ordererEmail, customers.customerId, customers.customerName')
 				->from('orderer')
 				->join('customers', 'orderer.customerId = customers.customerId')
 				->where('ordererEmail', $credential)

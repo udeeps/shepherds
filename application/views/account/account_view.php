@@ -31,13 +31,13 @@
 
 </head>
 <body>
-
-  <div class="row header"> <!-- Start Header -->
+<!-- Start Header -->
+  <div class="row header"> 
     <div class="five columns">
       <a href="admin.html"><h2>GPP Maintenance App</h2></a>
     </div>
-
-    <div class="four columns"> <!-- Start search -->
+	<!-- Start search -->
+    <div class="four columns"> 
       <div class="row collapse">
         <div class="eight mobile-three columns">
           <input type="text" placeholder="Search" />
@@ -51,12 +51,12 @@
     </div> <!-- End search -->
 
     <div class="three columns">
-      <p>Logged in as <?php echo $name; ?></p>
-      <p><a href="index.html">Log out</a></p>
+      <p>Logged in as <?php echo $_SESSION['name']; ?></p>
+      <p><?php echo anchor('login/log_out', 'Log out');?></p>
     </div>
   </div> <!-- End Header -->
-
-  <div class="row content"> <!-- Start App Content -->
+<!-- Start App Content -->
+  <div class="row content"> 
     <hr />
     <a href="adminaddreport.html"><div class="twelve columns panel adminpanel">
       <p>Add new report to system</p>
@@ -75,8 +75,8 @@
     </div></a>
     <hr />
   </div> <!-- End App Content -->
-
-  <div class="row footer"> <!-- Start Footer -->
+	<!-- Start Footer -->
+  <div class="row footer"> 
     <div class="six columns">
       <h4>GPP Perimeter Protection Oy</h4>
       <p>Brief footer text. Phone numer and other contact info.</p>
