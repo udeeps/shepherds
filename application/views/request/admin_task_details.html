@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>GPP Maintenance App</title>
+  
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+  -->
+  
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="stylesheets/app.css">
+
+  <script src="javascripts/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+
+  <div class="row header"> <!-- Start Header -->
+    <div class="five columns">
+      <a href="admin_homepage.html"><h2>GPP Maintenance App</h2></a>
+    </div>
+
+    <div class="four columns"> <!-- Start search -->
+      <div class="row collapse">
+        <div class="eight mobile-three columns">
+          <input type="text" placeholder="Search" />
+        </div>
+        <div class="four mobile-one columns">
+          <a href="#" class="postfix button expand gppbutton">Search</a>
+        </div>
+      </div>
+      Search for: <input type="radio" name="group2" value="Wine" checked> Tasks
+      <input type="radio" name="group2" value="Beer"> Users
+    </div> <!-- End search -->
+
+    <div class="three columns">
+      <p>Logged in as username</p>
+      <p><a href="index.html">Log out</a></p>
+    </div>
+  </div> <!-- End Header -->
+
+  <div class="row content"> <!-- Start App Content -->
+    <hr />
+    <div class="twelve columns "> <!-- Start breadcrumbs and title -->
+      <p><a href="admin_task_listing.html">&lArr; Back to task listing</a></p>
+      <h3>Title with name and date of task and customer</h3> <hr /><!-- End breadcrumbs and title" -->
+    </div>
+
+    
+<div class="row"> <!-- Start form -->
+  <div class="twelve columns">
+<form action="admin_task_listing.html">
+
+
+<div class="row">
+  <div class="seven columns">
+
+    <p><strong>Type of work:</strong> <input type="radio" name="group2" value="maintenance" checked> Maintenance <input type="radio" name="group2" value="installation"> Installation <input type="radio" name="group2" value="adjustment"> Adjustment <input type="radio" name="group2" value="urakka"> Urakka</p>
+
+  </div>
+
+  <div class="five columns">
+
+    <p class="status underway">Status:<br>Work underway</p>
+    <select class="statuspicker">
+              <option>Change status..</option>
+              <option>Underway</option>
+              <option>Waiting for parts</option>
+              <option>Finished</option>
+            </select>
+
+  </div>
+</div>
+
+
+        <div class="row panel"> <!-- Workers assigned -->
+          <h4>Assigned workers</h4>
+          <div class="row">
+            <div class="twelve columns">
+              <ul>
+                <li>Name Surname - <a href="#">Remove from task</a></li>
+                <li>Longername Surname - <a href="#">Remove from task</a></li>
+                <li>Name Surnamelonger - <a href="#">Remove from task</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="twelve columns">
+            <label>Add workers</label>
+            <input type="text" placeholder="Start writing to choose from list" />
+          </div>
+          <div class="twelve columns">
+            <input type="button" class="button gppbutton fullwidth" value="Save worker info" />
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row panel">
+          <h4>Customer information</h4>
+          <div class="six columns"> <!-- Name -->
+            <label>Customer name (company)</label>
+            <input type="text" disabled="disabled" placeholder="Already here from CRM" />
+          </div>
+          <div class="six columns">
+            <label>Billing address</label>
+            <input type="text" disabled="disabled" placeholder="Already here from CRM" />
+          </div>
+        </div>
+
+
+        <div class="row panel"><!-- Orderer info -->
+          <div class="four columns">
+            <label>Orderer of work (individual)</label>
+            <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+          </div>
+          <div class="four columns">
+            <label>Phone number</label>
+            <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+          </div>
+          <div class="four columns">
+            <label>Email address</label>
+            <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+          </div>
+        </div>
+  
+      <hr />
+
+      <div class="row panel"><!-- Task title and description -->
+        <h4>Task description</h4>
+        <div class="eight columns">
+          <label>Task title</label>
+          <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+        </div>
+        <div class="four columns">
+          <label>Estimated start date</label>
+          <div class="row">
+            <div class="four columns">
+              <input type="text" placeholder="Day" />
+            </div>
+            <div class="four columns">
+              <input type="text" placeholder="Month" />
+            </div>
+            <div class="four columns">
+              <input type="text" placeholder="Year" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row panel">
+        <div class="twelve columns">
+          <label>Description of assignment</label>
+          <textarea name="description" disabled="disabled" class="descriptionform" placeholder="Already here from HoM"></textarea>
+        </div>
+      </div>
+
+
+      <hr />
+
+      <div class="row panel">
+        <h4>What has been done</h4>
+        <div class="twelve columns">
+          <label>Actions taken on site</label>
+          <textarea name="description" class="descriptionform" placeholder=""></textarea>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="row panel"><!-- Parts and prices -->
+        <h4>Working time</h4>
+        <div class="row>">
+          <div class="three columns">
+            <label>Working hours</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="three columns">
+            <label>Driving hours</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="three columns">
+            <label>Kilometer compensation</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="three columns">
+            <label>Total</label>
+            <input type="text" disabled="disabled" placeholder="Automatically counted" />
+          </div>
+          <hr />
+        </div>
+
+        <h4>Products and parts</h4>
+        <div class="row"> <!-- Start line of product -->
+          <div class="three columns">
+            <label>Part product code - <a href="#">Show popular</a></label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="four columns">
+            <label>Description</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Quantity</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Ordered</label> 
+            <select class="orderedornot">
+              <option value="notordered">No</option>
+              <option value="ordered">Yes</option>
+            </select>
+          </div>
+          <div class="one columns">
+            <label>á price</label>
+            <input type="text" disabled="disabled" placeholder="CRM" />
+          </div>
+          <div class="two columns">
+            <label>Total</label>
+            <input type="text" disabled="disabled" placeholder="Automatic count" />
+          </div> 
+        </div> <!-- End line of product -->
+
+        <div class="row"> <!-- Start line of product -->
+          <div class="three columns">
+            <label>Part product code - <a href="#">Show popular</a></label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="four columns">
+            <label>Description</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Quantity</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Ordered</label> 
+            <select class="orderedornot">
+              <option value="notordered">No</option>
+              <option value="ordered">Yes</option>
+            </select>
+          </div>
+          <div class="one columns">
+            <label>á price</label>
+            <input type="text" disabled="disabled" placeholder="CRM" />
+          </div>
+          <div class="two columns">
+            <label>Total</label>
+            <input type="text" disabled="disabled" placeholder="Automatic count" />
+          </div> 
+        </div> <!-- End line of product -->
+
+        <div class="row"> <!-- Start line of product -->
+          <div class="three columns">
+            <label>Part product code - <a href="#">Show popular</a></label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="four columns">
+            <label>Description</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Quantity</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Ordered</label> 
+            <select class="orderedornot">
+              <option value="notordered">No</option>
+              <option value="ordered">Yes</option>
+            </select>
+          </div>
+          <div class="one columns">
+            <label>á price</label>
+            <input type="text" disabled="disabled" placeholder="CRM" />
+          </div>
+          <div class="two columns">
+            <label>Total</label>
+            <input type="text" disabled="disabled" placeholder="Automatic count" />
+          </div> 
+        </div> <!-- End line of product -->
+
+        <div class="row"> <!-- Start line of product -->
+          <div class="three columns">
+            <label>Part product code - <a href="#">Show popular</a></label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="four columns">
+            <label>Description</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Quantity</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="one columns">
+            <label>Ordered</label> 
+            <select class="orderedornot">
+              <option value="notordered">No</option>
+              <option value="ordered">Yes</option>
+            </select>
+          </div>
+          <div class="one columns">
+            <label>á price</label>
+            <input type="text" disabled="disabled" placeholder="CRM" />
+          </div>
+          <div class="two columns">
+            <label>Total</label>
+            <input type="text" disabled="disabled" placeholder="Automatic count" />
+          </div> 
+        </div> <!-- End line of product -->
+
+
+
+          <div class="row"> <!-- Start total sum -->
+            <div class="nine columns">
+              <hr />
+            </div>
+            <div class="three columns">
+              <label><strong>Total sum</strong></label>
+              <input type="text" disabled="disabled" placeholder="Automatic count" />
+            </div>
+          </div> <!-- End total sum -->
+
+      </div>
+
+<div class="row panel">
+<input type="submit" class="button gppbutton fullwidth" value="Save form">
+</div>
+
+</form>
+  </div>
+</div> <!-- End form -->
+
+
+    <hr />
+  </div> <!-- End App Content -->
+
+  <div class="row footer"> <!-- Start Footer -->
+    <div class="six columns">
+      <h4>GPP Perimeter Protection Oy</h4>
+      <p>Brief footer text. Phone numer and other contact info.</p>
+    </div>
+    <div class="six columns">
+      <h4>Links</h4>
+      <ul class="link-list">
+        <li><a href="#">GPP home page</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </div>
+  </div> <!-- End Footer -->
+  
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="javascripts/jquery.foundation.topbar.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/foundation.min.js"></script>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="javascripts/app.js"></script>
+</body>
+</html>

@@ -31,13 +31,13 @@
 
 </head>
 <body>
-<!-- Start Header -->
-  <div class="row header"> 
+
+  <div class="row header"> <!-- Start Header -->
     <div class="five columns">
       <?php echo anchor('account', 'GPP Maintenance App');?>
     </div>
-	<!-- Start search -->
-    <div class="four columns"> 
+
+    <div class="four columns"> <!-- Start search -->
       <div class="row collapse">
         <div class="eight mobile-three columns">
           <input type="text" placeholder="Search" />
@@ -55,25 +55,88 @@
       <p><?php echo anchor('login/log_out', 'Log out');?></p>
     </div>
   </div> <!-- End Header -->
-<!-- Start App Content -->
-  <div class="row content"> 
+
+  <div class="row content"> <!-- Start App Content -->
     <hr />
-    <a href="request/index/add_task"><div class="twelve columns panel adminpanel">
-      <p>Add new task</p>
-    </div></a>
-    <a href="request/index/list_tasks"><div class="twelve columns panel adminpanel">
-      <p>View existing tasks</p>
-    </div></a>
-    <a href="request/index/manage_users"><div class="twelve columns panel adminpanel">
-      <p>Manage user accounts</p>
-    </div></a>
-    <a href="request/index/system_anouncements"><div class="twelve columns panel adminpanel">
-      <p>Manage system announcements</p>
-    </div></a>
+    <div class="twelve columns "> <!-- Start "breadcrumbs" -->
+      <p><?php echo anchor($back, 'Previous page');?></p>
+      <h3>Report/task management</h3> <hr /><!-- End "breadcrumbs" -->
+
+    <div class="twelve columns panel">
+      <h4>Add a new report/task</h4> 
+
+      <p><strong>Type of work:</strong> <input type="radio" name="group2" value="maintenance" checked> Maintenance <input type="radio" name="group2" value="installation"> Installation <input type="radio" name="group2" value="adjustment"> Adjustment <input type="radio" name="group2" value="urakka"> Urakka</p> 
+
+      <div class="row">
+        <form name="newreport">
+          <div class="six columns"> <!-- Name -->
+            <label>Customer name (company)</label>
+            <input type="text" placeholder="Start typing to choose from the list" />
+          </div>
+          <div class="six columns">
+            <label>Billing address</label>
+            <input type="text" placeholder="Start typing to choose from the list" />
+          </div>
+      </div>
+
+      <div class="row"> <!-- Orderer info -->
+        <div class="six columns">
+          <label>Orderer of work (individual, first name)</label>
+          <input type="text" placeholder="" />
+        </div>
+        <div class="six columns">
+          <label>Orderer of work (individual, last name)</label>
+          <input type="text" placeholder="" />
+        </div>
+      </div>
+      <br />
+      <div class="row"> <!-- Task title and description -->
+        <div class="eight columns">
+          <label>Task title</label>
+          <input type="text" placeholder="" />
+        </div>
+        <div class="four columns">
+          <label>Estimated start date</label>
+          <div class="row">
+            <div class="four columns">
+              <input type="text" placeholder="Day" />
+            </div>
+            <div class="four columns">
+              <input type="text" placeholder="Month" />
+            </div>
+            <div class="four columns">
+              <input type="text" placeholder="Year" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="twelve columns">
+          <label>Description of the work</label>
+          <textarea name="newannouncement" class="newannouncement" placeholder=""></textarea>
+        </div>
+      </div>
+
+      <div class="row"> <!-- Choosing workers -->
+        <div class="twelve columns">
+          <hr />
+          <label><strong>Assign task to worker(s)</strong></label>
+          <input type="text" placeholder="Start typing to choose from list" />
+        </div>
+      </div>
+
+      <div class="row"> <!-- Submit button -->
+        <div class="twelve columns">
+          <hr />
+          <input type="submit" class="button gppbutton fullwidth" value="Add new report/task" />
+        </div>
+      </div>
+    </div>
+    
     <hr />
   </div> <!-- End App Content -->
-	<!-- Start Footer -->
-  <div class="row footer"> 
+
+  <div class="row footer"> <!-- Start Footer -->
     <div class="six columns">
       <h4>GPP Perimeter Protection Oy</h4>
       <p>Brief footer text. Phone numer and other contact info.</p>

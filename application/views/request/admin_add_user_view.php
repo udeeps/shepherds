@@ -31,13 +31,13 @@
 
 </head>
 <body>
-<!-- Start Header -->
-  <div class="row header"> 
+
+  <div class="row header"> <!-- Start Header -->
     <div class="five columns">
       <?php echo anchor('account', 'GPP Maintenance App');?>
     </div>
-	<!-- Start search -->
-    <div class="four columns"> 
+
+    <div class="four columns"> <!-- Start search -->
       <div class="row collapse">
         <div class="eight mobile-three columns">
           <input type="text" placeholder="Search" />
@@ -55,25 +55,62 @@
       <p><?php echo anchor('login/log_out', 'Log out');?></p>
     </div>
   </div> <!-- End Header -->
-<!-- Start App Content -->
-  <div class="row content"> 
+
+  <div class="row content"> <!-- Start App Content -->
     <hr />
-    <a href="request/index/add_task"><div class="twelve columns panel adminpanel">
-      <p>Add new task</p>
-    </div></a>
-    <a href="request/index/list_tasks"><div class="twelve columns panel adminpanel">
-      <p>View existing tasks</p>
-    </div></a>
-    <a href="request/index/manage_users"><div class="twelve columns panel adminpanel">
-      <p>Manage user accounts</p>
-    </div></a>
-    <a href="request/index/system_anouncements"><div class="twelve columns panel adminpanel">
-      <p>Manage system announcements</p>
+    <div class="twelve columns "> <!-- Start "breadcrumbs" -->
+      <p><?php echo anchor($back, 'Back to user management');?></p>
+      <h3>User management</h3> <hr /><!-- End "breadcrumbs" -->
+
+    <div class="twelve columns panel">
+      <h4>Add a new user</h4> 
+      <div class="row">
+        <form name="newuser">
+          <div class="four columns"> <!-- Name -->
+            <label>First name</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="four columns">
+            <label>Last name</label>
+            <input type="text" placeholder="" />
+          </div>
+
+          <div class="four columns">
+            <label>Email address</label>
+            <input type="text" placeholder="" />
+          </div>
+      </div>
+
+      <div class="row"> <!-- Street etc. -->
+        <div class="six columns">
+          <label>Postal address</label>
+          <input type="text" placeholder="" />
+        </div>
+        <div class="two columns">
+          <label>Postal number</label>
+          <input type="text" placeholder="" />
+        </div>
+        <div class="four columns">
+          <label>City</label>
+          <input type="text" placeholder="" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="twelve columns">
+          <p><strong>User level:</strong> <input type="radio" name="group2" value="Wine" checked> Worker <input type="radio" name="group2" value="Beer"> Admin</p>
+          <input type="submit" class="button gppbutton fullwidth" value="Add new user" />
+        </div>
+      </div>
+    </div>
+
+    <a href="adminuserlisting.html"><div class="twelve columns panel adminpanel">
+      <p>View current users</p>
     </div></a>
     <hr />
   </div> <!-- End App Content -->
-	<!-- Start Footer -->
-  <div class="row footer"> 
+
+  <div class="row footer"> <!-- Start Footer -->
     <div class="six columns">
       <h4>GPP Perimeter Protection Oy</h4>
       <p>Brief footer text. Phone numer and other contact info.</p>

@@ -11,7 +11,7 @@
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>GPP Maintenance App</title>
+  <title><?php echo $title; ?></title>
 
   <!-- Included CSS Files (Compressed) -->
   <link rel="stylesheet" href="/gpp/resources/stylesheets/foundation.min.css">

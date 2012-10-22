@@ -31,13 +31,13 @@
 
 </head>
 <body>
-<!-- Start Header -->
-  <div class="row header"> 
+
+  <div class="row header"> <!-- Start Header -->
     <div class="five columns">
-      <?php echo anchor('account', 'GPP Maintenance App');?>
+		<?php echo anchor('account', 'GPP Maintenance App');?>
     </div>
-	<!-- Start search -->
-    <div class="four columns"> 
+
+    <div class="four columns"> <!-- Start search -->
       <div class="row collapse">
         <div class="eight mobile-three columns">
           <input type="text" placeholder="Search" />
@@ -55,25 +55,29 @@
       <p><?php echo anchor('login/log_out', 'Log out');?></p>
     </div>
   </div> <!-- End Header -->
-<!-- Start App Content -->
-  <div class="row content"> 
+
+  <div class="row content"> <!-- Start App Content -->
     <hr />
-    <a href="request/index/add_task"><div class="twelve columns panel adminpanel">
-      <p>Add new task</p>
-    </div></a>
-    <a href="request/index/list_tasks"><div class="twelve columns panel adminpanel">
-      <p>View existing tasks</p>
-    </div></a>
-    <a href="request/index/manage_users"><div class="twelve columns panel adminpanel">
-      <p>Manage user accounts</p>
-    </div></a>
-    <a href="request/index/system_anouncements"><div class="twelve columns panel adminpanel">
-      <p>Manage system announcements</p>
-    </div></a>
+    <div class="twelve columns "> <!-- Start "breadcrumbs" -->
+      <p><?php echo anchor($back, 'Previous page');?></p>
+      <h3>Announcement management</h3> <hr /><!-- End "breadcrumbs" -->
+    <div class="twelve columns panel">
+      <h4>Add a new announcement</h4>
+      <form name="newannouncement">
+      <input type="text" placeholder="Title of the announcement" />
+      <textarea name="newannouncement" class="newannouncement" placeholder="Write your new announcement here"></textarea>
+      <input type="submit" class="button gppbutton fullwidth" value="Post the announcement" />
+    </div>
+    <div class="twelve columns panel">
+      <h4>Edit existing announcements</h4>
+      <a href="#"><p>Title of a previous announcement</p></a>
+      <a href="#"><p>Title of a previous announcement</p></a>
+      <a href="#"><p>Title of a previous announcement</p></a>
+    </div>
     <hr />
   </div> <!-- End App Content -->
-	<!-- Start Footer -->
-  <div class="row footer"> 
+
+  <div class="row footer"> <!-- Start Footer -->
     <div class="six columns">
       <h4>GPP Perimeter Protection Oy</h4>
       <p>Brief footer text. Phone numer and other contact info.</p>

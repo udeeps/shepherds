@@ -18,47 +18,20 @@ class Account extends CI_Controller
 		switch($_SESSION['userLevel'])
 		{
 			case 'admin':
-				$data = array('name' => $_SESSION['name'], 'email' => $_SESSION['email']);
+				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email']);
 				$this->load->view('account/admin_account_view', $data);
 				break;
 			case 'worker':
-				$data = array('name' => $_SESSION['name'], 'email' => $_SESSION['email']);
+				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email']);
 				$this->load->view('account/worker_account_view', $data);
 				break;
 			case 'customer':
-				$data = array('name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
+				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
 				$this->load->view('account/customer_account_view', $data);
 				break;
 		}
 	}
-	
-	public function admin_add_task()
-	{
-		if( isset($_SESSION['loggedIn']) && $_SESSION['userLevel'] == 'admin')
-		{
-			redirect('request');
-		}
-	}
-	
-	public function admin_list_tasks()
-	{
-			
-	}
-	
-	public function admin_add_customer()
-	{
-			
-	}
-	
-	public function admin_manage_users()
-	{
-			
-	}
-	
-	public function admin_system_anouncements()
-	{
-			
-	}
+
 
 	
 }
