@@ -2,7 +2,6 @@
 
 class Login extends CI_Controller
 {
-	
 	private $formType;
 	
 	public function __construct()
@@ -16,22 +15,18 @@ class Login extends CI_Controller
 	
 	public function index($loginType = '')
 	{
-		//session_destroy();
 		if( isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true ){
 			redirect('account');
 		}else{
 			$_SESSION['loggedIn'] = false;
 		}
-		if(!isset($_SESSION['uri'])){
-			if( uri_string() == 'login' ){
-				$_SESSION['uri'] = 'gpp_login_form';
-				//show GPP login
-				//$formType = 'gpp_login_form';
-			}else{
-				$_SESSION['uri'] = 'client_login_form';
-				//show client login
-				//$formType = 'client_login_form';
-			}
+
+		if( uri_string() == 'login' ){
+			//show GPP login
+			$formType = 'gpp_login_form';
+		}else{
+			//show client login
+			$formType = 'client_login_form';
 		}
 		
 		$this->form_validation->set_rules('email_address', 'Email address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
@@ -44,6 +39,7 @@ class Login extends CI_Controller
 			
 			if($result != false)
 			{
+				print_r($result);
 				//user exists
 				$_SESSION['loggedIn'] = true;
 				$_SESSION['userLevel'] = $result['userLevel'];
@@ -64,7 +60,7 @@ class Login extends CI_Controller
 			}
 		}
 		
-		$data = $this->get_form($_SESSION['uri']);
+		$data = $this->get_form($formType);
 		$this->load->view('login/login_view', $data);
 	}
 	

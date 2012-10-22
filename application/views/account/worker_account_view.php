@@ -34,7 +34,7 @@
 
   <div class="row header"> <!-- Start Header -->
     <div class="five columns">
-      <a href="listing.html">GPP Maintenance App</a>
+      <?php echo anchor('account', 'GPP Maintenance App');?>
     </div>
 
     <div class="four columns"> <!-- Start search -->

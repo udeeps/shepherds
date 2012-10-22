@@ -34,7 +34,7 @@
 
   <div class="row header"> <!-- Start Header -->
     <div class="five columns">
-      <a href="listing.html"><?php echo $customerName; ?> Maintenance</a>
+      <?php echo anchor('account', $customerName.' Maintenance');?>
     </div>
 
     <div class="four columns"> <!-- Start search -->

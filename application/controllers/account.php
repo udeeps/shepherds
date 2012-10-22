@@ -32,6 +32,35 @@ class Account extends CI_Controller
 		}
 	}
 	
+	public function admin_add_task()
+	{
+		if( isset($_SESSION['loggedIn']) && $_SESSION['userLevel'] == 'admin')
+		{
+			redirect('request');
+		}
+	}
+	
+	public function admin_list_tasks()
+	{
+			
+	}
+	
+	public function admin_add_customer()
+	{
+			
+	}
+	
+	public function admin_manage_users()
+	{
+			
+	}
+	
+	public function admin_system_anouncements()
+	{
+			
+	}
+
+	
 }
 
 ?>

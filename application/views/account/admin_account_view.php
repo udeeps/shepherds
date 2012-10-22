@@ -34,7 +34,7 @@
 <!-- Start Header -->
   <div class="row header"> 
     <div class="five columns">
-      <a href="admin.html">GPP Maintenance App</a>
+      <?php echo anchor('account', 'GPP Maintenance App');?>
     </div>
 	<!-- Start search -->
     <div class="four columns"> 
@@ -58,19 +58,19 @@
 <!-- Start App Content -->
   <div class="row content"> 
     <hr />
-    <a href="adminaddreport.html"><div class="twelve columns panel adminpanel">
-      <p>Add new report to system</p>
+    <a href="account/admin_add_task"><div class="twelve columns panel adminpanel">
+      <p>Add new task</p>
     </div></a>
-    <a href="adminlisting.html"><div class="twelve columns panel adminpanel">
-      <p>View existing reports</p>
+    <a href="account/admin_list_tasks"><div class="twelve columns panel adminpanel">
+      <p>View existing tasks</p>
     </div></a>
-    <a href="adminaddcustomer.html"><div class="twelve columns panel adminpanel">
+    <a href="account/admin_add_customer"><div class="twelve columns panel adminpanel">
       <p>Add a new customer</p>
     </div></a>
-    <a href="adminusermanagement.html"><div class="twelve columns panel adminpanel">
+    <a href="account/admin_manage_users"><div class="twelve columns panel adminpanel">
       <p>Manage user accounts</p>
     </div></a>
-    <a href="adminannouncements.html"><div class="twelve columns panel adminpanel">
+    <a href="account/admin_system_anouncements"><div class="twelve columns panel adminpanel">
       <p>Manage system announcements</p>
     </div></a>
     <hr />
