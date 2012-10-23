@@ -81,13 +81,14 @@
 
       <div class="row"> <!-- Orderer info -->
         <div class="six columns">
-          <label>Orderer of work (individual, first name)</label>
+          <label>Orderer of work (name)</label>
           <input type="text" placeholder="" />
         </div>
-        <div class="six columns">
+        <!-- <div class="six columns">
           <label>Orderer of work (individual, last name)</label>
           <input type="text" placeholder="" />
         </div>
+         -->
       </div>
       <br />
       <div class="row"> <!-- Task title and description -->
