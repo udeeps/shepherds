@@ -38,7 +38,7 @@
 |
 */
 
-$route['customer/login'] = 'login';
+//$route['customer/login'] = 'login';
 $route['default_controller'] = 'login';
 $route['404_override'] = '';
 

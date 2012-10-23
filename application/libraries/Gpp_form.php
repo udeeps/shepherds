@@ -32,7 +32,7 @@ class Gpp_form {
 				$data['validate'] = '2';
 				$data['userFields'] = array('id' => 'email_address', 
 										'name' => 'email_address',
-										'placeholder' => 'Email address');
+										'placeholder' => 'User Name');
 				$data['passwordFields'] = array('id' => 'password',
 												'type' => 'password',
 												'name' => 'password',

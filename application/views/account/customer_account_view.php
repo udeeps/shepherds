@@ -49,7 +49,7 @@
     </div> <!-- End search -->
 
     <div class="three columns">
-      <p>Logged in as <?php echo $name; ?></p>
+      <p>Logged in as <?php echo $customerName; ?></p>
       <p><?php echo anchor('login/log_out', 'Log out'); ?></p>
     </div>
   </div> <!-- End Header -->

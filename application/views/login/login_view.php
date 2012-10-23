@@ -29,7 +29,7 @@
 
   <div class="row header"> <!-- Start Header -->
     <div class="twelve columns">
-      <a href="index.html"><h2>GPP Maintenance App</h2></a>
+      <a href=""><h2>GPP Maintenance App</h2></a>
     </div>
   </div> <!-- End Header -->
 
@@ -42,7 +42,13 @@
 	<?php endif;?>
 	<?php echo validation_errors(); ?>
 
-      <?php echo form_open('login/index/'.$validate); ?>
+      <?php
+      if($validate == '1')
+      echo form_open('login');
+      else 
+	  echo form_open(''); 
+	  //echo form_open('login/index/'.$validate);
+	  ?>
         <label>Address</label>
         <div class="row">
           <div class="twelve columns">

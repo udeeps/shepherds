@@ -35,11 +35,17 @@ class Auth_model extends CI_Model
 			}
 			return false;
 		}else{
-			$this->db->select('orderer.ordererName, orderer.ordererEmail, customers.customerId, customers.customerName')
+			/*$this->db->select('orderer.ordererName, orderer.ordererEmail, customers.customerId, customers.customerName')
 				->from('orderer')
 				->join('customers', 'orderer.customerId = customers.customerId')
-				->where('ordererEmail', $credential)
-				->where('ordererPwd', sha1($password) )
+				->where('customerUserName', $credential)
+				->where('customerPwd', sha1($password) )
+				->limit(1);*/
+			
+			$this->db->select('customerId, customerName, companyEmail')
+				->from('customers')
+				->where('customerUserName', $credential)
+				->where('customerPwd', sha1($password) )
 				->limit(1);
 					
 			$q = $this->db->get();

@@ -26,7 +26,8 @@ class Account extends CI_Controller
 				$this->load->view('account/worker_account_view', $data);
 				break;
 			case 'customer':
-				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
+				//$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
+				$data = array('title' => 'GPP Maintenance App', 'customerName' => $_SESSION['customerName']);
 				$this->load->view('account/customer_account_view', $data);
 				break;
 		}
