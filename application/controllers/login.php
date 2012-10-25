@@ -64,6 +64,7 @@ class Login extends CI_Controller
 					$_SESSION['customerName'] = $result['query']->customerName;
 					//$_SESSION['name'] = $result['query']->ordererName;
 					$_SESSION['email'] = $result['query']->companyEmail;
+					$_SESSION['customerUserName'] = $this->input->post('email_address');
 					redirect('account');
 				}
 			}

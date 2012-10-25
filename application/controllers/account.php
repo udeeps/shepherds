@@ -13,7 +13,7 @@ class Account extends CI_Controller
 	
 	public function index()
 	{
-		if($_SESSION['loggedIn'] != true){ redirect('login'); }
+		if($_SESSION['loggedIn'] != true){ redirect(''); }
 		
 		switch($_SESSION['userLevel'])
 		{
@@ -26,8 +26,14 @@ class Account extends CI_Controller
 				$this->load->view('account/worker_account_view', $data);
 				break;
 			case 'customer':
+				
 				//$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
-				$data = array('title' => 'GPP Maintenance App', 'customerName' => $_SESSION['customerName']);
+				$data['title']='GPP Maintenance App';
+				$data['customerName']=$_SESSION['customerName'];
+				//$data = array('title' => 'GPP Maintenance App', 'customerName' => $_SESSION['customerName']);
+				$this->load->model('customer_account');
+				$data['requestlist'] = $this->customer_account->get_acccount_data($_SESSION['customerUserName']);
+				
 				$this->load->view('account/customer_account_view', $data);
 				break;
 		}
