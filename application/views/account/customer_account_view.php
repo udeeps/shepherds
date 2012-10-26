@@ -99,7 +99,17 @@ if($requestlist->num_rows() > 0 )
 	<h5>'.$row->subject.' - added at '. $row->dateRequested.'</h5>
 	<div class="row">
 	<div class="two columns">');
-		if($row->requestStatus == 'finished')
+		
+		switch($row->requestStatus){
+			case 'Finished':
+				echo('<p class="status finished">Status:<br>'.$row->requestStatus.'</p>');
+				break;
+			default:
+				echo('<p class="status underway">Status:<br>'.$row->requestStatus.'</p>');
+				break;
+				
+		}
+				/*if($row->requestStatus == 'finished')
 		{
 			echo('<p class="status finished">Status:<br>
 	Finished</p>');
@@ -108,11 +118,12 @@ if($requestlist->num_rows() > 0 )
 		{
 			echo('<p class="status underway">Status:<br>
 	Work underway</p>');
-		}
+		}*/
 		echo('
 	</div>
 	<div class="six columns"><strong>Description:</strong>
 	<p>'.$row->troubleshooting.'</p>
+	<strong>Reported By: </strong>'.$row->ordererName.'
 	</div>
 	<div class="four columns"><strong>Starting time:</strong>
 	<p>

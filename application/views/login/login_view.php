@@ -14,10 +14,10 @@
   <title><?php echo $title; ?></title>
 
   <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="/gpp/resources/stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="/gpp/resources/stylesheets/app.css">
+  <link rel="stylesheet" href="/shepherds/resources/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/shepherds/resources/stylesheets/app.css">
 
-  <script src="/gpp/resources/javascripts/modernizr.foundation.js"></script>
+  <script src="/shepherds/resources/javascripts/modernizr.foundation.js"></script>
 
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>
@@ -41,6 +41,15 @@
 		<div class="six columns">
 	<?php endif;?>
 	<?php echo validation_errors(); ?>
+	<?php if($msg!=''){?>
+        <div class="row">
+          <div class="twelve columns">
+            <?php echo ('<p>'.$msg.'</p>'); ?>
+          </div>
+        </div> 
+        <?php 
+        }
+        ?>
 
       <?php
       if($validate == '1')
@@ -50,6 +59,7 @@
 	  //echo form_open('login/index/'.$validate);
 	  ?>
         <label>Address</label>
+         
         <div class="row">
           <div class="twelve columns">
             <?php echo form_input($userFields); ?>
@@ -60,6 +70,7 @@
             <?php echo form_input($passwordFields); ?>
           </div>
         </div> 
+       
           <?php echo form_submit($submit); ?>
       </form>   
     </div>
@@ -89,10 +100,10 @@
   </div> <!-- End Footer -->
   
   <!-- Included JS Files (Compressed) -->
-  <script src="/gpp/resources/javascripts/jquery.js"></script>
-  <script src="/gpp/resources/javascripts/foundation.min.js"></script>
+  <script src="/shepherds/resources/javascripts/jquery.js"></script>
+  <script src="/shepherds/resources/javascripts/foundation.min.js"></script>
   
   <!-- Initialize JS Plugins -->
-  <script src="/gpp/resources/javascripts/app.js"></script>
+  <script src="/shepherds/resources/javascripts/app.js"></script>
 </body>
 </html>

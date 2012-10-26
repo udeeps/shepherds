@@ -9,8 +9,10 @@ class Gpp_form {
 	
 	public function get_login_form($type)
 	{
+		
 		switch($type)
 		{
+			
 			case 'gpp_login_form':
 				$data['title'] = 'GPP Maintenance App';
 				$data['validate'] = '1';
@@ -26,6 +28,7 @@ class Gpp_form {
 										'type' => 'submit',
 										'value' => 'Log in',
 										'class' => 'medium button gppbutton');
+				
 				return $data;
 			case 'client_login_form':
 				$data['title'] = 'GPP Maintenance App';

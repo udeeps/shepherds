@@ -13,7 +13,9 @@ class Account extends CI_Controller
 	
 	public function index()
 	{
-		if($_SESSION['loggedIn'] != true){ redirect(''); }
+		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
+		{ redirect(''); }
+		//if($_SESSION['loggedIn'] != true){ redirect(''); }
 		
 		switch($_SESSION['userLevel'])
 		{

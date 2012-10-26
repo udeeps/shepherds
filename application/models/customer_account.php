@@ -11,13 +11,14 @@ class Customer_account extends CI_Model
 	public function get_acccount_data($customerUserName)
 	{
 	
-		//$sql = 'SELECT repairrequests.* FROM repairrequests, orderer, customers WHERE customers.customerUserName = "'.$customerUserName.'" AND orderer.customerId = customers.customerId AND repairrequests.ordererId = orderer.ordererId';
-		$sql = 'SELECT repairrequests.*, requestStatuses.requestStatus 
-		FROM repairrequests, orderer, customers, requestStatuses 
+		//select all the maintenance request of the particular company 
+		$sql = 'SELECT 
+		repairRequests.*, requestStatuses.requestStatus, orderer.ordererName 
+		FROM repairRequests, orderer, customers, requestStatuses 
 		WHERE customers.customerUserName = "'.$customerUserName.'" 
 		AND orderer.customerId = customers.customerId 
-		AND repairrequests.ordererId = orderer.ordererId
-		AND repairrequests.requestStatusId = requestStatuses.requestStatusId';
+		AND repairRequests.ordererId = orderer.ordererId
+		AND repairRequests.requestStatusId = requestStatuses.requestStatusId';
 		/*$this->db
 		->select('repairrequests.*')
 		->from('repairrequests, orderer, customers')

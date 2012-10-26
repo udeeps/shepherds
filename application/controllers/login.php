@@ -38,7 +38,8 @@ class Login extends CI_Controller
 		}
 		//$this->form_validation->set_rules('email_address', 'Email Address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
 		
-		
+		$data = $this->get_form($formType);
+		$data['msg']='';
 		
 		if( $this->form_validation->run() !== FALSE )
 		{
@@ -72,16 +73,16 @@ class Login extends CI_Controller
 			{
 				//if(uri_string() !== 'login' || uri_string() != 'login/index/1')
 				if(uri_string() == 'login')
-				echo('Incorrect email or password');
+				$data['msg']='Incorrect email or password';
 				else
-				echo('Incorrect username or password');
+				$data['msg']='Incorrect username or password';
 				
 			}
 			
 			
 		}
 		
-		$data = $this->get_form($formType);
+		
 		$this->load->view('login/login_view', $data);
 	}
 	
