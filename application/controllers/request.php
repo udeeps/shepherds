@@ -3,8 +3,6 @@
 class Request extends CI_Controller
 {
 	
-	//private $formType;
-	
 	public function __construct()
 	{
 		parent::__construct();
@@ -20,13 +18,32 @@ class Request extends CI_Controller
 		{
 			redirect('login');
 		}
+
+		$config = array(
+				array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'customer_name','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'billing_address','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'orderer_of_work','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'task_title','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'day','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'month','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'year','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'work_description','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'assigned_employees','label' => 'Maintenance type','rules' => 'required')
+		);
 		
-		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
-		
+		$this->form_validation->set_rules($config);
+	
 		if($this->form_validation->run() !== FALSE)
 		{
+			$this->load->model('request_model');
+			$result = $this->request_model->verify_task_data( $this->input->post() );
 			
+			if($result)
+				print_r($result);
 		}
+		
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		
 		switch($task)
 		{
