@@ -19,16 +19,17 @@ class Request extends CI_Controller
 			redirect('login');
 		}
 
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		
 		$config = array(
 				array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'customer_name','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'billing_address','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'billing_address','label' => 'Maintenance type','rules' => 'required|alpha_numeric'),
 				array('field' => 'orderer_of_work','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'task_title','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'day','label' => 'Maintenance type','rules' => ''),
-				array('field' => 'month','label' => 'Maintenance type','rules' => ''),
-				array('field' => 'year','label' => 'Maintenance type','rules' => ''),
+				array('field' => 'day','label' => 'Maintenance type','rules' => 'numeric'),
+				array('field' => 'month','label' => 'Maintenance type','rules' => 'numeric'),
+				array('field' => 'year','label' => 'Maintenance type','rules' => 'numeric'),
 				array('field' => 'work_description','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'assigned_employees','label' => 'Maintenance type','rules' => 'required')
 		);
@@ -39,15 +40,18 @@ class Request extends CI_Controller
 		{
 			$this->load->model('request_model');
 			//verifying "add task" post array
-			$result = $this->request_model->verify_task_data( $this->input->post() );
+			$result = $this->request_model->create_repair_request( $this->input->post() );
+
+			if($result){
+				$data['msg'] = 'Incorrect orderer name';
+				$this->load->view('request/admin_add_task_view', $data);
+			}else{
+				$data['msg'] = 'Request saved succesfully';
+				$this->load->view('request/admin_add_task_view', $data);
+			}
 			
-			if($result)
-				print_r($result);
-				
 			
 		}
-		
-		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		
 		switch($task)
 		{

@@ -62,6 +62,15 @@
       <p><?php echo anchor($back, 'Previous page');?></p>
       <h3>Report/task management</h3> <hr /><!-- End "breadcrumbs" -->
 
+	  
+	  <?php if(isset($msg)): ?>
+		 <!-- Shows message if orderer name not found from DB -->
+			<div class="twelve columns panel">
+				<h6><?php echo $msg; ?></h6>
+			</div>
+		
+		<?php endif; ?>
+		
     <div class="twelve columns panel">
       <h4>Add a new report/task</h4> 
 	  
@@ -105,13 +114,13 @@
           <label>Start date</label>
           <div class="row">
             <div class="four columns">
-              <input type="text" placeholder="Day" name="day" />
+              <input type="text" placeholder="pp" name="day" />
             </div>
             <div class="four columns">
-              <input type="text" placeholder="Month" name="month" />
+              <input type="text" placeholder="kk" name="month" />
             </div>
             <div class="four columns">
-              <input type="text" placeholder="Year" name="year" />
+              <input type="text" placeholder="vvvv" name="year" />
             </div>
           </div>
         </div>
