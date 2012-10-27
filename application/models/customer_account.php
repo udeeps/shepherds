@@ -37,9 +37,3 @@ class Customer_account extends CI_Model
 	}
 
 }
-
-//SELECT repairrequests.* FROM repairrequests, orderer, customers WHERE customers.customerUserName = "udeeps" AND orderer.customerId = customers.customerId AND repairrequests.ordererId = orderer.ordererId
-
-//SELECT yrityksen_toimihenkilot.henkilo_id, yritys.yritys_id, yritys.yritys_nimi FROM yrityksen_toimihenkilot INNER JOIN yritys on yrityksen_toimihenkilot.yritys_id = yritys.yritys_id WHERE yrityksen_toimihenkilot.kayttajatunnus = [TUNNUS] AND yrityksen_toimihenkilot.salasana = [SALASANA]
-
-//SELECT yrityksen_toimihenkilot.henkilo_id, yritys.yritys_id, yritys.yritys_nimi FROM yrityksen_toimihenkilot, yritys WHERE yrityksen_toimihenkilot.yritys_id = yritys.yritys_id AND yrityksen_toimihenkilot.kayttajatunnus = [TUNNUS] AND yrityksen_toimihenkilot.salasana = [SALASANA]

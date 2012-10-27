@@ -19,6 +19,7 @@ class Request extends CI_Controller
 			redirect('login');
 		}
 
+		
 		$config = array(
 				array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'customer_name','label' => 'Maintenance type','rules' => 'required'),
@@ -37,10 +38,13 @@ class Request extends CI_Controller
 		if($this->form_validation->run() !== FALSE)
 		{
 			$this->load->model('request_model');
+			//verifying "add task" post array
 			$result = $this->request_model->verify_task_data( $this->input->post() );
 			
 			if($result)
 				print_r($result);
+				
+			
 		}
 		
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
@@ -71,4 +75,3 @@ class Request extends CI_Controller
 	}
 
 }
-?>
