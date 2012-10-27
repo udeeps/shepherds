@@ -19,10 +19,10 @@
   -->
   
   <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="/shepherds/resources/stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="/shepherds/resources/stylesheets/app.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/app.css">
 
-  <script src="/shepherds/resources/javascripts/modernizr.foundation.js"></script>
+  <script src="<?php echo base_url(); ?>resources/javascripts/modernizr.foundation.js"></script>
 
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>
@@ -144,10 +144,10 @@
   -->
   
   <!-- Included JS Files (Compressed) -->
-  <script src="/shepherds/resources/javascripts/jquery.js"></script>
-  <script src="/shepherds/resources/javascripts/foundation.min.js"></script>
+  <script src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
+  <script src="<?php echo base_url(); ?>resources/javascripts/foundation.min.js"></script>
   
   <!-- Initialize JS Plugins -->
-  <script src="/shepherds/resources/javascripts/app.js"></script>
+  <script src="<?php echo base_url(); ?>resources/javascripts/app.js"></script>
 </body>
 </html>
