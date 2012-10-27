@@ -26,9 +26,9 @@ class Request extends CI_Controller
 				array('field' => 'billing_address','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'orderer_of_work','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'task_title','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'day','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'month','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'year','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'day','label' => 'Maintenance type','rules' => ''),
+				array('field' => 'month','label' => 'Maintenance type','rules' => ''),
+				array('field' => 'year','label' => 'Maintenance type','rules' => ''),
 				array('field' => 'work_description','label' => 'Maintenance type','rules' => 'required'),
 				array('field' => 'assigned_employees','label' => 'Maintenance type','rules' => 'required')
 		);

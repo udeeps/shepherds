@@ -64,49 +64,54 @@
 
     <div class="twelve columns panel">
       <h4>Add a new report/task</h4> 
-
-      <p><strong>Type of work:</strong> <input type="radio" name="group2" value="maintenance" checked> Maintenance <input type="radio" name="group2" value="installation"> Installation <input type="radio" name="group2" value="adjustment"> Adjustment <input type="radio" name="group2" value="urakka"> Urakka</p> 
-
-      <div class="row">
-        <form name="newreport">
+	  
+        <?php echo form_open('request'); ?>
+		
+		<div class="row">
+			<p><strong>Type of work:</strong>
+			<input type="radio" name="type_maintenance" value="maintenance" checked>Maintenance
+			<input type="radio" name="type_maintenance" value="installation">Installation
+			<input type="radio" name="type_maintenance" value="adjustment">Adjustment
+			<input type="radio" name="type_maintenance" value="contract">Contract</p>
+		</div>
+		<div class="row">
           <div class="six columns"> <!-- Name -->
             <label>Customer name (company)</label>
-            <input type="text" placeholder="Start typing to choose from the list" />
+            <input type="text" placeholder="Start typing to choose from the list" name="customer_name"/>
           </div>
           <div class="six columns">
             <label>Billing address</label>
-            <input type="text" placeholder="Start typing to choose from the list" />
+            <input type="text" placeholder="Start typing to choose from the list" name="billing_address"/>
           </div>
       </div>
 
       <div class="row"> <!-- Orderer info -->
         <div class="six columns">
+          <label>Customer address</label>
+          <input type="text" placeholder="" name="customer_address"/>
+        </div>
+        <div class="six columns">
           <label>Orderer of work (name)</label>
-          <input type="text" placeholder="" />
+          <input type="text" placeholder="" name="orderer_of_work"/>
         </div>
-        <!-- <div class="six columns">
-          <label>Orderer of work (individual, last name)</label>
-          <input type="text" placeholder="" />
-        </div>
-         -->
       </div>
       <br />
       <div class="row"> <!-- Task title and description -->
         <div class="eight columns">
           <label>Task title</label>
-          <input type="text" placeholder="" />
+          <input type="text" placeholder="" name="task_title"/>
         </div>
         <div class="four columns">
-          <label>Estimated start date</label>
+          <label>Start date</label>
           <div class="row">
             <div class="four columns">
-              <input type="text" placeholder="Day" />
+              <input type="text" placeholder="Day" name="day" />
             </div>
             <div class="four columns">
-              <input type="text" placeholder="Month" />
+              <input type="text" placeholder="Month" name="month" />
             </div>
             <div class="four columns">
-              <input type="text" placeholder="Year" />
+              <input type="text" placeholder="Year" name="year" />
             </div>
           </div>
         </div>
@@ -114,7 +119,7 @@
       <div class="row">
         <div class="twelve columns">
           <label>Description of the work</label>
-          <textarea name="newannouncement" class="newannouncement" placeholder=""></textarea>
+          <textarea name="work_description" class="newannouncement" placeholder=""></textarea>
         </div>
       </div>
 
@@ -122,16 +127,19 @@
         <div class="twelve columns">
           <hr />
           <label><strong>Assign task to worker(s)</strong></label>
-          <input type="text" placeholder="Start typing to choose from list" />
+          <input type="text" placeholder="Start typing to choose from list" name="assigned_employees" />
         </div>
       </div>
 
       <div class="row"> <!-- Submit button -->
         <div class="twelve columns">
           <hr />
-          <input type="submit" class="button gppbutton fullwidth" value="Add new report/task" />
+          <input type="submit" class="button gppbutton fullwidth" value="Add new report/task" name="submit" />
         </div>
       </div>
+	  
+	  <?php echo form_close(); ?>
+	  
     </div>
     
     <hr />
