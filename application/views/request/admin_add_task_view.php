@@ -73,7 +73,9 @@
 		
     <div class="twelve columns panel">
       <h4>Add a new report/task</h4> 
-	  
+		
+		<div class="twelve columns panel"><?php echo validation_errors(); ?></div>
+		
         <?php echo form_open('request'); ?>
 		
 		<div class="row">

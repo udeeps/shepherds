@@ -89,19 +89,19 @@ color: #fff;
 padding: 15px 0px 15px 0px;
 }
 
-.finished {
+.completed {
 background-color: #1c900c;
 }
 
-.underway {
+.in_progress {
 background-color: #988800;
 }
 
-.notstarted {
+.received {
 background-color: #3f3f3f;
 }
 
-.waiting {
+.stopped {
 background-color: #a2490d;
 }
 

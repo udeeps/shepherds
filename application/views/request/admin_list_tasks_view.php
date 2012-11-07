@@ -69,299 +69,42 @@
         <dd><a href="#">Worker</a></dd>
       </dl> 
 
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
+	  <?php if(count($taskList) > 0): ?>
+		<?php foreach($taskList as $row): ?> 
+      <a href="admin_task_details.html">
+	  <ul class="listing"> <!-- Start single task listing -->
         <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status finished">Status:<br>Finished</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="two columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-          <div class="two columns">
-            <strong>Finishing time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
+          <h5>Title of the job - added <?php echo date('j.n.o', strtotime($row->dateRequested)); ?></h5>
+			<div class="row">
+			  <div class="two columns">
+				<p class="status <?php echo $row->requestStatus; ?>">Status:<br><?php echo ucfirst(str_replace("_", " ", $row->requestStatus)); ?></p>
+			  </div>
+			  <div class="six columns">
+				<strong>Description:</strong>
+				<p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
+				<?php if(isset($row->workerName)): ?>
+				
+				<!-- TODO: IF MANY REQUESTDETAILS WITH SAME REQUEST ID, LOOP THROUGH TO GET ALL WORKERS -->
+				
+				<strong>Workers:</strong>
+				<p><?php echo $row->workerName; ?></p>
+				<?php endif; ?>
+			  </div>
+			  <div class="two columns">
+				<strong>Starting time:</strong>
+				<p>10/12/2012</p>
+			  </div>
+			  <div class="two columns">
+				<strong>Finishing time:</strong>
+				<p>10/12/2012</p>
+			  </div>
+			</div>
         </li>
       </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status finished">Status:<br>Finished</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="two columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-          <div class="two columns">
-            <strong>Finishing time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status finished">Status:<br>Finished</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="two columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-          <div class="two columns">
-            <strong>Finishing time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status finished">Status:<br>Finished</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="two columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-          <div class="two columns">
-            <strong>Finishing time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status finished">Status:<br>Finished</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="two columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-          <div class="two columns">
-            <strong>Finishing time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status underway">Status:<br>Work underway</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status underway">Status:<br>Work underway</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status underway">Status:<br>Work underway</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status underway">Status:<br>Work underway</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status underway">Status:<br>Work underway</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status waiting">Status:<br>Waiting for parts</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status notstarted">Status:<br>Not started</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
-      <a href="admin_task_details.html"><ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status notstarted">Status:<br>Not started</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-            <strong>Workers:</strong>
-            <p>Matti, Jukka, Eemeli, Perttu, Aatu, Niilo</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
-        </li>
-      </ul></a> <!-- End single task listing -->
-
+		<?php endforeach; ?> 
+	  <?php endif; ?>
+	  
+      
 
 
     </div>

@@ -9,6 +9,7 @@ class Request extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->library( array('form_validation', 'session') );
+		$this->load->model('request_model');
 		session_start();
 	}
 	
@@ -23,22 +24,21 @@ class Request extends CI_Controller
 		
 		$config = array(
 				array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'customer_name','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'billing_address','label' => 'Maintenance type','rules' => 'required|alpha_numeric'),
-				array('field' => 'orderer_of_work','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'task_title','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'day','label' => 'Maintenance type','rules' => 'numeric'),
-				array('field' => 'month','label' => 'Maintenance type','rules' => 'numeric'),
-				array('field' => 'year','label' => 'Maintenance type','rules' => 'numeric'),
-				array('field' => 'work_description','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'assigned_employees','label' => 'Maintenance type','rules' => 'required')
+				array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
+				array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
+				array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
+				array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
+				array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
+				array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
+				array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
+				array('field' => 'work_description','label' => 'Description','rules' => 'required'),
+				array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
 		);
 		
 		$this->form_validation->set_rules($config);
 	
 		if($this->form_validation->run() !== FALSE)
 		{
-			$this->load->model('request_model');
 			//verifying "add task" post array
 			$result = $this->request_model->create_repair_request( $this->input->post() );
 
@@ -49,8 +49,6 @@ class Request extends CI_Controller
 				$data['msg'] = 'Request saved succesfully';
 				$this->load->view('request/admin_add_task_view', $data);
 			}
-			
-			
 		}
 		
 		switch($task)
@@ -59,6 +57,8 @@ class Request extends CI_Controller
 				$this->load->view('request/admin_add_task_view', $data);
 			break;
 			case 'list_tasks':
+				$data['taskList'] = $this->request_model->get_requests();
+				//print_r($data['taskList']);
 				$this->load->view('request/admin_list_tasks_view', $data);
 			break;
 			case 'manage_users':
@@ -71,6 +71,18 @@ class Request extends CI_Controller
 				
 			break;
 		}	
+	}
+	
+	public function check_worker($str)
+	{
+		$str = trim($str);
+		if(preg_match('/^[a-zA-ZåäöÅÄÖ,\s]+$/', $str)){
+			return TRUE;
+		}else if($str == ''){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
 	}
 	
 	public function get_single_task($taskId)
