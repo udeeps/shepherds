@@ -21,10 +21,13 @@
   -->
 
 <!-- Included CSS Files (Compressed) -->
-<link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/foundation.min.css">
-<link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/app.css">
+<link rel="stylesheet"
+	href="<?php echo base_url(); ?>resources/stylesheets/foundation.min.css">
+<link rel="stylesheet"
+	href="<?php echo base_url(); ?>resources/stylesheets/app.css">
 
-<script src="<?php echo base_url(); ?>resources/javascripts/modernizr.foundation.js"></script>
+<script
+	src="<?php echo base_url(); ?>resources/javascripts/modernizr.foundation.js"></script>
 
 <!-- IE Fix for HTML5 Tags -->
 <!--[if lt IE 9]>
@@ -73,20 +76,37 @@ bit more, just to see how the layout responds to the amount of content.</p>
 <div class="row content"><!-- Start App Content -->
 <hr />
 
-<?php
-if($requestlist->num_rows() > 0 )
 
-{
-	echo('
+
+
 <div class="twelve columns ">
 <h4>Your reports to our service</h4>
 
 <dl class="sub-nav">
 	<dt>Sort by:</dt>
-	<dd class="active gppbg"><a href="#">Date</a></dd>
-	<dd><a href="#">Status</a></dd>
+	<?php 
+	if($listByDate)
+	{
+	echo('<dd id="linkDate" class="active gppbg"><a href="">Date</a></dd>
+	<dd id="linkStatus" class=""><a href="'.site_url("account/listByStatus").'">Status</a></dd>');
+	}
+	else
+	{
+	echo('<dd id="linkDate" class=""><a href="'.site_url("account/listByDate").'">Date</a></dd>
+	<dd id="linkStatus" class="active gppbg"><a href="">Status</a></dd>');
+	}
+	?>
+	
 </dl>
-');
+
+<div id="task_list">
+<?php
+//$data['requestlist']=$requestlist;
+$this->load->view('account/listTasks',$requestlist);
+/*
+if($requestlist->num_rows() > 0 )
+{
+
 	foreach ($requestlist->result() as $row)
 	{
 
@@ -99,15 +119,9 @@ if($requestlist->num_rows() > 0 )
 	<div class="row">
 	<div class="two columns">');
 
-		switch($row->requestStatus){
-			case 'completed':
-				echo('<p class="status finished">Status:<br>'.$row->requestStatus.'</p>');
-				break;
-			default:
-				echo('<p class="status underway">Status:<br>'.$row->requestStatus.'</p>');
-				break;
 
-		}
+		echo('<p class="status '.$row->requestStatus.'">Status:<br>'.$row->requestStatus.'</p>');
+			
 
 		echo('
 	</div>
@@ -138,7 +152,11 @@ if($requestlist->num_rows() > 0 )
 
 
 }
-?> <!-- End single task listing -->
+else
+echo("You haven't registered any task yet");
+
+*/
+?> <!-- End task listing --></div>
 
 
 <hr />
@@ -160,10 +178,7 @@ if($requestlist->num_rows() > 0 )
 </ul>
 </div>
 </div>
-<!-- End Footer -->
-
-<!-- Included JS Files (Uncompressed) -->
-<!--
+<!-- End Footer --> <!-- Included JS Files (Uncompressed) --> <!--
   
   <script src="javascripts/jquery.js"></script>
   
@@ -191,13 +206,54 @@ if($requestlist->num_rows() > 0 )
   
   <script src="javascripts/jquery.foundation.topbar.js"></script>
   
-  -->
+  --> <!-- Included JS Files (Compressed) --> <script
+	src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
+<script
+	src="<?php echo base_url(); ?>resources/javascripts/foundation.min.js"></script>
 
-<!-- Included JS Files (Compressed) -->
-<script src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
-<script src="<?php echo base_url(); ?>resources/javascripts/foundation.min.js"></script>
+<!-- Initialize JS Plugins --> <script
+	src="<?php echo base_url(); ?>resources/javascripts/app.js"></script> <script
+	type="text/javascript">
+$('#linkStatus').click(function() {
+	var form_data = {
+			ajax: '1'		
+		};
+	$.ajax({
+		url: "<?php echo site_url('account/listByStatus'); ?>",
+		type: 'POST',
+		data: form_data,
+		success: function(msg) {
+			$('#task_list').html(msg);
+			document.getElementById("linkStatus").setAttribute("class", "active gppbg");
+			document.getElementById("linkDate").setAttribute("class", "");
+			
+		}
+	});
+	
+	return false;
+});
 
-<!-- Initialize JS Plugins -->
-<script src="<?php echo base_url(); ?>resources/javascripts/app.js"></script>
+$('#linkDate').click(function() {
+	var form_data = {
+			ajax: '1'		
+		};
+	$.ajax({
+		url: "<?php echo site_url('account/listByDate'); ?>",
+		type: 'POST',
+		data: form_data,
+		success: function(msg) {
+			$('#task_list').html(msg);
+			document.getElementById("linkStatus").setAttribute("class", "");
+			document.getElementById("linkDate").setAttribute("class", "active gppbg");
+			
+		}
+	});
+	
+	return false;
+});
+
+	
+</script>
+
 </body>
 </html>
