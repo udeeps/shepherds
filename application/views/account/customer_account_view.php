@@ -98,26 +98,17 @@ if($requestlist->num_rows() > 0 )
 	<h5>'.$row->subject.' - added at '. $row->dateRequested.'</h5>
 	<div class="row">
 	<div class="two columns">');
-		
+
 		switch($row->requestStatus){
-			case 'Finished':
+			case 'completed':
 				echo('<p class="status finished">Status:<br>'.$row->requestStatus.'</p>');
 				break;
 			default:
 				echo('<p class="status underway">Status:<br>'.$row->requestStatus.'</p>');
 				break;
-				
+
 		}
-				/*if($row->requestStatus == 'finished')
-		{
-			echo('<p class="status finished">Status:<br>
-	Finished</p>');
-		}
-		elseif($row->requestStatus == 'assigned')
-		{
-			echo('<p class="status underway">Status:<br>
-	Work underway</p>');
-		}*/
+
 		echo('
 	</div>
 	<div class="six columns"><strong>Description:</strong>
@@ -127,14 +118,14 @@ if($requestlist->num_rows() > 0 )
 	<div class="four columns"><strong>Starting time:</strong>
 	<p>
 	');
-		
-	if($row->dateAssigned!= NULL)
-	echo($row->dateAssigned);
-	else
-	echo('Not assigned yet');
-	
-	
-	echo('</p>
+
+		if($row->dateAssigned!= NULL)
+		echo($row->dateAssigned);
+		else
+		echo('Not assigned yet');
+
+
+		echo('</p>
 	</div>
 	</div>
 	</li>
@@ -147,7 +138,7 @@ if($requestlist->num_rows() > 0 )
 
 
 }
-?> <!-- End single task listing --> 
+?> <!-- End single task listing -->
 
 
 <hr />
