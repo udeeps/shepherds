@@ -1,3 +1,4 @@
+<?php $row=$result[0];?>
 <!DOCTYPE html>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -17,7 +18,7 @@
 
 <!-- Included CSS Files (Uncompressed) -->
 <!--
-  <link rel="stylesheet" href="stylesheets/foundation.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/foundation.css">
   -->
 
 <!-- Included CSS Files (Compressed) -->
@@ -37,13 +38,10 @@
 </head>
 <body>
 
-
 <div class="row header"><!-- Start Header -->
-<div class="five columns">
-<?php 
+<div class="five columns"><?php 
 echo anchor('account', $customerName.' Maintenance');
-?>
-</div>
+?></div>
 
 <div class="four columns"><!-- Start search -->
 <div class="row collapse">
@@ -62,49 +60,83 @@ echo anchor('account', $customerName.' Maintenance');
 </div>
 <!-- End Header -->
 
-<div class="row">
-<hr />
-<div class="twelve columns">
-<h5>Brief message to users</h5>
-<p>A message to welcome the user to the system, possibly explaining the
-basic functionality of the application so that there's less need for
-support. Just a couple of lines to not burden the user with text. Just a
-bit more, just to see how the layout responds to the amount of content.</p>
-</div>
-</div>
-
 <div class="row content"><!-- Start App Content -->
 <hr />
+<div class="twelve columns "><!-- Start "breadcrumbs" -->
+<p><a href="<?php echo(site_url("account"));?>">&lArr; Back to task
+listing</a></p>
+<h4><?php echo($row->subject)?></h4>
+<!-- End "breadcrumbs" -->
 
+<ul class="details">
+	<!-- Start detailed task info -->
+	<li class="panel">
+	<div class="row">
+	<div class="two columns"><?php echo('<p class="status '.$row->requestStatus.'">Status:<br>'.$row->requestStatus.'</p>');?>
+	</div>
+	<div class="six columns">
+	<p><b>What information can we give to customers?</b></p>
+	<p><?php 
+	echo("Request received on ".$row->dateRequested."<br/>");
+	echo("Location - ".$row->repairLocation."<br/>");
+	//echo("Work Type - ".$row->workTypeName."<br/>");
+	?></p>
+	<p><strong>Reported By: </strong><br />
+	Name: <?php echo($row->ordererName);?> <br />
+	Email: <?php echo($row->ordererEmail);?> <br />
+	Phone No: <?php echo($row->ordererPhone);?></p>
 
+	<!-- <p><strong>Admined By: </strong><br />
+	Name: <?php echo($row->adminName);?> <br />
+	Email: <?php echo($row->adminEmail);?> <br />
+	Phone No: <?php echo($row->adminPhone);?></p>
 
-
-<div class="twelve columns ">
-<h4>Your reports to our service</h4>
-
-<dl class="sub-nav">
-	<dt>Sort by:</dt>
-	<?php 
-	if($listByDate)
+	<p><strong>Task Performed By: </strong><br />
+	<?php
+	foreach($result as  $row)
 	{
-	echo('<dd id="linkDate" class="active gppbg"><a href="">Date</a></dd>
-	<dd id="linkStatus" class=""><a href="'.site_url("account/listByStatus").'">Status</a></dd>');
+		echo(
+	'Name: '.$row->workerName.'<br />
+	Email: '.$row->workerEmail.'<br />
+	Phone No: '.$row->workerPhone.'<br />
+	Hours Worked: '.$row->workingHours.'<br/><br/>');
 	}
-	else
+	echo('</p>');
+
+	foreach($result as  $row)
 	{
-	echo('<dd id="linkDate" class=""><a href="'.site_url("account/listByDate").'">Date</a></dd>
-	<dd id="linkStatus" class="active gppbg"><a href="">Status</a></dd>');
+		if($row->levelOfWorker == 1)
+		echo('<p><strong>Actions performed: </strong>'. $row->actionsDone.'</p>');
 	}
-	?>
+	?> -->
 	
-</dl>
+	
+	<p><strong>Description: </strong><?php echo($row->troubleshooting);?>.</p>
 
-<div id="task_list">
-<?php
-$this->load->view('account/listTasks',$requestlist);
-?> <!-- End task listing --></div>
-
-
+	<div class="row"><!-- Start feedback box -->
+	<hr />
+	<div class="twelve columns"><label><strong>Comments</strong></label> <textarea
+		name="feedbackbox" class="feedbackbox"
+		placeholder="Comments and feedback regarding this task"></textarea> <a
+		href="#" class="medium button gppbutton">Send us your feedback</a></div>
+	</div>
+	<!-- End feedback box --></div>
+	<div class="two columns"><strong>Starting time:</strong>
+	<p><?php if($row->dateAssigned!= NULL)
+	echo($row->dateAssigned);
+	else
+	echo('Not assigned yet');?></p>
+	</div>
+	<div class="two columns"><strong>Estimated finish time:</strong>
+	<p><?php if($row->dateFinished!= NULL)
+	echo($row->dateFinished);
+	else
+	echo('Not predictable yet');?></p>
+	</div>
+	</div>
+	</li>
+</ul>
+<!-- End detailed task info --></div>
 <hr />
 </div>
 <!-- End App Content -->
@@ -124,7 +156,10 @@ $this->load->view('account/listTasks',$requestlist);
 </ul>
 </div>
 </div>
-<!-- End Footer --> <!-- Included JS Files (Uncompressed) --> <!--
+<!-- End Footer -->
+
+<!-- Included JS Files (Uncompressed) -->
+<!--
   
   <script src="javascripts/jquery.js"></script>
   
@@ -152,54 +187,14 @@ $this->load->view('account/listTasks',$requestlist);
   
   <script src="javascripts/jquery.foundation.topbar.js"></script>
   
-  --> <!-- Included JS Files (Compressed) --> <script
-	src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
+  -->
+
+<!-- Included JS Files (Compressed) -->
+<script src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
 <script
 	src="<?php echo base_url(); ?>resources/javascripts/foundation.min.js"></script>
 
-<!-- Initialize JS Plugins --> <script
-	src="<?php echo base_url(); ?>resources/javascripts/app.js"></script> <script
-	type="text/javascript">
-$('#linkStatus').click(function() {
-	var form_data = {
-			ajax: '1'		
-		};
-	$.ajax({
-		url: "<?php echo site_url('account/listByStatus'); ?>",
-		type: 'POST',
-		data: form_data,
-		success: function(msg) {
-			$('#task_list').html(msg);
-			document.getElementById("linkStatus").setAttribute("class", "active gppbg");
-			document.getElementById("linkDate").setAttribute("class", "");
-			
-		}
-	});
-	
-	return false;
-});
-
-$('#linkDate').click(function() {
-	var form_data = {
-			ajax: '1'		
-		};
-	$.ajax({
-		url: "<?php echo site_url('account/listByDate'); ?>",
-		type: 'POST',
-		data: form_data,
-		success: function(msg) {
-			$('#task_list').html(msg);
-			document.getElementById("linkStatus").setAttribute("class", "");
-			document.getElementById("linkDate").setAttribute("class", "active gppbg");
-			
-		}
-	});
-	
-	return false;
-});
-
-	
-</script>
-
+<!-- Initialize JS Plugins -->
+<script src="<?php echo base_url(); ?>resources/javascripts/app.js"></script>
 </body>
 </html>

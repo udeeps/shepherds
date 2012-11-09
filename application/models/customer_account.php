@@ -19,21 +19,9 @@ class Customer_account extends CI_Model
 		AND orderer.customerId = customers.customerId 
 		AND repairRequests.ordererId = orderer.ordererId
 		AND repairRequests.requestStatusId = requestStatuses.requestStatusId ORDER BY repairRequests.dateRequested DESC';
-		/*$this->db
-		->select('repairrequests.*')
-		->from('repairrequests, orderer, customers')
-		->where('customers.customerUserName', $customerUserName)
-		->where('customers.customerId=orderer.customerId' )
-		->where('orderer.ordererId=repairrequests.ordererId');*/
 		$q=$this->db->query($sql);
 		return $q;
-		/*if( $q->num_rows() > 0 )
-		{
-			//$requestarray = array( 'query' => $q->result());
-			return $q;
-		}
-		else
-		return FALSE;*/
+		
 	}
 
 	public function get_list_by_status($customerUserName)
@@ -45,12 +33,6 @@ class Customer_account extends CI_Model
 		AND orderer.customerId = customers.customerId 
 		AND repairRequests.ordererId = orderer.ordererId
 		AND repairRequests.requestStatusId = requestStatuses.requestStatusId ORDER BY repairRequests.requestStatusId ASC';
-		/*$this->db
-		->select('repairrequests.*')
-		->from('repairrequests, orderer, customers')
-		->where('customers.customerUserName', $customerUserName)
-		->where('customers.customerId=orderer.customerId' )
-		->where('orderer.ordererId=repairrequests.ordererId');*/
 		$q=$this->db->query($sql);
 		return $q;
 	}

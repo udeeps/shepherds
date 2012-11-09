@@ -15,7 +15,6 @@ class Account extends CI_Controller
 	{
 		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
 		{ redirect(''); }
-		//if($_SESSION['loggedIn'] != true){ redirect(''); }
 
 		switch($_SESSION['userLevel'])
 		{
@@ -29,39 +28,31 @@ class Account extends CI_Controller
 				break;
 			case 'customer':
 				$this->listByDate();
-				/*
-				//$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'customerName' => $_SESSION['customerName']);
-				$data['title']='GPP Maintenance App';
-				$data['customerName']=$_SESSION['customerName'];
-				//$data = array('title' => 'GPP Maintenance App', 'customerName' => $_SESSION['customerName']);
-				$this->load->model('customer_account');
-				$data['requestlist'] = $this->customer_account->get_acccount_data($_SESSION['customerUserName']);
-
-				$this->load->view('account/customer_account_view', $data);
-				*/
 				break;
 		}
 	}
 
 	public function listByStatus()
 	{
+		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
+		{ redirect(''); }
 		$this->load->model('customer_account');
 		$data['requestlist'] = $this->customer_account->get_list_by_status($_SESSION['customerUserName']);
 		if ($this->input->post('ajax')) {
 			$this->load->view('account/listTasks',$data);
-		}else 
+		}else
 		{
 			$data['title']='GPP Maintenance App';
-				$data['customerName']=$_SESSION['customerName'];
-				$data['listByDate']=0;
-				//$this->load->model('customer_account');
-				//$data['requestlist'] = $this->customer_account->get_list_by_status($_SESSION['customerUserName']);
-				$this->load->view('account/customer_account_view', $data);
+			$data['customerName']=$_SESSION['customerName'];
+			$data['listByDate']=0;
+			$this->load->view('account/customer_account_view', $data);
 		}
 	}
 
 	public function listByDate()
 	{
+		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
+		{ redirect(''); }
 		$this->load->model('customer_account');
 		$data['requestlist'] = $this->customer_account->get_acccount_data($_SESSION['customerUserName']);
 		if ($this->input->post('ajax')) {
@@ -70,11 +61,9 @@ class Account extends CI_Controller
 		else
 		{
 			$data['title']='GPP Maintenance App';
-				$data['customerName']=$_SESSION['customerName'];
-				$data['listByDate']=1;
-				//$this->load->model('customer_account');
-				//$data['requestlist'] = $this->customer_account->get_acccount_data($_SESSION['customerUserName']);
-				$this->load->view('account/customer_account_view', $data);
+			$data['customerName']=$_SESSION['customerName'];
+			$data['listByDate']=1;
+			$this->load->view('account/customer_account_view', $data);
 		}
 
 	}

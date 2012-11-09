@@ -4,9 +4,10 @@ if($requestlist->num_rows() > 0 )
 
 	foreach ($requestlist->result() as $row)
 	{
+		//var_dump($row);
 
 		echo('
-	<a href="details.html">
+	<a href="'.site_url("request/get_single_task/".$row->Id).'">
 	<ul class="listing">
 	<!-- Start single task listing -->
 	<li class="panel">
