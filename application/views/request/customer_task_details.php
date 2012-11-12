@@ -1,4 +1,4 @@
-<?php $row=$result[0];?>
+<?php ?>
 <!DOCTYPE html>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -65,53 +65,88 @@ echo anchor('account', $customerName.' Maintenance');
 <div class="twelve columns "><!-- Start "breadcrumbs" -->
 <p><a href="<?php echo(site_url("account"));?>">&lArr; Back to task
 listing</a></p>
-<h4><?php echo($row->subject)?></h4>
+<h4><?php echo($result['basicInfo']->subject)?></h4>
 <!-- End "breadcrumbs" -->
 
 <ul class="details">
 	<!-- Start detailed task info -->
 	<li class="panel">
 	<div class="row">
-	<div class="two columns"><?php echo('<p class="status '.$row->requestStatus.'">Status:<br>'.$row->requestStatus.'</p>');?>
+	<div class="two columns"><?php echo('<p class="status '.$result['basicInfo']->requestStatus.'">Status:<br>'.$result['basicInfo']->requestStatus.'</p>');?>
 	</div>
 	<div class="six columns">
 	<p><b>What information can we give to customers?</b></p>
 	<p><?php 
-	echo("Request received on ".$row->dateRequested."<br/>");
-	echo("Location - ".$row->repairLocation."<br/>");
-	//echo("Work Type - ".$row->workTypeName."<br/>");
+	echo("Request received on ".$result['basicInfo']->dateRequested."<br/>");
+	echo("Location - ".$result['basicInfo']->repairLocation."<br/>");
+	echo('<p><strong>Description: </strong>'.$result['basicInfo']->troubleshooting.'</p>');
+	if($result['workTypeInfo'] != FALSE)
+	echo("Work Type - ".$result['workTypeInfo']->workTypeName."<br/>");
 	?></p>
 	<p><strong>Reported By: </strong><br />
-	Name: <?php echo($row->ordererName);?> <br />
-	Email: <?php echo($row->ordererEmail);?> <br />
-	Phone No: <?php echo($row->ordererPhone);?></p>
+	Name: <?php echo($result['basicInfo']->ordererName);?> <br />
+	Email: <?php echo($result['basicInfo']->ordererEmail);?> <br />
+	Phone No: <?php echo($result['basicInfo']->ordererPhone);?></p>
 
-	<!-- <p><strong>Admined By: </strong><br />
-	Name: <?php echo($row->adminName);?> <br />
-	Email: <?php echo($row->adminEmail);?> <br />
-	Phone No: <?php echo($row->adminPhone);?></p>
-
-	<p><strong>Task Performed By: </strong><br />
-	<?php
-	foreach($result as  $row)
+	<?php if($result['adminInfo']== FALSE)
+	echo('<p><strong>No Administrator found for this request </strong></p>');
+	else
+	echo('<p><strong>Admined By: </strong><br />
+	Name: '.$result['adminInfo']->adminName.' <br />
+	Email:'.$result['adminInfo']->adminEmail.'<br />
+	Phone No: '.$result['adminInfo']->adminPhone.'</p>');
+	?> <?php if($result['workersInfo'] == FALSE)
+	echo('<p><strong>No Workers assigned for this request yet </strong></p>');
+	else
 	{
-		echo(
-	'Name: '.$row->workerName.'<br />
+		echo('<div><strong>Task Performed By: </strong>');
+		foreach($result['workersInfo'] as  $row)
+		{
+			echo(
+	'<p>Name: '.$row->workerName.'<br />
 	Email: '.$row->workerEmail.'<br />
 	Phone No: '.$row->workerPhone.'<br />
-	Hours Worked: '.$row->workingHours.'<br/><br/>');
-	}
-	echo('</p>');
+	Hours Worked: '.$row->workingHours.'<br/></p>');
+		}
+		echo('</div>');
 
-	foreach($result as  $row)
-	{
-		if($row->levelOfWorker == 1)
-		echo('<p><strong>Actions performed: </strong>'. $row->actionsDone.'</p>');
+		foreach($result['workersInfo'] as  $row)
+		{
+			if($row->levelOfWorker == 1)
+			echo('<p><strong>Actions performed: </strong>'. $row->actionsDone.'</p>');
+		}
 	}
-	?> -->
-	
-	
-	<p><strong>Description: </strong><?php echo($row->troubleshooting);?>.</p>
+
+	?> <?php
+	// information about items used
+	if($result['itemsInfo'] != FALSE)
+	{
+		echo('<div><strong>Items used: </strong>');
+		echo('
+		<table>
+		<tbody>
+		<tr>
+		<th>Name</th>
+		<th>Quantity</th>
+		</tr>
+		');
+		foreach($result['itemsInfo'] as  $row)
+		echo('
+			<tr>
+			<td>'.$row->itemName.'</td>
+			<td>'.$row->quantity.'</td>
+			</tr>
+			');
+			
+		echo('</tbody></table></div>');
+
+	}
+
+	?>
+
+
+
+
 
 	<div class="row"><!-- Start feedback box -->
 	<hr />
@@ -122,14 +157,14 @@ listing</a></p>
 	</div>
 	<!-- End feedback box --></div>
 	<div class="two columns"><strong>Starting time:</strong>
-	<p><?php if($row->dateAssigned!= NULL)
-	echo($row->dateAssigned);
+	<p><?php if($result['basicInfo']->dateAssigned!= NULL)
+	echo($result['basicInfo']->dateAssigned);
 	else
 	echo('Not assigned yet');?></p>
 	</div>
 	<div class="two columns"><strong>Estimated finish time:</strong>
-	<p><?php if($row->dateFinished!= NULL)
-	echo($row->dateFinished);
+	<p><?php if($result['basicInfo']->dateFinished!= NULL)
+	echo($result['basicInfo']->dateFinished);
 	else
 	echo('Not predictable yet');?></p>
 	</div>

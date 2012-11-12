@@ -87,22 +87,31 @@ class Request extends CI_Controller
 
 	public function get_single_task($taskId='')
 	{
+		// if user is not logged in, redirect to homepage
 		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
 		{ redirect(''); }
+		//this information is only for customer
 		if($_SESSION['userLevel'] == 'customer')
 		{
 			$data['result'] = $this->request_model->get_request_detail($taskId);
-			if($data['result'][0]->customerName !=$_SESSION['customerName'])
-			{
-				redirect('account');
-			}
+			//if user tries different taskId other than we have in database, 404 overide
+			if($data['result'] == FALSE)
+				redirect('404_override');
 			else
 			{
-				$data['customerName']=$_SESSION['customerName'];
-				$data['title']='GPP Maintenance App';
-				$this->load->view('request/customer_task_details',$data);
+				//if user tries to access data of other customers. 
+				if($data['result']['basicInfo']->customerName !=$_SESSION['customerName'])
+				{
+					redirect('account');
+				}
+				else
+				{
+					$data['customerName']=$_SESSION['customerName'];
+					$data['title']='GPP Maintenance App';
+					$this->load->view('request/customer_task_details',$data);
+				}
 			}
-				
+
 
 		}
 
