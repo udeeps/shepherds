@@ -10,7 +10,7 @@ if($requestlist->num_rows() > 0 )
 			<ul class="listing">
 			<!-- Start single task listing -->
 			<li class="panel">
-			<h5>'.$row->subject.' - added at '. $row->dateRequested.'</h5>
+			<h5>'.$row->title.' - added at '. $row->dateRequested.'</h5>
 			<div class="row">
 			<div class="two columns">'
 			);
@@ -19,7 +19,7 @@ if($requestlist->num_rows() > 0 )
 			echo('
 			</div>
 			<div class="six columns"><strong>Description:</strong>
-			<p>'.$row->troubleshooting.'</p>
+			<p>'.$row->description.'</p>
 			<strong>Reported By: </strong>'.$row->ordererName.'
 			</div>
 			<div class="four columns"><strong>Starting time:</strong>

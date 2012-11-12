@@ -65,7 +65,7 @@ echo anchor('account', $customerName.' Maintenance');
 <div class="twelve columns "><!-- Start "breadcrumbs" -->
 <p><a href="<?php echo(site_url("account"));?>">&lArr; Back to task
 listing</a></p>
-<h4><?php echo($result['basicInfo']->subject)?></h4>
+<h4><?php echo($result['basicInfo']->title)?></h4>
 <!-- End "breadcrumbs" -->
 
 <ul class="details">
@@ -79,7 +79,7 @@ listing</a></p>
 	<p><?php 
 	echo("Request received on ".$result['basicInfo']->dateRequested."<br/>");
 	echo("Location - ".$result['basicInfo']->repairLocation."<br/>");
-	echo('<p><strong>Description: </strong>'.$result['basicInfo']->troubleshooting.'</p>');
+	echo('<p><strong>Description: </strong>'.$result['basicInfo']->description.'</p>');
 	if($result['workTypeInfo'] != FALSE)
 	echo("Work Type - ".$result['workTypeInfo']->workTypeName."<br/>");
 	?></p>
