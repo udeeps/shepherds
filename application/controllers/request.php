@@ -14,7 +14,7 @@ class Request extends CI_Controller
 		session_start();
 	}
 
-	public function index($task = '')
+	public function index()
 	{
 		if( !isset($_SESSION['loggedIn']) || $_SESSION['userLevel'] != 'admin')
 		{
@@ -51,27 +51,7 @@ class Request extends CI_Controller
 				$this->load->view('request/admin_add_task_view', $data);
 			}
 		}
-
-		switch($task)
-		{
-			case 'add_task':
-				$this->load->view('request/admin_add_task_view', $data);
-				break;
-			case 'list_tasks':
-				$data['taskList'] = $this->request_model->get_requests();
-				//print_r($data['taskList']);
-				$this->load->view('request/admin_list_tasks_view', $data);
-				break;
-			case 'manage_users':
-				$this->load->view('request/admin_manage_users_view', $data);
-				break;
-			case 'system_anouncements':
-				$this->load->view('request/admin_system_anouncements_view', $data);
-				break;
-			default:
-
-				break;
-		}
+		$this->load->view('request/admin_add_task_view', $data);
 	}
 
 	public function check_worker($str)
@@ -86,6 +66,56 @@ class Request extends CI_Controller
 		}
 	}
 
+	public function list_tasks($sort_by = '')
+	{
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$data['main_content'] = 'request/admin_list_tasks_view';
+		
+		if($this->input->post('ajax')){
+			$data['taskList'] = $this->request_model->get_requests($sort_by);
+			$this->load->view($data['main_content'], $data);
+		}else{
+			$data['taskList'] = $this->request_model->get_requests();
+			//print_r($data['taskList']);
+			$this->load->view('templates/template', $data);
+		}
+	}
+	
+	public function single_task($r_id)
+	{	
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$data['main_content'] = 'request/admin_task_details';
+		$data['taskData'] = $this->request_model->get_single_request($r_id);
+		$data['workTypes'] = $this->request_model->get_work_types();
+		$data['statusTypes'] = $this->request_model->get_status_types();
+		//pront_r($data['taskData']);
+		$this->load->view('templates/template', $data);
+	}
+	
+	public function change_status()
+	{
+		$id = $this->input->post('id');
+		$status = $this->input->post('status');
+		if($this->request_model->change_status($id, $status)){
+			echo true;
+		}else{
+			echo false;
+		}
+	}
+	
+	public function manage_users()
+	{
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$this->load->view('request/admin_manage_users_view', $data);
+	}
+	
+	public function system_announcements()
+	{
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$this->load->view('request/admin_manage_users_view', $data);
+	}
+	
+	
 	//public function get_single_task($taskId='',$errmsg='',$successmsg='')
 	public function get_single_task($taskId='')
 	{

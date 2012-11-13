@@ -16,6 +16,7 @@ class Request_model extends CI_Model
 			$orderer = $postArray['orderer_of_work'];
 			$address = $postArray['customer_address'];
 			$title = $postArray['task_title'];
+			$description = $postArray['work_description'];
 			$day = ($postArray['day']) ? $postArray['day'] : '';
 			$month = ($postArray['month']) ? $postArray['month'] : '';
 			$year = ($postArray['year']) ? $postArray['year'] : '';
@@ -58,13 +59,13 @@ class Request_model extends CI_Model
 			if($q2->num_rows() > 0) $workTypeId = $q2->row()->workTypeId;
 
 			//insert to db
-			$this->db->insert('repairRequests', array('dateAssigned' => $dateAssigned, 'repairLocation' => $address, 'ordererId' => $ordererId, 'workTypeId' => $workTypeId));
+			$this->db->insert('repairRequests', array('dateAssigned' => $dateAssigned, 'title' => $title, 'repairLocation' => $address, 'description' => $description, 'ordererId' => $ordererId, 'workTypeId' => $workTypeId));
 			//get the AUTO_INCREMENTed ID of the repair request so we can use it to reference repair detail
 			$requestId = mysql_insert_id();
 
 			//update request status if needed
 			if(isset($requestStatusId))
-			$this->db->where('id', $requestId)->update('repairRequests', array('requestStatusId' => $requestStatusId));
+			$this->db->where('Id', $requestId)->update('repairRequests', array('requestStatusId' => $requestStatusId));
 
 			//create a new entry in repairDetail table based on the requestId
 			$this->create_request_detail($requestId, $assigned);
@@ -92,7 +93,7 @@ class Request_model extends CI_Model
 				if($q->num_rows() > 0){
 					$workerId = $q->row()->workerId;
 
-					$this->db->insert('repairDetail', array('repairRequestId' => $reqId, 'workerId' => $workerId));
+					$this->db->insert('repairDetail', array('repairRequestID' => $reqId, 'workerId' => $workerId));
 				}
 			}
 			return true;
@@ -102,48 +103,75 @@ class Request_model extends CI_Model
 		}
 	}
 
-	public function get_requests()
+	public function get_requests($sort_by = 'requestStatus')
 	{
-		$q1 = $this->db->select('repairRequests.id')->get('repairRequests');
-
-
-		$rowdata;
-
-		if($q1->num_rows() > 0 ){
-			//get requests which have a worker assigned
-			foreach($q1->result() as $row){
-				$q2 = $this->db->select('rq.id, rq.dateRequested, rq.dateAssigned, w.workerName, rs.requestStatus, wt.workTypeName')
-				->from('repairRequests rq, workers w, requestStatuses rs, workTypes wt')
-				->join('repairDetail', 'repairDetail.repairRequestId = rq.id')
-				->where('repairDetail.repairRequestId', $row->id)
-				->where('w.workerId = repairDetail.workerId')
-				->where('rs.requestStatusId = rq.requestStatusId')
-				->where('wt.workTypeId = rq.workTypeId')
-				->get();
-
-				if($q2->num_rows() > 0){
-					$rowdata[] = $q2->row();
-				}
-			}
-
-			$q3 = $this->db->select('repairRequests.id,, repairRequests.dateRequested, repairRequests.dateAssigned, rs.requestStatus, wt.workTypeName')
-			->from('repairDetail rd, requestStatuses rs, workTypes wt')
-			->join('repairRequests', 'repairRequests.id = rd.repairRequestId')
-			->where('rd.workerId IS NULL', '', FALSE)
-			->where('rs.requestStatusId = repairRequests.requestStatusId')
-			->where('wt.workTypeId = repairRequests.workTypeId')
-			->get();
-
-			if($q3->num_rows() > 0){
-				foreach($q3->result() as $row){
-					$rowdata[] = $row;
-				}
-			}
-
-			return $rowdata;
+		//get all request id's
+		$q = $this->db->select('repairdetail.id, repairdetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requeststatuses.requestStatus, worktypes.workTypeName, workers.workerName, ')
+					->from('repairrequests rr')
+					->join('repairdetail', 'rr.Id = repairdetail.repairRequestID')
+					->join('workers', 'repairdetail.workerID = workers.workerId', 'left outer')
+					->join('requeststatuses', 'rr.requestStatusId = requeststatuses.requestStatusId')
+					->join('worktypes', 'rr.workTypeId = worktypes.workTypeId')
+					->order_by($sort_by, 'asc')
+					->get();
+		
+		if($q->num_rows() > 0 ){
+			return $q->result();
 		}
 	}
-
+	
+	public function get_single_request($r_id)
+	{	
+		$rows = array();
+		
+		//get single request data
+		$q = $this->db->select('repairdetail.id, repairdetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requeststatuses.requestStatus, worktypes.workTypeName')
+					->from('repairrequests rr')
+					->join('repairdetail', 'rr.Id = repairdetail.repairRequestID')
+					->join('requeststatuses', 'rr.requestStatusId = requeststatuses.requestStatusId')
+					->join('worktypes', 'rr.workTypeId = worktypes.workTypeId')
+					->where('rr.Id', $r_id)
+					->get();
+		
+		$q2 = $this->db->select('workers.workerId, workerName')
+					->from('repairdetail')
+					->join('workers', 'workers.workerId = repairdetail.workerID')
+					->where('repairdetail.repairRequestId', $r_id)
+					->get();
+					
+		$rows['info'] = $q->row();
+		
+		if($q2->num_rows() > 0)
+			$rows['workers'] = $q2->result();
+		
+		return $rows;
+	}
+	
+	public function get_status_types()
+	{
+		$q = $this->db->select('requestStatus')->get('requeststatuses');
+		return $q->result();
+	}
+	
+	public function get_work_types()
+	{
+		$q = $this->db->select('workTypeName')->get('worktypes');
+		return $q->result();
+	}
+	
+	public function change_status($r_id, $status)
+	{
+		$q = $this->db->select('requestStatusId')
+					->where('requestStatus', $status)
+					->get('requeststatuses');
+		
+		$status = $q->row();
+		
+		return $this->db->where('Id', $r_id)->update('repairrequests', array('requestStatusId' => $status->requestStatusId));
+	
+	}
+	
+	
 	public function get_request_detail($taskId)
 	{
 

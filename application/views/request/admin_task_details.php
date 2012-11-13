@@ -1,40 +1,6 @@
-<!DOCTYPE html>
-
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8" />
-
-  <!-- Set the viewport width to device width for mobile -->
-  <meta name="viewport" content="width=device-width" />
-
-  <title>GPP Maintenance App</title>
-  
-  <!-- Included CSS Files (Uncompressed) -->
-  <!--
-  <link rel="stylesheet" href="stylesheets/foundation.css">
-  -->
-  
-  <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="stylesheets/foundation.min.css">
-  <link rel="stylesheet" href="stylesheets/app.css">
-
-  <script src="javascripts/modernizr.foundation.js"></script>
-
-  <!-- IE Fix for HTML5 Tags -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
-</head>
-<body>
-
-  <div class="row header"> <!-- Start Header -->
+<div class="row header"> <!-- Start Header -->
     <div class="five columns">
-      <a href="admin_homepage.html"><h2>GPP Maintenance App</h2></a>
+     <?php echo anchor('account', 'GPP Maintenance App');?>
     </div>
 
     <div class="four columns"> <!-- Start search -->
@@ -51,15 +17,15 @@
     </div> <!-- End search -->
 
     <div class="three columns">
-      <p>Logged in as username</p>
-      <p><a href="index.html">Log out</a></p>
+      <p>Logged in as <?php echo $name; ?></p>
+      <p><?php echo anchor('login/log_out', 'Log out');?></p>
     </div>
   </div> <!-- End Header -->
 
   <div class="row content"> <!-- Start App Content -->
     <hr />
     <div class="twelve columns "> <!-- Start breadcrumbs and title -->
-      <p><a href="admin_task_listing.html">&lArr; Back to task listing</a></p>
+      <p><?php echo anchor($back, 'Previous page');?></p>
       <h3>Title with name and date of task and customer</h3> <hr /><!-- End breadcrumbs and title" -->
     </div>
 
@@ -72,32 +38,73 @@
 <div class="row">
   <div class="seven columns">
 
-    <p><strong>Type of work:</strong> <input type="radio" name="group2" value="maintenance" checked> Maintenance <input type="radio" name="group2" value="installation"> Installation <input type="radio" name="group2" value="adjustment"> Adjustment <input type="radio" name="group2" value="urakka"> Urakka</p>
+    <p>
+		<strong>Type of work:</strong>
+		<?php foreach($workTypes as $type): ?>
+			<?php if($type->workTypeName != $taskData['info']->workTypeName): ?>
+				<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>"> <?php echo ucfirst($type->workTypeName); ?> 
+			<?php else: ?>
+				<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>" checked> <?php echo ucfirst($type->workTypeName); ?> 
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</p>
 
   </div>
-
   <div class="five columns">
-
-    <p class="status underway">Status:<br>Work underway</p>
-    <select class="statuspicker">
-              <option>Change status..</option>
-              <option>Underway</option>
-              <option>Waiting for parts</option>
-              <option>Finished</option>
-            </select>
-
+    <p id="status_bar" class="status <?php echo $taskData['info']->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $taskData['info']->requestStatus)); ?></p>
+    <select name="change_status" class="statuspicker">
+		<option>-- Change status --</option>
+            <?php foreach($statusTypes as $type): ?>
+				<?php if($type->requestStatus != $taskData['info']->requestStatus): ?>
+					<option value="<?php echo $type->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $type->requestStatus));  ?></option>
+				<?php endif;?>
+			<?php endforeach; ?> 
+	</select>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("select[name='change_status']").change(function(){
+			var values = {
+				id: <?php echo $taskData['info']->repairRequestId; ?>,
+				status: $(this).children('option:selected').val()
+			};
+			
+			$.ajax({
+				url: "<?php echo site_url('request/change_status'); ?>",
+				data: values,
+				type: 'POST',
+				success: function(data){
+					if(data){
+						var stat = values.status;
+						$('#status_bar').attr('class', 'status '+stat);
+						if(stat.indexOf('_') != -1){
+							stat = stat.replace('_', ' ');
+						}
+						var newstatus = stat.toLowerCase().replace(/^(.)/g, 
+							function($1){ return $1.toUpperCase();
+						});	
+						$('#status_bar').text(newstatus);
+					}
+				}
+			});
+		});
+	});
+</script>
   </div>
 </div>
-
-
-        <div class="row panel"> <!-- Workers assigned -->
+		<div class="row panel"> <!-- Workers assigned -->
           <h4>Assigned workers</h4>
           <div class="row">
             <div class="twelve columns">
               <ul>
-                <li>Name Surname - <a href="#">Remove from task</a></li>
-                <li>Longername Surname - <a href="#">Remove from task</a></li>
-                <li>Name Surnamelonger - <a href="#">Remove from task</a></li>
+			<?php if(!isset($taskData['workers'])): ?>
+				<li>No workers assigned for this task</li>
+			<?php elseif(count($taskData['workers']) == 1): ?>
+				<li><?php echo $taskData['workers'][0]->workerName; ?> <?php echo anchor('request/remove_from_task/worker/'.$taskData['workers'][0]->workerId, 'Remove from task'); ?></li>
+			<?php else: ?>
+				<?php foreach($taskData['workers'] as $row): ?>
+					<li><?php echo $row->workerName; ?> <?php echo anchor('request/remove_from_task/worker/'.$row->workerId, 'Remove from task'); ?></li>
+				<?php endforeach; ?>
+			<?php endif; ?>
               </ul>
             </div>
           </div>
@@ -352,59 +359,3 @@
 
     <hr />
   </div> <!-- End App Content -->
-
-  <div class="row footer"> <!-- Start Footer -->
-    <div class="six columns">
-      <h4>GPP Perimeter Protection Oy</h4>
-      <p>Brief footer text. Phone numer and other contact info.</p>
-    </div>
-    <div class="six columns">
-      <h4>Links</h4>
-      <ul class="link-list">
-        <li><a href="#">GPP home page</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Support</a></li>
-      </ul>
-    </div>
-  </div> <!-- End Footer -->
-  
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  <script src="javascripts/jquery.foundation.topbar.js"></script>
-  
-  -->
-  
-  <!-- Included JS Files (Compressed) -->
-  <script src="javascripts/jquery.js"></script>
-  <script src="javascripts/foundation.min.js"></script>
-  
-  <!-- Initialize JS Plugins -->
-  <script src="javascripts/app.js"></script>
-</body>
-</html>

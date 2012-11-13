@@ -58,16 +58,16 @@
 <!-- Start App Content -->
   <div class="row content"> 
     <hr />
-    <a href="request/index/add_task"><div class="twelve columns panel adminpanel">
+    <a href="request/index"><div class="twelve columns panel adminpanel">
       <p>Add new task</p>
     </div></a>
-    <a href="request/index/list_tasks"><div class="twelve columns panel adminpanel">
+    <a href="request/list_tasks"><div class="twelve columns panel adminpanel">
       <p>View existing tasks</p>
     </div></a>
-    <a href="request/index/manage_users"><div class="twelve columns panel adminpanel">
+    <a href="request/manage_users"><div class="twelve columns panel adminpanel">
       <p>Manage user accounts</p>
     </div></a>
-    <a href="request/index/system_anouncements"><div class="twelve columns panel adminpanel">
+    <a href="request/system_anouncements"><div class="twelve columns panel adminpanel">
       <p>Manage system announcements</p>
     </div></a>
     <hr />
