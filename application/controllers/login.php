@@ -36,7 +36,7 @@ class Login extends CI_Controller
 			$this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
 			//set_rules('field name', 'human readable name for error messages', rules)
 		}
-		//$this->form_validation->set_rules('email_address', 'Email Address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
+		
 		
 		$data = $this->get_form($formType);
 		$data['msg']='';

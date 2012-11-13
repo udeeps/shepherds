@@ -142,6 +142,35 @@ listing</a></p>
 
 	}
 
+	?> <?php
+	// Comments appear here
+	if($comments != 'EMPTY')
+	{
+		echo('<div><strong>Comments: </strong>');
+		echo('
+		<table>
+		<tbody>
+		');
+		foreach($comments as  $comment)
+		echo('
+			<tr>
+			<td>'.$comment->text.'<br/>
+			By '.$comment->author.' on '.$comment->date.'</td>
+			</tr>
+			');
+			
+		echo('</tbody></table>');
+		if (isset($status))
+		{
+			if($status['errormsg']!='')
+			echo ('<font color="red">'.$status['errormsg'].'</font>');
+			if($status['successmsg']!='')
+			echo ('<font color="green">'.$status['successmsg'].'</font>');
+		}
+		echo('</div>');
+
+	}
+
 	?>
 
 
@@ -150,10 +179,25 @@ listing</a></p>
 
 	<div class="row"><!-- Start feedback box -->
 	<hr />
-	<div class="twelve columns"><label><strong>Comments</strong></label> <textarea
-		name="feedbackbox" class="feedbackbox"
-		placeholder="Comments and feedback regarding this task"></textarea> <a
-		href="#" class="medium button gppbutton">Send us your feedback</a></div>
+	<div class="twelve columns"><font color="red"> <?php echo validation_errors(); ?>
+	</font> <?php echo form_open('request/get_single_task/'.$result['basicInfo']->Id);
+	$commentField = array('id' => 'feedbackbox',
+							'name' => 'feedbackbox',
+							'class'=>"feedbackbox",
+							'placeholder' => 'Comments and feedback regarding this task',
+	'rows'=>2);
+	$authorField = array('id' => 'author',
+										'name' => 'author',
+										'placeholder' => 'Your Name');
+	$submit = array('name' => 'commentButton',
+										'type' => 'submit',
+										'value' => 'Send us your feedback',
+										'class' => 'medium button gppbutton');
+	echo('
+	<label><strong>Comments</strong></label>
+	'.form_textarea($commentField).form_input($authorField).form_submit($submit));
+	echo form_close();
+	?></div>
 	</div>
 	<!-- End feedback box --></div>
 	<div class="two columns"><strong>Starting time:</strong>

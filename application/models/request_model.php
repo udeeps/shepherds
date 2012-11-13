@@ -163,6 +163,10 @@ class Request_model extends CI_Model
 		return FALSE;
 		else
 		$result['basicInfo'] = $q1->row();
+		if($result['basicInfo']->customerName !=$_SESSION['customerName'])
+				{
+					redirect('account');
+				}
 
 		//select administrator info, I have assumed that there will on only
 		//one adminstrator(maintainance head)

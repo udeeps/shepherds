@@ -40,11 +40,14 @@
 	<?php else: ?>
 		<div class="six columns">
 	<?php endif;?>
+	<font color="red">
 	<?php echo validation_errors(); ?>
+	</font>
+	
 	<?php if($msg!=''){?>
         <div class="row">
           <div class="twelve columns">
-            <?php echo ('<p>'.$msg.'</p>'); ?>
+            <?php echo ('<p><font color="red">'.$msg.'</font></p>'); ?>
           </div>
         </div> 
         <?php 
@@ -56,7 +59,7 @@
       echo form_open('login');
       else 
 	  echo form_open(''); 
-	  //echo form_open('login/index/'.$validate);
+	  
 	  ?>
         <label>Address</label>
          

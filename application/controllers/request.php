@@ -10,6 +10,7 @@ class Request extends CI_Controller
 		$this->load->helper('form');
 		$this->load->library( array('form_validation', 'session') );
 		$this->load->model('request_model');
+		$this->load->model('comment_model');
 		session_start();
 	}
 
@@ -85,34 +86,83 @@ class Request extends CI_Controller
 		}
 	}
 
+	//public function get_single_task($taskId='',$errmsg='',$successmsg='')
 	public function get_single_task($taskId='')
+	{
+		if($taskId=='')
+		redirect('404_override');
+		$this->checkSession();
+		$this->form_validation->set_rules('feedbackbox', 'Comment', 'required|min_length[2]|max_length[200]|xss_clean');
+		$this->form_validation->set_rules('author', 'Name', 'required|min_length[2]|max_length[40]|xss_clean');
+		//this information is only for customer
+		if($_SESSION['userLevel'] == 'customer')
+		{
+			
+				if ($this->form_validation->run() != FALSE)
+				{
+					
+					$status = $this->comment($taskId,$this->input->post('feedbackbox'),$this->input->post('author'));
+					$data['status']=$status;
+				}
+
+
+
+
+			$data['result'] = $this->request_model->get_request_detail($taskId);
+			//if user tries different taskId other than we have in database, 404 overide
+			if($data['result'] == FALSE)
+			redirect('404_override');
+			else
+			{
+				$data['customerName']=$_SESSION['customerName'];
+				$data['title']='GPP Maintenance App';
+				$data['comments'] = $this->comment_model->get_comments($taskId);
+			
+				$this->load->view('request/customer_task_details',$data);
+			}
+
+
+		}
+
+	}
+
+	public function checkSession()
 	{
 		// if user is not logged in, redirect to homepage
 		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
 		{ redirect(''); }
-		//this information is only for customer
-		if($_SESSION['userLevel'] == 'customer')
+
+	}
+
+
+	public function comment($taskId,$comment,$author)
+	{
+
+		$result = $this->comment_model->addComment($taskId,$comment,$author);
+		$status['errormsg']='';
+		$status['successmsg']='';
+		if($result == 'NO_RECORDS')
+		redirect('404_override');
+		
+		elseif($result == 'MULTIPLE_RECORDS')
 		{
-			$data['result'] = $this->request_model->get_request_detail($taskId);
-			//if user tries different taskId other than we have in database, 404 overide
-			if($data['result'] == FALSE)
-				redirect('404_override');
-			else
-			{
-				//if user tries to access data of other customers. 
-				if($data['result']['basicInfo']->customerName !=$_SESSION['customerName'])
-				{
-					redirect('account');
-				}
-				else
-				{
-					$data['customerName']=$_SESSION['customerName'];
-					$data['title']='GPP Maintenance App';
-					$this->load->view('request/customer_task_details',$data);
-				}
-			}
-
-
+			$status['errormsg']='Multiple records found in database, contact web admnistrator';
+			return($status);
+		}
+		elseif($result=='INSERT_FAILED')
+		{
+			$status['errormsg']='Comments Not Saved. Try again later';
+			return($status);
+		}
+		elseif($result=='SUCCESS')
+		{
+			$status['successmsg']="Comment Saved";
+			return($status);
+		}
+		else
+		{
+			$status['errormsg']='Unknown error. Notify web administrator';
+			return($status);
 		}
 
 	}
