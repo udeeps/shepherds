@@ -81,7 +81,7 @@ class Request extends CI_Controller
 		}
 	}
 	
-	public function single_task($r_id)
+	public function single_task($r_id, $data = array())
 	{	
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_task_details';
@@ -100,6 +100,28 @@ class Request extends CI_Controller
 			echo true;
 		}else{
 			echo false;
+		}
+	}
+	
+	public function remove_from_task($r_id = '', $w_id = '')
+	{
+		$data = array();
+		
+		if($this->input->post('ajax')){
+			$r_id = $this->input->post('task');
+			$w_id = $this->input->post('worker');
+			if( $this->request_model->remove_worker_from_task($r_id, $w_id) ){
+				echo true;
+			}else{
+				echo false;
+			}
+		}else{
+			if( $this->request_model->remove_worker_from_task($r_id, $w_id) ){
+				$data['msg'] = 'Worker removed succesfully';
+			}else{
+				$data['msg'] = 'Remove failed for some reason';
+			}
+			$this->single_task($r_id, $data);
 		}
 	}
 	

@@ -171,6 +171,12 @@ class Request_model extends CI_Model
 	
 	}
 	
+	public function remove_worker_from_task($r_id, $w_id)
+	{
+		return $this->db->where('repairRequestID', $r_id)
+						->where('workerID', $w_id)
+						->delete('repairdetail');
+	}
 	
 	public function get_request_detail($taskId)
 	{

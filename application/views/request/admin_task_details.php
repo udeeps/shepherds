@@ -60,35 +60,6 @@
 				<?php endif;?>
 			<?php endforeach; ?> 
 	</select>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("select[name='change_status']").change(function(){
-			var values = {
-				id: <?php echo $taskData['info']->repairRequestId; ?>,
-				status: $(this).children('option:selected').val()
-			};
-			
-			$.ajax({
-				url: "<?php echo site_url('request/change_status'); ?>",
-				data: values,
-				type: 'POST',
-				success: function(data){
-					if(data){
-						var stat = values.status;
-						$('#status_bar').attr('class', 'status '+stat);
-						if(stat.indexOf('_') != -1){
-							stat = stat.replace('_', ' ');
-						}
-						var newstatus = stat.toLowerCase().replace(/^(.)/g, 
-							function($1){ return $1.toUpperCase();
-						});	
-						$('#status_bar').text(newstatus);
-					}
-				}
-			});
-		});
-	});
-</script>
   </div>
 </div>
 		<div class="row panel"> <!-- Workers assigned -->
@@ -99,10 +70,10 @@
 			<?php if(!isset($taskData['workers'])): ?>
 				<li>No workers assigned for this task</li>
 			<?php elseif(count($taskData['workers']) == 1): ?>
-				<li><?php echo $taskData['workers'][0]->workerName; ?> <?php echo anchor('request/remove_from_task/worker/'.$taskData['workers'][0]->workerId, 'Remove from task'); ?></li>
+				<li><?php echo $taskData['workers'][0]->workerName; ?> <?php echo anchor('request/remove_from_task/'.$this->uri->segment(3).'/'.$taskData['workers'][0]->workerId, 'Remove from task', 'class="w_remove"'); ?></li>
 			<?php else: ?>
 				<?php foreach($taskData['workers'] as $row): ?>
-					<li><?php echo $row->workerName; ?> <?php echo anchor('request/remove_from_task/worker/'.$row->workerId, 'Remove from task'); ?></li>
+					<li><?php echo $row->workerName; ?> <?php echo anchor('request/remove_from_task/'.$this->uri->segment(3).'/'.$row->workerId, 'Remove from task', 'class="w_remove"'); ?></li>
 				<?php endforeach; ?>
 			<?php endif; ?>
               </ul>
@@ -355,7 +326,53 @@
 </form>
   </div>
 </div> <!-- End form -->
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("select[name='change_status']").change(function(){
+			var values = {
+				id: <?php echo $taskData['info']->repairRequestId; ?>,
+				status: $(this).children('option:selected').val()
+			};
+			
+			$.ajax({
+				url: "<?php echo site_url('request/change_status'); ?>",
+				data: values,
+				type: 'POST',
+				success: function(data){
+					if(data){
+						var stat = values.status;
+						$('#status_bar').attr('class', 'status '+stat);
+						if(stat.indexOf('_') != -1){
+							stat = stat.replace('_', ' ');
+						}
+						var newstatus = stat.toLowerCase().replace(/^(.)/g, 
+							function($1){ return $1.toUpperCase();
+						});	
+						$('#status_bar').text(newstatus);
+					}
+				}
+			});
+		});
+		
+		$('.w_remove').click(function(){
+			var values = {
+				task: <?php echo $this->uri->segment(3); ?>,
+				worker: $(this).attr('href').substr($(this).attr('href').length - 1)
+			};
+			
+			$.ajax({
+				url: "<?php echo site_url('request/remove_from_task'); ?>",
+				type: 'POST',
+				success: function(data){
+					if(data){
+						alert('jee');
+					}
+				}
+			});
+			return false;
+		});		
+	});
+</script>
 
     <hr />
   </div> <!-- End App Content -->
