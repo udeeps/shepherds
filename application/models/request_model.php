@@ -184,10 +184,17 @@ class Request_model extends CI_Model
 	
 	public function remove_worker_from_task($r_id, $w_id)
 	{
-		$data = array( 'workerID' => null );
-		return $this->db->where('repairRequestID', $r_id)
+		$length = count( $this->db->select('id')->where('repairRequestID', $r_id)->get('repairDetail')->result() );
+		if($length > 1){
+			return $this->db->where('repairRequestID', $r_id)
+						->where('workerID', $w_id)
+						->delete('repairDetail');
+		}else{
+			$data = array( 'workerID' => null );
+			return	$this->db->where('repairRequestID', $r_id)
 						->where('workerID', $w_id)
 						->update('repairDetail', $data);
+		}
 	}
 	
 	public function get_request_detail($taskId)

@@ -110,7 +110,6 @@ class Request extends CI_Controller
 		if($this->input->post('ajax')){
 			$r_id = $this->input->post('task');
 			$w_id = $this->input->post('worker');
-			print_r($r_id, $w_id);
 			if( $this->request_model->remove_worker_from_task($r_id, $w_id) ){
 				echo true;
 			}else{
