@@ -340,19 +340,32 @@
 				type: 'POST',
 				success: function(data){
 					if(data){
-						var stat = values.status;
-						$('#status_bar').attr('class', 'status '+stat);
-						if(stat.indexOf('_') != -1){
-							stat = stat.replace('_', ' ');
-						}
-						var newstatus = stat.toLowerCase().replace(/^(.)/g, 
-							function($1){ return $1.toUpperCase();
-						});	
+						$('#status_bar').attr('class', 'status '+values.status);
+						var newstatus = fluc(values.status);
 						$('#status_bar').text(newstatus);
+					
+						var types = ['received', 'in_progress', 'stopped', 'completed'];
+						var select_html = '<option value="">-- Change status --</option>';
+						for(var i=0; i<types.length; i++){
+							if(types[i] != values.status){
+								select_html += '<option value="'+types[i]+'">'+fluc(types[i]);+'</option>';
+							}
+						}
+						$("select[name='change_status']").html(select_html);
+					}
+					
+					function fluc(str){
+						if(str.indexOf('_') != -1){
+							str = str.replace('_', ' ');
+						}
+						var new_str = str.toLowerCase().replace(/^(.)/g, 
+							function($1){ return $1.toUpperCase();
+						});
+						return new_str;
 					}
 				}
 			});
-		});
+		});		
 		
 		$('.w_remove').click(function(){
 			var values = {

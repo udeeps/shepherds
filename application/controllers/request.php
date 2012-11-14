@@ -88,7 +88,7 @@ class Request extends CI_Controller
 		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
-		//pront_r($data['taskData']);
+		//print_r($data['statusTypes']);
 		$this->load->view('templates/template', $data);
 	}
 	
