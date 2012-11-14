@@ -83,7 +83,7 @@ class Request extends CI_Controller
 	
 	public function single_task($r_id, $data = array())
 	{	
-		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'request/list_tasks', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_task_details';
 		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
