@@ -81,11 +81,12 @@
           </div>
           <div class="twelve columns">
             <label>Add workers</label>
-            <input type="text" placeholder="Start writing to choose from list" />
+            <input id="add_worker_text" type="text" placeholder="Start writing to choose from list" />
           </div>
-          <div class="twelve columns">
-            <input type="button" class="button gppbutton fullwidth" value="Save worker info" />
+          <div class="six columns">
+            <input id="add_worker_btn" type="button" class="button gppbutton fullwidth" value="Save worker info" />
           </div>
+		  <div id="add_worker_msg" class="six columns"></div>
         </div>
 
         <hr />
@@ -368,22 +369,51 @@
 		});		
 		
 		$('.w_remove').click(function(){
+			var length = $('.w_remove').length;
+			var link = $(this);
 			var values = {
 				task: <?php echo $this->uri->segment(3); ?>,
-				worker: $(this).attr('href').substr($(this).attr('href').length - 1)
+				worker: $(this).attr('href').substr($(this).attr('href').length - 1),
+				ajax: 1
 			};
 			
 			$.ajax({
 				url: "<?php echo site_url('request/remove_from_task'); ?>",
+				data: values,
 				type: 'POST',
 				success: function(data){
 					if(data){
-						alert('jee');
+						if(length < 2){
+							link.parent('li').html('No workers assigned for this task');
+						}else{
+							link.parent('li').remove();
+						}
 					}
 				}
 			});
 			return false;
-		});		
+		});	
+		
+		$('#add_worker_btn').click(function(){
+			var values = {
+				requestId: <?php echo $this->uri->segment(3); ?>,
+				assignees: $('#add_worker_text').val(),
+				detailId: <?php echo $taskData['info']->id; ?>
+			};
+			$.ajax({
+				url: "<?php echo site_url('request/add_worker_to_task'); ?>",
+				type: 'POST',
+				data: values,
+				success: function(data){
+					if(data){
+						$('<span />').text('Worker(s) added succesfully').appendTo('#add_worker_msg');
+						$('#add_worker_msg').fadeIn('800');
+						$('#add_worker_text').val('');
+					}
+				}
+			});
+		});
+		
 	});
 </script>
 

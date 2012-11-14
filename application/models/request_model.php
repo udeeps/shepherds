@@ -72,9 +72,8 @@ class Request_model extends CI_Model
 		}
 	}
 
-	public function create_request_detail($requestId, $assigned)
+	public function create_request_detail($requestId, $assigned, $detailId = '')
 	{
-		$reqId = $requestId;
 		$assignees = array();
 		//if give, explode the string of workers to an array
 		if(!empty($assigned)){
@@ -84,34 +83,36 @@ class Request_model extends CI_Model
 
 		//on each iteration of the loop, check if array value is a worker name in db. if found, insert a new row to db
 		if( count($assignees) > 0 ){
-			foreach($assignees as $detail){
+			foreach($assignees as $name){
 				$q = $this->db->select('workerId')
-				->where('workerName', $detail)
+				->where('workerName', $name)
 				->limit(1)
 				->get('workers');
 					
 				if($q->num_rows() > 0){
 					$workerId = $q->row()->workerId;
-
-					$this->db->insert('repairDetail', array('repairRequestID' => $reqId, 'workerId' => $workerId));
+					$q_if_null = $this->db->select('workerID')->where('id', $detailId)->get('repairDetail')->row()->workerID;
+					if( $q_if_null == null ){
+						return $this->db->where('id', $detailId)->update('repairDetail', array('workerID' => $workerId));
+					}else{
+						return $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
+					}
 				}
 			}
-			return true;
 		}else{
-			$this->db->insert('repairDetail', array('repairRequestId' => $reqId));
-			return true;
+			$this->db->insert('repairDetail', array('repairRequestId' => $requestId));
 		}
 	}
-
+	
 	public function get_requests($sort_by = 'requestStatus')
 	{
 		//get all request id's
-		$q = $this->db->select('repairdetail.id, repairdetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requeststatuses.requestStatus, worktypes.workTypeName, workers.workerName, ')
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
 					->from('repairrequests rr')
-					->join('repairdetail', 'rr.Id = repairdetail.repairRequestID')
-					->join('workers', 'repairdetail.workerID = workers.workerId', 'left outer')
-					->join('requeststatuses', 'rr.requestStatusId = requeststatuses.requestStatusId')
-					->join('worktypes', 'rr.workTypeId = worktypes.workTypeId')
+					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
+					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
+					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
+					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
 					->order_by($sort_by, 'asc')
 					->get();
 		
@@ -125,18 +126,18 @@ class Request_model extends CI_Model
 		$rows = array();
 		
 		//get single request data
-		$q = $this->db->select('repairdetail.id, repairdetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requeststatuses.requestStatus, worktypes.workTypeName')
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, worktypes.workTypeName')
 					->from('repairrequests rr')
-					->join('repairdetail', 'rr.Id = repairdetail.repairRequestID')
-					->join('requeststatuses', 'rr.requestStatusId = requeststatuses.requestStatusId')
-					->join('worktypes', 'rr.workTypeId = worktypes.workTypeId')
+					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
+					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
+					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
 					->where('rr.Id', $r_id)
 					->get();
 		
 		$q2 = $this->db->select('workers.workerId, workerName')
-					->from('repairdetail')
-					->join('workers', 'workers.workerId = repairdetail.workerID')
-					->where('repairdetail.repairRequestId', $r_id)
+					->from('repairDetail')
+					->join('workers', 'workers.workerId = repairDetail.workerID')
+					->where('repairDetail.repairRequestId', $r_id)
 					->get();
 					
 		$rows['info'] = $q->row();
@@ -149,13 +150,13 @@ class Request_model extends CI_Model
 	
 	public function get_status_types()
 	{
-		$q = $this->db->select('requestStatus')->get('requeststatuses');
+		$q = $this->db->select('requestStatus')->get('requestStatuses');
 		return $q->result();
 	}
 	
 	public function get_work_types()
 	{
-		$q = $this->db->select('workTypeName')->get('worktypes');
+		$q = $this->db->select('workTypeName')->get('workTypes');
 		return $q->result();
 	}
 	
@@ -163,19 +164,30 @@ class Request_model extends CI_Model
 	{
 		$q = $this->db->select('requestStatusId')
 					->where('requestStatus', $status)
-					->get('requeststatuses');
+					->get('requestStatuses');
 		
-		$status = $q->row();
+		$statusId = $q->row();
 		
-		return $this->db->where('Id', $r_id)->update('repairrequests', array('requestStatusId' => $status->requestStatusId));
-	
+		$date = new DateTime('', new DateTimeZone('Europe/Helsinki'));
+
+		if($status == 'completed'){
+			$this->db->where('Id', $r_id)->update('repairRequests', array('dateFinished' => $date->format('Y-m-d H:i:s')));
+			return $this->db->where('Id', $r_id)->update('repairRequests', array('requestStatusId' => $statusId->requestStatusId));
+		}else{
+			if( !empty( $this->db->select('dateFinished')->where('Id', $r_id)->get('repairRequests')->row()->dateFinished) ){
+				$this->db->where('Id', $r_id)->update('repairRequests', array('dateFinished' => null));
+			}
+			
+			return $this->db->where('Id', $r_id)->update('repairRequests', array('requestStatusId' => $statusId->requestStatusId));
+		}
 	}
 	
 	public function remove_worker_from_task($r_id, $w_id)
 	{
+		$data = array( 'workerID' => null );
 		return $this->db->where('repairRequestID', $r_id)
 						->where('workerID', $w_id)
-						->delete('repairdetail');
+						->update('repairDetail', $data);
 	}
 	
 	public function get_request_detail($taskId)

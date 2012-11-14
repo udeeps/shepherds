@@ -81,14 +81,14 @@ class Request extends CI_Controller
 		}
 	}
 	
-	public function single_task($r_id, $data = array())
-	{	
+	public function single_task($r_id, $data = '')
+	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'request/list_tasks', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_task_details';
 		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
-		//print_r($data['statusTypes']);
+		//print_r($data['taskData']);
 		$this->load->view('templates/template', $data);
 	}
 	
@@ -110,6 +110,7 @@ class Request extends CI_Controller
 		if($this->input->post('ajax')){
 			$r_id = $this->input->post('task');
 			$w_id = $this->input->post('worker');
+			print_r($r_id, $w_id);
 			if( $this->request_model->remove_worker_from_task($r_id, $w_id) ){
 				echo true;
 			}else{
@@ -123,6 +124,16 @@ class Request extends CI_Controller
 			}
 			$this->single_task($r_id, $data);
 		}
+	}
+	
+	public function add_worker_to_task()
+	{
+		$requestId = $this->input->post('requestId');
+		$assignees = $this->input->post('assignees');
+		$detailId = $this->input->post('detailId');
+		
+		$result = $this->request_model->create_request_detail($requestId, $assignees, $detailId);
+		echo $result;
 	}
 	
 	public function manage_users()

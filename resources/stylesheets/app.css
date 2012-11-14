@@ -104,6 +104,19 @@ background-color: #3f3f3f;
 background-color: #a2490d;
 }
 
+#add_worker_msg{
+display: none;
+}
+
+#add_worker_msg span{
+padding: 10px;
+text-align: right;
+border: 1px dotted #078658;
+float: right;
+width: 100%;
+color: #078658;
+}
+
 
 
 /* -----------------------------------------
