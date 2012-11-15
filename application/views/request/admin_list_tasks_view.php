@@ -33,6 +33,12 @@
         <dd class="active gppbg"><a class="req_list_sort" name="requestStatus" href="#">Status</a></dd>
         <dd><a class="req_list_sort" name="dateRequested" href="#">Date</a></dd>
         <dd><a class="req_list_sort" name="workerName" href="#">Worker</a></dd>
+		<ul id="status_nav">
+			<li><a class="stat_sort_opt" name="received">Received</a></li>
+			<li><a class="stat_sort_opt" name="in_progress">In progress</a></li>
+			<li><a class="stat_sort_opt" name="stopped">Stopped</a></li>
+			<li><a class="stat_sort_opt" name="completed">Completed</a></li>
+		</ul>
       </dl> 
 
 	  <?php if(count($taskList) > 0): ?>
@@ -72,20 +78,49 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('.req_list_sort').click(function(){
-				var sort = $(this).attr('name');
+				if( $(this).attr('name') == 'requestStatus' && $('#status_nav').css('display') == 'none'){
+					$('#status_nav').fadeIn('fast');
+				}else{
+					if( $(this).attr('name') != 'requestStatus' || $(this).attr('class') != 'stat_sort_opt'){
+						if( $('#status_nav').css('display') != 'none' ){
+							$('#status_nav').fadeOut('fast');
+						}
+						
+						var sort = $(this).attr('name');
+						var ajax_data = {
+							status: 0,
+							ajax: '1'
+						};
+						
+						$.ajax({
+							url: "<?php echo site_url('request/list_tasks'); ?>/"+sort,
+							data: ajax_data,
+							type: 'POST',
+							success: function(data){
+								$('#wrapper').html(data);
+							}
+						});
+					}
+				}
+				return false;
+			});
+			
+			$('.stat_sort_opt').click(function(){
 				var ajax_data = {
+					status: 1,
+					statusName: $(this).attr('name'),
 					ajax: '1'
 				};
 				
 				$.ajax({
-					url: "<?php echo site_url('request/list_tasks'); ?>/"+sort,
+					url: "<?php echo site_url('request/list_tasks'); ?>/",
 					data: ajax_data,
 					type: 'POST',
 					success: function(data){
 						$('#wrapper').html(data);
 					}
 				});
-				return false;
+			
 			});
 		});
 	</script>  

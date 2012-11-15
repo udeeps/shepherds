@@ -65,16 +65,15 @@
 	  
 	  <?php if(isset($msg)): ?>
 		 <!-- Shows message if orderer name not found from DB -->
-			<div class="twelve columns panel">
+			<div id="add_task_msg" class="twelve columns panel">
 				<h6><?php echo $msg; ?></h6>
 			</div>
-		
 		<?php endif; ?>
 		
     <div class="twelve columns panel">
       <h4>Add a new report/task</h4> 
 		
-		<div class="twelve columns panel"><?php echo validation_errors(); ?></div>
+		<div id="add_task_errors" class="twelve columns panel"><?php echo validation_errors(); ?></div>
 		
         <?php echo form_open('request'); ?>
 		

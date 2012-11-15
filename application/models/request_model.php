@@ -83,6 +83,7 @@ class Request_model extends CI_Model
 
 		//on each iteration of the loop, check if array value is a worker name in db. if found, insert a new row to db
 		if( count($assignees) > 0 ){
+			$success;
 			foreach($assignees as $name){
 				$q = $this->db->select('workerId')
 				->where('workerName', $name)
@@ -91,20 +92,28 @@ class Request_model extends CI_Model
 					
 				if($q->num_rows() > 0){
 					$workerId = $q->row()->workerId;
+
 					$q_if_null = $this->db->select('workerID')->where('id', $detailId)->get('repairDetail')->row()->workerID;
+						/*
+						
+						IMPRTANT!!!! IF REQ DETAIL HAS WORKERNAME OF NULL AND YOU ASSIGN A WORKER, THE STATUS WILL CHANGE TO "IN PROGRESS"
+									ALSO IF STATUS != RECEIVED AND YOU DELETE THE LAST WORKER, STATUS SHOULD BE CHANGED TO RECEIVED
+						
+						*/
 					if( $q_if_null == null ){
-						return $this->db->where('id', $detailId)->update('repairDetail', array('workerID' => $workerId));
+						$success = $this->db->where('id', $detailId)->update('repairDetail', array('workerID' => $workerId));
 					}else{
-						return $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
+						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
 					}
 				}
 			}
+			return $success;
 		}else{
 			$this->db->insert('repairDetail', array('repairRequestId' => $requestId));
 		}
 	}
 	
-	public function get_requests($sort_by = 'requestStatus')
+	public function get_requests($sort_by = 'dateRequested')
 	{
 		//get all request id's
 		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
@@ -113,7 +122,24 @@ class Request_model extends CI_Model
 					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
 					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
-					->order_by($sort_by, 'asc')
+					->order_by($sort_by, 'desc')
+					->get();
+		
+		if($q->num_rows() > 0 ){
+			return $q->result();
+		}
+	}
+	
+	public function get_requests_by_status($status)
+	{
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
+					->from('repairrequests rr')
+					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
+					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
+					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
+					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+					->where('requestStatuses.requestStatus', $status)
+					->order_by('dateRequested', 'desc')
 					->get();
 		
 		if($q->num_rows() > 0 ){

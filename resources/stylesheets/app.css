@@ -117,7 +117,24 @@ width: 100%;
 color: #078658;
 }
 
+#add_task_errors{
+border: none;
+}
 
+#add_task_msg{
+border: none;
+}
+
+#status_nav{
+display: none;
+position: relative;
+margin-top: 25px;
+}
+#status_nav li{
+float: left;
+margin-left: 10px;
+cursor: pointer;
+}
 
 /* -----------------------------------------
    Page Name 2

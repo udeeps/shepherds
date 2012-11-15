@@ -72,8 +72,15 @@ class Request extends CI_Controller
 		$data['main_content'] = 'request/admin_list_tasks_view';
 		
 		if($this->input->post('ajax')){
-			$data['taskList'] = $this->request_model->get_requests($sort_by);
-			$this->load->view($data['main_content'], $data);
+			if($this->input->post('status')){
+				$status = $this->input->post('statusName');
+				$data['taskList'] = $this->request_model->get_requests_by_status($status);
+				$this->load->view($data['main_content'], $data);
+			}else{
+				$data['taskList'] = $this->request_model->get_requests($sort_by);
+				$this->load->view($data['main_content'], $data);
+			}
+			
 		}else{
 			$data['taskList'] = $this->request_model->get_requests();
 			//print_r($data['taskList']);
