@@ -180,7 +180,7 @@ listing</a></p>
 	<div class="row"><!-- Start feedback box -->
 	<hr />
 	<div class="twelve columns"><font color="red"> <?php echo validation_errors(); ?>
-	</font> <?php echo form_open('request/get_single_task/'.$result['basicInfo']->Id);
+	</font> <?php echo form_open();
 	$commentField = array('id' => 'feedbackbox',
 							'name' => 'feedbackbox',
 							'class'=>"feedbackbox",
