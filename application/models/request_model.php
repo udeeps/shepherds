@@ -11,6 +11,7 @@ class Request_model extends CI_Model
 	{
 		if(isset($postArray)){
 			$type = $postArray['type_maintenance'];
+			$warranty = ($postArray['warranty']) ? 1 : 0;
 			$c_name = $postArray['customer_name'];
 			$billing = $postArray['billing_address'];
 			$orderer = $postArray['orderer_of_work'];
@@ -24,7 +25,7 @@ class Request_model extends CI_Model
 			$assigned = $postArray['assigned_employees'];
 			$requestStatusId;
 			$ordererId;
-			$dateAssigned = null;
+			$dateToFinnish = null;
 			$workTypeId;
 
 			//first get the ordererId by given name
@@ -39,16 +40,10 @@ class Request_model extends CI_Model
 				return FALSE;
 			}
 
-			if(!empty($day) && !empty($month) && !empty($year)) $dateAssigned = $year.'-'.$month.'-'.$day;
+			if(!empty($day) && !empty($month) && !empty($year)) $dateToFinnish = $year.'-'.$month.'-'.$day;
 
 			//db sets requestStatusId to 1 by default. If start date is given, change request status to 2 -> "in_progress"
-			/*
-			 	
-			IMPORTANT!!!!
-			MAKE COMPARISON THAT IF DATE ASSIGNED IS IN THE FUTURE, STATUS WILL STAY 1
-
-			*/
-			if(isset($dateAssigned)) $requestStatusId = '2';
+			if(isset($dateToFinnish)) $requestStatusId = '2';
 
 			//get the work type
 			$q2 = $this->db->select('workTypeId')
@@ -59,7 +54,14 @@ class Request_model extends CI_Model
 			if($q2->num_rows() > 0) $workTypeId = $q2->row()->workTypeId;
 
 			//insert to db
-			$this->db->insert('repairRequests', array('dateAssigned' => $dateAssigned, 'title' => $title, 'repairLocation' => $address, 'description' => $description, 'ordererId' => $ordererId, 'workTypeId' => $workTypeId));
+			$this->db->insert('repairRequests', array('dateToFinnish' => $dateToFinnish, 
+													'title' => $title, 
+													'repairLocation' => $address, 
+													'description' => $description, 
+													'ordererId' => $ordererId, 
+													'workTypeId' => $workTypeId,
+													'warranty' => $warranty
+													));
 			//get the AUTO_INCREMENTed ID of the repair request so we can use it to reference repair detail
 			$requestId = mysql_insert_id();
 
@@ -81,7 +83,7 @@ class Request_model extends CI_Model
 			$assignees = explode(",", $assigned);
 		}
 
-		//on each iteration of the loop, check if array value is a worker name in db. if found, insert a new row to db
+		//on each iteration of the loop, check if array value is a worker name in db.
 		if( count($assignees) > 0 ){
 			$success;
 			foreach($assignees as $name){
@@ -91,19 +93,19 @@ class Request_model extends CI_Model
 				->get('workers');
 					
 				if($q->num_rows() > 0){
+					//if worker found, get the id
 					$workerId = $q->row()->workerId;
-
+					//check if worker id is NULL. If NULL, update the requestdetail to have the worker id. Otherwise create a new detail
 					$q_if_null = $this->db->select('workerID')->where('id', $detailId)->get('repairDetail')->row()->workerID;
-						/*
-						
-						IMPRTANT!!!! IF REQ DETAIL HAS WORKERNAME OF NULL AND YOU ASSIGN A WORKER, THE STATUS WILL CHANGE TO "IN PROGRESS"
-									ALSO IF STATUS != RECEIVED AND YOU DELETE THE LAST WORKER, STATUS SHOULD BE CHANGED TO RECEIVED
-						
-						*/
+					$status = $this->db->select('requestStatusId')->where('Id', $requestId)->get('repairRequests')->row()->requestStatusId;
 					if( $q_if_null == null ){
 						$success = $this->db->where('id', $detailId)->update('repairDetail', array('workerID' => $workerId));
 					}else{
 						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
+					}
+					//change status to "in_progress" if forst worker assigned and status is "received"
+					if($status == '1'){
+						$this->db->where('Id', $requestId)->update('repairRequests', array('requestStatusId' => '2'));
 					}
 				}
 			}
@@ -152,7 +154,7 @@ class Request_model extends CI_Model
 		$rows = array();
 		
 		//get single request data
-		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, worktypes.workTypeName')
+		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, worktypes.workTypeName')
 					->from('repairrequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
@@ -217,6 +219,7 @@ class Request_model extends CI_Model
 						->delete('repairDetail');
 		}else{
 			$data = array( 'workerID' => null );
+			$this->db->where('Id', $r_id)->update('repairRequests', array('requestStatusId' => '1'));
 			return	$this->db->where('repairRequestID', $r_id)
 						->where('workerID', $w_id)
 						->update('repairDetail', $data);

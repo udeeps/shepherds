@@ -47,6 +47,7 @@
 				<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>" checked> <?php echo ucfirst($type->workTypeName); ?> 
 			<?php endif; ?>
 		<?php endforeach; ?>
+		<span id="det-warranty"><input type="checkbox" name="warranty" <?php echo ($taskData['info']->warranty) ? 'checked' : '' ;?>/> Warranty</span>
 	</p>
 
   </div>
@@ -79,10 +80,24 @@
               </ul>
             </div>
           </div>
-          <div class="twelve columns">
+          <div class="eight columns">
             <label>Add workers</label>
             <input id="add_worker_text" type="text" placeholder="Start writing to choose from list" />
           </div>
+			<div class="four columns">
+			  <label>Estimated date of completion</label>
+			  <div class="row">
+				<div class="four columns">
+				  <input type="text" placeholder="pp" name="day" />
+				</div>
+				<div class="four columns">
+				  <input type="text" placeholder="kk" name="month" />
+				</div>
+				<div class="four columns">
+				  <input type="text" placeholder="vvvv" name="year" />
+				</div>
+			  </div>
+			</div>
           <div class="six columns">
             <input id="add_worker_btn" type="button" class="button gppbutton fullwidth" value="Save worker info" />
           </div>

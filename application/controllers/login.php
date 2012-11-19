@@ -40,6 +40,7 @@ class Login extends CI_Controller
 		
 		$data = $this->get_form($formType);
 		$data['msg']='';
+		$data['main_content'] = 'login/login_view';
 		
 		if( $this->form_validation->run() !== FALSE )
 		{
@@ -82,8 +83,7 @@ class Login extends CI_Controller
 			
 		}
 		
-		
-		$this->load->view('login/login_view', $data);
+		$this->load->view('templates/template', $data);
 	}
 	
 	public function get_form($type)

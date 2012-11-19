@@ -135,7 +135,14 @@ float: left;
 margin-left: 10px;
 cursor: pointer;
 }
-
+#add-warranty{
+margin-left: 70px;
+}
+#det-warranty{
+position: relative;
+float: left;
+margin: 0 0 0 97px;
+}
 /* -----------------------------------------
    Page Name 2
 ----------------------------------------- */

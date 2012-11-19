@@ -20,11 +20,13 @@ class Account extends CI_Controller
 		{
 			case 'admin':
 				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email']);
-				$this->load->view('account/admin_account_view', $data);
+				$data['main_content'] = 'account/admin_account_view';
+				$this->load->view('templates/template', $data);
 				break;
 			case 'worker':
 				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email']);
-				$this->load->view('account/worker_account_view', $data);
+				$data['main_content'] = 'account/worker_account_view';
+				$this->load->view('templates/template', $data);
 				break;
 			case 'customer':
 				$this->listByDate();
@@ -38,14 +40,16 @@ class Account extends CI_Controller
 		{ redirect(''); }
 		$this->load->model('customer_account');
 		$data['requestlist'] = $this->customer_account->get_list_by_status($_SESSION['customerUserName']);
+		$data['main_content'] = 'account/customer_account_view';
 		if ($this->input->post('ajax')) {
-			$this->load->view('account/listTasks',$data);
+			$data['main_content'] = 'account/listTasks';
+			$this->load->view('templates/template', $data);
 		}else
 		{
 			$data['title']='GPP Maintenance App';
 			$data['customerName']=$_SESSION['customerName'];
 			$data['listByDate']=0;
-			$this->load->view('account/customer_account_view', $data);
+			$this->load->view('templates/template', $data);
 		}
 	}
 
@@ -55,15 +59,17 @@ class Account extends CI_Controller
 		{ redirect(''); }
 		$this->load->model('customer_account');
 		$data['requestlist'] = $this->customer_account->get_acccount_data($_SESSION['customerUserName']);
+		$data['main_content'] = 'account/customer_account_view';
 		if ($this->input->post('ajax')) {
-			$this->load->view('account/listTasks',$data);
+			$data['main_content'] = 'account/listTasks';
+			$this->load->view('templates/template', $data);
 		}
 		else
 		{
 			$data['title']='GPP Maintenance App';
 			$data['customerName']=$_SESSION['customerName'];
 			$data['listByDate']=1;
-			$this->load->view('account/customer_account_view', $data);
+			$this->load->view('templates/template', $data);
 		}
 
 	}

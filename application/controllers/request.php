@@ -22,6 +22,7 @@ class Request extends CI_Controller
 		}
 
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$data['main_content'] = 'request/admin_add_task_view';
 
 		$config = array(
 		array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
@@ -45,13 +46,13 @@ class Request extends CI_Controller
 
 			if($result){
 				$data['msg'] = 'Incorrect orderer name';
-				$this->load->view('request/admin_add_task_view', $data);
+				$this->load->view('templates/template', $data);
 			}else{
 				$data['msg'] = 'Request saved succesfully';
-				$this->load->view('request/admin_add_task_view', $data);
+				$this->load->view('templates/template', $data);
 			}
 		}
-		$this->load->view('request/admin_add_task_view', $data);
+		$this->load->view('templates/template', $data);
 	}
 
 	public function check_worker($str)
@@ -145,13 +146,15 @@ class Request extends CI_Controller
 	public function manage_users()
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
-		$this->load->view('request/admin_manage_users_view', $data);
+		$data['main_content'] = 'request/admin_manage_users_view';
+		$this->load->view('templates/template', $data);
 	}
 	
 	public function system_announcements()
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
-		$this->load->view('request/admin_manage_users_view', $data);
+		$data['main_content'] = 'request/admin_system_announcements_view';
+		$this->load->view('templates/template', $data);
 	}
 	
 	
