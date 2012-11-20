@@ -38,11 +38,11 @@ class Account extends CI_Controller
 	{
 		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
 		{ redirect(''); }
-		$this->load->model('customer_account');
-		$data['requestlist'] = $this->customer_account->get_list_by_status($_SESSION['customerUserName']);
+		$this->load->model('customer_account_model');
+		$data['requestlist'] = $this->customer_account_model->get_list_by_status($_SESSION['customerUserName']);
 		$data['main_content'] = 'account/customer_account_view';
 		if ($this->input->post('ajax')) {
-			$data['main_content'] = 'account/listTasks';
+			$data['main_content'] = 'account/listTasks_view';
 			$this->load->view('templates/template', $data);
 		}else
 		{
@@ -57,11 +57,11 @@ class Account extends CI_Controller
 	{
 		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
 		{ redirect(''); }
-		$this->load->model('customer_account');
-		$data['requestlist'] = $this->customer_account->get_acccount_data($_SESSION['customerUserName']);
+		$this->load->model('customer_account_model');
+		$data['requestlist'] = $this->customer_account_model->get_acccount_data($_SESSION['customerUserName']);
 		$data['main_content'] = 'account/customer_account_view';
 		if ($this->input->post('ajax')) {
-			$data['main_content'] = 'account/listTasks';
+			$data['main_content'] = 'account/listTasks_view';
 			$this->load->view('templates/template', $data);
 		}
 		else

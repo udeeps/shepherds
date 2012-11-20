@@ -39,6 +39,14 @@ request or view status of your request and make comments to the job in this appl
 
 
 
+    <a href="request/index"><div class="panel" align="center">
+      <p>Add new task</p>
+    </div></a>
+
+
+ 
+
+
 
 <div class="twelve columns ">
 <h4>Your reports to our service</h4>
@@ -62,7 +70,7 @@ request or view status of your request and make comments to the job in this appl
 
 <div id="task_list">
 <?php
-$this->load->view('account/listTasks',$requestlist);
+$this->load->view('account/listTasks_view',$requestlist);
 ?> <!-- End task listing --></div>
 
 

@@ -119,7 +119,7 @@ class Request_model extends CI_Model
 	{
 		//get all request id's
 		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
-					->from('repairrequests rr')
+					->from('repairRequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
@@ -154,8 +154,8 @@ class Request_model extends CI_Model
 		$rows = array();
 		
 		//get single request data
-		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, worktypes.workTypeName')
-					->from('repairrequests rr')
+		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName')
+					->from('repairRequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
 					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')

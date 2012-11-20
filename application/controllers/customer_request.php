@@ -189,7 +189,7 @@ class Request extends CI_Controller
 				$data['customerName']=$_SESSION['customerName'];
 				$data['title']='GPP Maintenance App';
 				$data['comments'] = $this->comment_model->get_comments($taskId);
-				$data['main_content'] = 'request/customer_task_details_view';
+				$data['main_content'] = 'request/customer_task_details';
 				$this->load->view('templates/template', $data);
 			}
 

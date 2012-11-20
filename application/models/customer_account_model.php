@@ -1,5 +1,5 @@
 <?php
-class Customer_account extends CI_Model
+class Customer_account_model extends CI_Model
 {
 
 
