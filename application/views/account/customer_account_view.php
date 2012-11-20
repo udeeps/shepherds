@@ -26,11 +26,11 @@ echo anchor('account', $customerName.' Maintenance');
 <div class="row">
 <hr />
 <div class="twelve columns">
-<h5>Brief message to users</h5>
-<p>A message to welcome the user to the system, possibly explaining the
-basic functionality of the application so that there's less need for
-support. Just a couple of lines to not burden the user with text. Just a
-bit more, just to see how the layout responds to the amount of content.</p>
+<h5>Welcome <?php echo $customerName; ?>,</h5>
+<p>
+This system helps you to keep track of your maintenance request.<br/> You can file a maintenance 
+request or view status of your request and make comments to the job in this application. 
+</p>
 </div>
 </div>
 

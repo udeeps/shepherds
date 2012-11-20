@@ -18,7 +18,8 @@ class Customer_account extends CI_Model
 		WHERE customers.customerUserName = "'.$customerUserName.'" 
 		AND orderer.customerId = customers.customerId 
 		AND repairRequests.ordererId = orderer.ordererId
-		AND repairRequests.requestStatusId = requestStatuses.requestStatusId ORDER BY repairRequests.dateRequested DESC';
+		AND repairRequests.requestStatusId = requestStatuses.requestStatusId ORDER BY repairRequests.dateRequested DESC,
+		CAST(repairRequests.dateRequested AS DATE)';
 		$q=$this->db->query($sql);
 		return $q;
 		

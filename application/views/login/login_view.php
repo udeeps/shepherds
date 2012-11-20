@@ -47,11 +47,20 @@
        
           <?php echo form_submit($submit); ?>
       </form>   
+      <p>Forgot username / password ? <br/>
+      Please contact the system adminstrator.</p>
     </div>
 	<?php if($validate == '2'): ?>
 		<div class="six columns">
 		  <h4>Welcome to the GPP Maintenance App!</h4>
-		  <p>This piece of text is here to both welcome the customers to the system as well as give them a brief introduction about it. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
+		  <p> Use the username and password of your company to login. You can file a new maintenance request or 
+		   view the status of your maintenance request and complaints after your login.<br/><br/>
+		  
+		  If your company doesn't have a username and password for this service, you can get one by contacting
+		   an administrator at _ _ _ _ _ _ _ _ or _ _ _ _@perimeter.fi
+		   
+		   </p>
+		   </div>
 		</div>
 	<?php endif; ?>
     <hr />

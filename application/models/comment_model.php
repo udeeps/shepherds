@@ -12,7 +12,7 @@ class Comment_model extends CI_Model
 
 	public function get_comments($taskId)
 	{
-		$q = $this->db->get_where('comments', array('repairRequestId' => $taskId));
+		$q = $this->db->get_where('comments', array('repairRequestId' => $taskId,'private'=>0));
 		if($q->num_rows<1)
 		$comments = 'EMPTY';
 		else
@@ -43,15 +43,24 @@ class Comment_model extends CI_Model
 			}
 			else
 			{
+				
 				$data = array(
 								   'author' => $author ,
 								   'text' => $comment ,
-								   'repairRequestId' => $taskId
+								   'repairRequestId' => $taskId,
+									'private'=>0
 				);
-				if($this->db->insert('comments', $data))
-				return 'SUCCESS';
-				else
-				return 'INSERT_FAILED';
+				$q1= $this->db->get_where('comments',$data);
+				if($q1->num_rows<1)
+				{
+					if($this->db->insert('comments', $data))
+						return 'SUCCESS';
+					else
+						return 'INSERT_FAILED';
+					
+				}
+				if($q1->num_rows==1)
+					return('DUPLICATE');
 
 			}
 		}

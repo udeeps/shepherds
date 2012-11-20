@@ -189,8 +189,8 @@ class Request extends CI_Controller
 				$data['customerName']=$_SESSION['customerName'];
 				$data['title']='GPP Maintenance App';
 				$data['comments'] = $this->comment_model->get_comments($taskId);
-			
-				$this->load->view('request/customer_task_details',$data);
+				$data['main_content'] = 'request/customer_task_details';
+				$this->load->view('templates/template', $data);
 			}
 
 
@@ -229,6 +229,10 @@ class Request extends CI_Controller
 		elseif($result=='SUCCESS')
 		{
 			$status['successmsg']="Comment Saved";
+			return($status);
+		}
+		elseif($result=='DUPLICATE')
+		{
 			return($status);
 		}
 		else
