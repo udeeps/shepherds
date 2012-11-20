@@ -150,6 +150,37 @@ class Request extends CI_Controller
 		$this->load->view('templates/template', $data);
 	}
 	
+	public function add_user()
+	{	
+		// AUTH!!!!!!!!!!!
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$data['main_content'] = 'request/admin_add_user_view';
+		
+		$config = array(
+			array('field' => 'firstname','label' => 'First name','rules' => 'required'),
+			array('field' => 'lastname','label' => 'Last name','rules' => 'required'),
+			array('field' => 'email','label' => 'Email','rules' => 'required|valid_email|is_unique[workers.workerEmail]'),
+			array('field' => 'password','label' => 'Password','rules' => 'required|min_length[8]|matches[pass_conf]'),
+			array('field' => 'pass_conf','label' => 'Password conf','rules' => 'required'),
+			array('field' => 'userlevel','label' => 'User level','rules' => 'required'),
+		);
+		
+		$this->form_validation->set_rules($config);
+		
+		if( $this->form_validation->run() !== FALSE ){
+			$this->load->model('user_model');
+			$userlevel = $this->user_model->add_new_user($this->input->post());
+			if($userlevel){
+				$data['msg'] = "A new user of level $userlevel added succesfully";
+			}else{
+				$data['msg'] = "Something went wrong. Data not saved";
+			}
+			$this->load->view('templates/template', $data);
+		}
+		
+		$this->load->view('templates/template', $data);
+	}
+	
 	public function system_announcements()
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
