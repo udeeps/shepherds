@@ -39,24 +39,45 @@
         <dd><a href="#">Status</a></dd>
       </dl> 
 
-      <a href="workerdetails.html"><ul class="listing"> <!-- Start single task listing -->
+<?php if(!empty($tasks)): ?>
+	<?php foreach($tasks as $row): ?> 
+      <a href="<?php echo site_url('tasks/worker_single_task').'/'.$row->repairRequestId; ?>">
+	  <ul class="listing"> <!-- Start single task listing -->
         <li class="panel">
-          <h5>Title of the job - added at 25/12/2001</h5>
-        <div class="row">
-          <div class="two columns">
-            <p class="status underway">Status:<br>Work underway</p>
-          </div>
-          <div class="six columns">
-            <strong>Description:</strong>
-            <p>Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats. Malfunctioning product blocks a door and two cats.</p>
-          </div>
-          <div class="four columns">
-            <strong>Starting time:</strong>
-            <p>10/12/2012</p>
-          </div>
-        </div>
+          <h5><?php if(!empty($row->title)){ echo $row->title; }else{ echo 'Repair request'; } echo ' - '.date('j/n/o', strtotime($row->dateRequested)); ?></h5>
+			<div class="row">
+			  <div class="two columns">
+				<p class="status <?php echo $row->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $row->requestStatus)); ?></p>
+			  </div>
+			  <div class="six columns">
+				<strong>Description:</strong>
+				<p>
+					<?php echo $row->description; ?>
+				</p>
+				<strong>Starting time:</strong>
+					<?php if(isset($row->estimatedDateFinish)):?>
+						<p><?php echo $row->estimatedDateFinish; ?></p>
+					<?php else: ?>
+						<p> - </p>
+					<?php endif; ?>
+			  </div>
+			  <div class="four columns">
+				<strong>Customer name:</strong>
+				<p><?php echo $row->customerName; ?></p>
+				<strong>Orderer name:</strong>
+				<p><?php echo $row->ordererName; ?></p>
+			  </div>
+			</div>
         </li>
       </ul></a> <!-- End single task listing -->
+	<?php endforeach; ?>
+<?php else: ?>
+	 <ul class="listing"> <!-- Start single task listing -->
+		<li class="panel">
+			<h5>No tasks assigned</h5>
+		</li>
+	 </ul>
+<?php endif; ?> <!-- End single task listing -->
 
     </div>
     <hr />

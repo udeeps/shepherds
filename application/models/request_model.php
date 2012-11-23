@@ -25,7 +25,7 @@ class Request_model extends CI_Model
 			$assigned = $postArray['assigned_employees'];
 			$requestStatusId;
 			$ordererId;
-			$dateToFinnish = null;
+			$dateToFinish = null;
 			$workTypeId;
 
 			//first get the ordererId by given name
@@ -40,10 +40,10 @@ class Request_model extends CI_Model
 				return FALSE;
 			}
 
-			if(!empty($day) && !empty($month) && !empty($year)) $dateToFinnish = $year.'-'.$month.'-'.$day;
+			if(!empty($day) && !empty($month) && !empty($year)) $dateToFinish = $year.'-'.$month.'-'.$day;
 
 			//db sets requestStatusId to 1 by default. If start date is given, change request status to 2 -> "in_progress"
-			if(isset($dateToFinnish)) $requestStatusId = '2';
+			if(isset($dateToFinish)) $requestStatusId = '2';
 
 			//get the work type
 			$q2 = $this->db->select('workTypeId')
@@ -54,7 +54,7 @@ class Request_model extends CI_Model
 			if($q2->num_rows() > 0) $workTypeId = $q2->row()->workTypeId;
 
 			//insert to db
-			$this->db->insert('repairRequests', array('dateToFinnish' => $dateToFinnish, 
+			$this->db->insert('repairRequests', array('estimatedDateFinish' => $dateToFinish, 
 													'title' => $title, 
 													'repairLocation' => $address, 
 													'description' => $description, 
@@ -118,12 +118,15 @@ class Request_model extends CI_Model
 	public function get_requests($sort_by = 'dateRequested')
 	{
 		//get all request id's
-		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
+								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, customers.customerName, orderer.ordererName')
 					->from('repairRequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
 					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+					->join('orderer', 'rr.ordererId = orderer.ordererId')
+					->join('customers', 'customers.customerId = orderer.customerId')
 					->order_by($sort_by, 'desc')
 					->get();
 		
@@ -134,7 +137,8 @@ class Request_model extends CI_Model
 	
 	public function get_requests_by_status($status)
 	{
-		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
+								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
 					->from('repairrequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
@@ -154,7 +158,8 @@ class Request_model extends CI_Model
 		$rows = array();
 		
 		//get single request data
-		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, requestStatuses.requestStatus, workTypes.workTypeName')
+		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
+								requestStatuses.requestStatus, workTypes.workTypeName')
 					->from('repairRequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')

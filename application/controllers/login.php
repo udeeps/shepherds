@@ -21,20 +21,18 @@ class Login extends CI_Controller
 			$_SESSION['loggedIn'] = false;
 		}
 
-		//if( uri_string() == 'login' || uri_string() == 'login/index/1' ){
 		if( uri_string() == 'login'){
 			//show GPP login
 			$formType = 'gpp_login_form';
 			$loginType = '1'; //added by Udeep
-			$this->form_validation->set_rules('email_address', 'Email Address', 'required|valid_email'); //set_rules('field name', 'human readable name for error messages', rules)
+			$this->form_validation->set_rules('email_address', 'Email Address', 'required|valid_email');
 			$this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
 		}else{
 			//show client login
 			$formType = 'client_login_form';
 			$loginType = '2';
-			$this->form_validation->set_rules('email_address', 'User Name', 'required'); //client's company staff logs in with company User Name.
-			$this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
-			//set_rules('field name', 'human readable name for error messages', rules)
+			$this->form_validation->set_rules('email_address', 'User Name', 'required|valid_email'); //client's company staff logs in with company User Name.
+			$this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
 		}
 		
 		
@@ -44,13 +42,11 @@ class Login extends CI_Controller
 		
 		if( $this->form_validation->run() !== FALSE )
 		{
-			//echo('form validation successful');
 			$this->load->model('auth_model');
 			$result = $this->auth_model->verify_user($this->input->post('email_address'), $this->input->post('password'), $loginType);
 			
 			if($result != false)
 			{
-				//print_r($result);
 				//user exists
 				$_SESSION['loggedIn'] = true;
 				$_SESSION['userLevel'] = $result['userLevel'];
@@ -59,12 +55,12 @@ class Login extends CI_Controller
 					$_SESSION['email'] = $result['query']->adminEmail;
 					redirect('account');
 				}else if($_SESSION['userLevel'] == 'worker'){
+					$_SESSION['wid'] = $result['query']->workerId;
 					$_SESSION['name'] = $result['query']->workerName;
 					$_SESSION['email'] = $result['query']->workerEmail;
 					redirect('account');
 				}else{
 					$_SESSION['customerName'] = $result['query']->customerName;
-					//$_SESSION['name'] = $result['query']->ordererName;
 					$_SESSION['email'] = $result['query']->companyEmail;
 					$_SESSION['customerUserName'] = $this->input->post('email_address');
 					redirect('account');
@@ -72,7 +68,6 @@ class Login extends CI_Controller
 			}
 			else
 			{
-				//if(uri_string() !== 'login' || uri_string() != 'login/index/1')
 				if(uri_string() == 'login')
 				$data['msg']='Incorrect email or password';
 				else

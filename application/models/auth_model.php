@@ -1,4 +1,4 @@
-<?php 
+<?php if (! defined('BASEPATH')) exit('Users have no access to view this page.');
 class Auth_model extends CI_Model
 {
 	
@@ -35,13 +35,6 @@ class Auth_model extends CI_Model
 			}
 			return false;
 		}else{
-			/*$this->db->select('orderer.ordererName, orderer.ordererEmail, customers.customerId, customers.customerName')
-				->from('orderer')
-				->join('customers', 'orderer.customerId = customers.customerId')
-				->where('customerUserName', $credential)
-				->where('customerPwd', sha1($password) )
-				->limit(1);*/
-			
 			$this->db->select('customerId, customerName, companyEmail')
 				->from('customers')
 				->where('customerUserName', $credential)
@@ -60,7 +53,3 @@ class Auth_model extends CI_Model
 	}
 	
 }
-
-//SELECT yrityksen_toimihenkilot.henkilo_id, yritys.yritys_id, yritys.yritys_nimi FROM yrityksen_toimihenkilot INNER JOIN yritys on yrityksen_toimihenkilot.yritys_id = yritys.yritys_id WHERE yrityksen_toimihenkilot.kayttajatunnus = [TUNNUS] AND yrityksen_toimihenkilot.salasana = [SALASANA]
-
-//SELECT yrityksen_toimihenkilot.henkilo_id, yritys.yritys_id, yritys.yritys_nimi FROM yrityksen_toimihenkilot, yritys WHERE yrityksen_toimihenkilot.yritys_id = yritys.yritys_id AND yrityksen_toimihenkilot.kayttajatunnus = [TUNNUS] AND yrityksen_toimihenkilot.salasana = [SALASANA]

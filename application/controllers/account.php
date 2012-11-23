@@ -25,6 +25,7 @@ class Account extends CI_Controller
 				break;
 			case 'worker':
 				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email']);
+				$data['tasks'] = $this->worker_list_tasks($_SESSION['wid']);
 				$data['main_content'] = 'account/worker_account_view';
 				$this->load->view('templates/template', $data);
 				break;
@@ -74,7 +75,25 @@ class Account extends CI_Controller
 
 	}
 
-
+	public function worker_list_tasks($wid)
+	{
+		if(empty($_SESSION['loggedIn']) || $_SESSION['userLevel'] != 'worker'){
+			redirect('');
+		}
+		$this->load->model('worker_tasks_model');
+		try{
+			if($wid == $_SESSION['wid']){
+				$result = $this->worker_tasks_model->get_tasks_by_id($wid);
+				return $result;
+			}else{
+				throw new Exception('This is not the way to list tasks?');
+			}
+		}catch(Exception $e){
+			echo $e->getMessage();
+		}
+			
+		
+	}
 
 }
 
