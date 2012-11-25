@@ -10,16 +10,6 @@ class Worker_tasks_model extends CI_Model
 	public function get_tasks_by_id($wid)
 	{
 		//get all tasks for worker id == $wid
-		/*$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.estimatedDateFinish, rr.title,
-								rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
-					->from('repairRequests rr')
-					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
-					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
-					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
-					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
-					->where('workers.workerId', $wid)
-					->get*/
-					
 		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.estimatedDateFinish, rr.title,
 								rr.description, requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, customers.customerName, orderer.ordererName')
 					->from('repairRequests rr, requestStatuses, workTypes, workers, orderer, customers')
