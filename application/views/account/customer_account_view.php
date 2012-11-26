@@ -39,8 +39,8 @@ request or view status of your request and make comments to the job in this appl
 
 
 
-    <a href="request/index"><div class="panel" align="center">
-      <p>Add new task</p>
+    <a href="request"><div class="panel" align="center">
+      <p>Add new report</p>
     </div></a>
 
 

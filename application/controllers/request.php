@@ -12,48 +12,97 @@ class Request extends CI_Controller
 		$this->load->model('request_model');
 		$this->load->model('comment_model');
 		session_start();
+
 	}
 
 	public function index()
 	{
-		if( !isset($_SESSION['loggedIn']) || $_SESSION['userLevel'] != 'admin')
+
+
+		if( !isset($_SESSION['loggedIn'])||($_SESSION['userLevel'] != 'admin'&&$_SESSION['userLevel'] != 'customer'))
 		{
 			redirect('login');
 		}
 
-		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
-		$data['main_content'] = 'request/admin_add_task_view';
-
-		$config = array(
-		array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
-		array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
-		array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
-		array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
-		array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
-		array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
-		array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
-		array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
-		array('field' => 'work_description','label' => 'Description','rules' => 'required'),
-		array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
-		);
-
-		$this->form_validation->set_rules($config);
-
-		if($this->form_validation->run() !== FALSE)
+		else if($_SESSION['userLevel'] == 'admin')
 		{
-			//verifying "add task" post array
-			$result = $this->request_model->create_repair_request( $this->input->post() );
+			$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 
-			if($result){
-				$data['msg'] = 'Incorrect orderer name';
-				$this->load->view('templates/template', $data);
-			}else{
-				$data['msg'] = 'Request saved succesfully';
-				$this->load->view('templates/template', $data);
+			$data['main_content'] = 'request/admin_add_task_view';
+			$config = array(
+			array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
+			array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
+			array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
+			array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
+			array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
+			array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
+			array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
+			array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
+			array('field' => 'work_description','label' => 'Description','rules' => 'required'),
+			array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
+			);
+
+			$this->form_validation->set_rules($config);
+
+			if($this->form_validation->run() !== FALSE)
+			{
+				//verifying "add task" post array
+				$result = $this->request_model->create_repair_request( $this->input->post() );
+
+				if($result){
+					$data['msg'] = 'Incorrect orderer name';
+					//$this->load->view('templates/template', $data);
+				}else{
+					$data['msg'] = 'Request saved succesfully';
+					//$this->load->view('templates/template', $data);
+				}
 			}
+			$this->load->view('templates/template', $data);
 		}
-		$this->load->view('templates/template', $data);
+
+		else if($_SESSION['userLevel'] == 'customer')
+		{
+			$data = array( 'title' => 'GPP Maintenance App','back' => 'account', 'customerName' => $_SESSION['customerName']);
+			$data['main_content'] = 'request/customer_add_task_view';
+			$config = array(
+			array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
+			array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
+			array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
+			array('field' => 'work_description','label' => 'Description','rules' => 'required'),
+			);
+
+			$this->form_validation->set_rules($config);
+
+			if($this->form_validation->run() !== FALSE)
+			{
+				//verifying "add task" post array
+				$result = $this->request_model->create_repair_request( $this->input->post() );
+
+				if($result){
+					$data['msg'] = 'Request saved succesfully';
+					$to      = 'shakydeep@gmail.com';
+					$subject = 'New Task added in GPP maintanence app';
+					$message = 'A new Task has been added by '.$_SESSION['customerName'].' in GPP maintanence app';
+					$headers = 'From: GPP maintanence App' . "\r\n" .'X-Mailer: PHP/' . phpversion();
+					ini_set ( "SMTP", "smtp-server.example.com" );
+					ini_set ( "smtp_port", "25" );  
+					date_default_timezone_set('Europe/Helsinki');
+					mail($to, $subject, $message, $headers);
+					//$this->load->view('templates/template', $data);
+				}else{
+					$data['msg'] = 'Incorrect orderer name. Report not Saved';
+					//$this->load->view('templates/template', $data);
+				}
+			}
+			$this->load->view('templates/template', $data);
+		}
+		else
+		{
+			redirect('');
+		}
 	}
+
+
 
 	public function check_worker($str)
 	{
@@ -71,7 +120,7 @@ class Request extends CI_Controller
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_list_tasks_view';
-		
+
 		if($this->input->post('ajax')){
 			if($this->input->post('status')){
 				$status = $this->input->post('statusName');
@@ -81,14 +130,14 @@ class Request extends CI_Controller
 				$data['taskList'] = $this->request_model->get_requests($sort_by);
 				$this->load->view($data['main_content'], $data);
 			}
-			
+
 		}else{
 			$data['taskList'] = $this->request_model->get_requests();
 			//print_r($data['taskList']);
 			$this->load->view('templates/template', $data);
 		}
 	}
-	
+
 	public function single_task($r_id, $data = '')
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'request/list_tasks', 'name' => $_SESSION['name']);
@@ -99,7 +148,7 @@ class Request extends CI_Controller
 		//print_r($data['taskData']);
 		$this->load->view('templates/template', $data);
 	}
-	
+
 	public function change_status()
 	{
 		$id = $this->input->post('id');
@@ -110,11 +159,11 @@ class Request extends CI_Controller
 			echo false;
 		}
 	}
-	
+
 	public function remove_from_task($r_id = '', $w_id = '')
 	{
 		$data = array();
-		
+
 		if($this->input->post('ajax')){
 			$r_id = $this->input->post('task');
 			$w_id = $this->input->post('worker');
@@ -132,24 +181,24 @@ class Request extends CI_Controller
 			$this->single_task($r_id, $data);
 		}
 	}
-	
+
 	public function add_worker_to_task()
 	{
 		$requestId = $this->input->post('requestId');
 		$assignees = $this->input->post('assignees');
 		$detailId = $this->input->post('detailId');
-		
+
 		$result = $this->request_model->create_request_detail($requestId, $assignees, $detailId);
 		echo $result;
 	}
-	
+
 	public function manage_users()
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_manage_users_view';
 		$this->load->view('templates/template', $data);
 	}
-	
+
 	public function add_user()
 	{	
 		// AUTH!!!!!!!!!!!
@@ -187,8 +236,8 @@ class Request extends CI_Controller
 		$data['main_content'] = 'request/admin_system_announcements_view';
 		$this->load->view('templates/template', $data);
 	}
-	
-	
+
+
 	//public function get_single_task($taskId='',$errmsg='',$successmsg='')
 	public function get_single_task($taskId='')
 	{
@@ -200,13 +249,13 @@ class Request extends CI_Controller
 		//this information is only for customer
 		if($_SESSION['userLevel'] == 'customer')
 		{
-			
-				if ($this->form_validation->run() != FALSE)
-				{
+
+			if ($this->form_validation->run() != FALSE)
+			{
 					
-					$status = $this->comment($taskId,$this->input->post('feedbackbox'),$this->input->post('author'));
-					$data['status']=$status;
-				}
+				$status = $this->comment($taskId,$this->input->post('feedbackbox'),$this->input->post('author'));
+				$data['status']=$status;
+			}
 
 
 
@@ -246,7 +295,7 @@ class Request extends CI_Controller
 		$status['successmsg']='';
 		if($result == 'NO_RECORDS')
 		redirect('404_override');
-		
+
 		elseif($result == 'MULTIPLE_RECORDS')
 		{
 			$status['errormsg']='Multiple records found in database, contact web admnistrator';

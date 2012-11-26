@@ -11,6 +11,7 @@ class Login extends CI_Controller
 		$this->load->helper('form');
 		$this->load->library( array('form_validation', 'session') );
 		session_start();
+		
 	}
 	
 	public function index($loginType = '')
@@ -90,6 +91,7 @@ class Login extends CI_Controller
 	
 	public function log_out()
 	{
+		
 		$redirect = '';
 		
 		switch( $_SESSION['userLevel'] )

@@ -1,6 +1,6 @@
  <div class="row header"> <!-- Start Header -->
     <div class="five columns">
-      <?php echo anchor('account', 'GPP Maintenance App');?>
+      <?php echo anchor('account', $customerName.' Maintenance');?>
     </div>
 
     <div class="four columns"> <!-- Start search -->
@@ -17,7 +17,7 @@
     </div> <!-- End search -->
 
     <div class="three columns">
-      <p>Logged in as <?php echo $name; ?></p>
+      <p>Logged in as <?php echo $customerName; ?></p>
       <p><?php echo anchor('login/log_out', 'Log out');?></p>
     </div>
   </div> <!-- End Header -->
@@ -32,13 +32,14 @@
 	  <?php if(isset($msg)): ?>
 		 <!-- Shows message if orderer name not found from DB -->
 			<div id="add_task_msg" class="twelve columns panel">
-			<?php 
+				<h6>
+				<?php 
 				if ($msg == 'Request saved succesfully')
 				echo ('<font color ="green">');
 				else
 				echo ('<font color ="red">');
 				?>
-				<h6><?php echo $msg.'</font>'; ?></h6>
+				<?php echo $msg.'</font>'; ?></h6>
 			</div>
 		<?php endif; ?>
 		
@@ -49,7 +50,7 @@
 		
         <?php echo form_open('request'); ?>
 		
-		<div class="row">
+		<!-- <div class="row">
 			<p>
 				<strong>Type of work:</strong>
 				<input type="radio" name="type_maintenance" value="maintenance" checked>Maintenance
@@ -57,12 +58,14 @@
 				<input type="radio" name="type_maintenance" value="contract">Contract
 				<span id="add-warranty"><input type="checkbox" name="warranty" />Warranty</span>
 			</p>
-		</div>
+		</div> -->
 		<div class="row">
-          <div class="six columns"> <!-- Name -->
+          <!-- 
+          <div class="six columns"> 
             <label>Customer name (company)</label>
             <input type="text" placeholder="Start typing to choose from the list" name="customer_name"/>
           </div>
+           -->
           <div class="six columns">
             <label>Billing address</label>
             <input type="text" placeholder="Start typing to choose from the list" name="billing_address"/>
@@ -71,8 +74,8 @@
 
       <div class="row"> <!-- Orderer info -->
         <div class="six columns">
-          <label>Customer address</label>
-          <input type="text" placeholder="" name="customer_address"/>
+          <label>Address</label>
+          <input type="text" placeholder="" name="address"/>
         </div>
         <div class="six columns">
           <label>Orderer of work (name)</label>
@@ -85,7 +88,7 @@
           <label>Task title</label>
           <input type="text" placeholder="" name="task_title"/>
         </div>
-        <div class="four columns">
+        <!-- <div class="four columns">
           <label>Estimated date of completion</label>
           <div class="row">
             <div class="four columns">
@@ -97,9 +100,10 @@
             <div class="four columns">
               <input type="text" placeholder="vvvv" name="year" />
             </div>
-          </div>
+          
+  
         </div>
-      </div>
+      </div>-->
       <div class="row">
         <div class="twelve columns">
           <label>Description of the work</label>
@@ -107,13 +111,13 @@
         </div>
       </div>
 
-      <div class="row"> <!-- Choosing workers -->
-        <div class="twelve columns">
+      <!--<div class="row">
+         <div class="twelve columns">
           <hr />
           <label><strong>Assign task to worker(s)</strong></label>
           <input type="text" placeholder="Start typing to choose from list" name="assigned_employees" />
         </div>
-      </div>
+      </div> -->
 
       <div class="row"> <!-- Submit button -->
         <div class="twelve columns">

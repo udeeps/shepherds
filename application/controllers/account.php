@@ -9,8 +9,10 @@ class Account extends CI_Controller
 		$this->load->helper('url');
 		$this->load->library( array('form_validation', 'session') );
 		session_start();
+
 	}
 
+	
 	public function index()
 	{
 		if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true)
