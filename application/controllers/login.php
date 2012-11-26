@@ -32,7 +32,8 @@ class Login extends CI_Controller
 			//show client login
 			$formType = 'client_login_form';
 			$loginType = '2';
-			$this->form_validation->set_rules('email_address', 'User Name', 'required|valid_email'); //client's company staff logs in with company User Name.
+			//client's company staff logs in with company User Name not with email ID
+			$this->form_validation->set_rules('email_address', 'User Name', 'required'); 
 			$this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
 		}
 		

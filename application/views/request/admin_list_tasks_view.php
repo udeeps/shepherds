@@ -34,9 +34,9 @@
         <dd><a class="req_list_sort" name="dateRequested" href="#">Date</a></dd>
         <dd><a class="req_list_sort" name="workerName" href="#">Worker</a></dd>
 		<ul id="status_nav">
-			<li><a class="stat_sort_opt" name="received">Received</a></li>
+			<li><a class="stat_sort_opt" name="recorded">Recorded</a></li>
 			<li><a class="stat_sort_opt" name="in_progress">In progress</a></li>
-			<li><a class="stat_sort_opt" name="stopped">Stopped</a></li>
+			<li><a class="stat_sort_opt" name="cancelled">Cancelled</a></li>
 			<li><a class="stat_sort_opt" name="completed">Completed</a></li>
 		</ul>
       </dl> 
