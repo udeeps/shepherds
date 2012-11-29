@@ -81,7 +81,7 @@ class Request_model extends CI_Model
 		{
 			if(isset($postArray)){
 				$type = $postArray['type_maintenance'];
-				$warranty = ($postArray['warranty']) ? 1 : 0;
+				$warranty = isset($postArray['warranty']) ? 1 : 0;
 				$c_name = $postArray['customer_name'];
 				$billing = $postArray['billing_address'];
 				$orderer = $postArray['orderer_of_work'];
@@ -167,14 +167,16 @@ class Request_model extends CI_Model
 					//if worker found, get the id
 					$workerId = $q->row()->workerId;
 					//check if worker id is NULL. If NULL, update the requestdetail to have the worker id. Otherwise create a new detail
-					$q_if_null = $this->db->select('workerID')->where('id', $detailId)->get('repairDetail')->row()->workerID;
-					$status = $this->db->select('requestStatusId')->where('Id', $requestId)->get('repairRequests')->row()->requestStatusId;
-					if( $q_if_null == null ){
+					$detail_exists = $this->db->select('workerID')->where('id', $detailId)->get('repairDetail');
+					
+					if( $detail_exists->num_rows() > 0){
 						$success = $this->db->where('id', $detailId)->update('repairDetail', array('workerID' => $workerId));
 					}else{
+						echo 'elsessä';
 						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
 					}
 					//change status to "in_progress" if forst worker assigned and status is "recorded"
+					$status = $this->db->select('requestStatusId')->where('Id', $requestId)->get('repairRequests')->row()->requestStatusId;
 					if($status == '1'){
 						$this->db->where('Id', $requestId)->update('repairRequests', array('requestStatusId' => '2'));
 					}
@@ -182,6 +184,7 @@ class Request_model extends CI_Model
 			}
 			return $success;
 		}else{
+			echo 'lisätään ilman työntekijää';
 			$this->db->insert('repairDetail', array('repairRequestId' => $requestId));
 		}
 	}
@@ -189,7 +192,7 @@ class Request_model extends CI_Model
 	public function get_requests($sort_by = 'requestStatus')
 	{
 		//get all request id's
-		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, rr.repairLocation, 
 								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, customers.customerName, orderer.ordererName')
 					->from('repairRequests rr')
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
@@ -211,7 +214,7 @@ class Request_model extends CI_Model
 	{
 		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
 								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
-		->from('repairrequests rr')
+		->from('repairRequests rr')
 		->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 		->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 		->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')

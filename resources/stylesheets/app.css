@@ -117,15 +117,15 @@ float: right;
 width: 100%;
 color: #078658;
 }
-
 #add_task_errors{
 border: none;
 }
-
 #add_task_msg{
 border: none;
 }
-
+#add_task_msg h6{
+color: #078658;
+}
 #status_nav{
 position: relative;
 }
@@ -147,6 +147,9 @@ color: #078658;
 }
 .task_details_wn_assigned{
 color: red;
+}
+.link-list li{
+float: right !important;
 }
 /* -----------------------------------------
    Page Name 2

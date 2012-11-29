@@ -10,7 +10,7 @@
 			<dd class="active"><a class="stat_sort_opt" name="all">All</a></dd>
 			<dd><a class="stat_sort_opt" name="recorded">Recorded</a></dd>
 			<dd><a class="stat_sort_opt" name="in_progress">In progress</a></dd>
-			<dd><a class="stat_sort_opt" name="stopped">Stopped</a></dd>
+			<dd><a class="stat_sort_opt" name="cancelled">Cancelled</a></dd>
 			<dd><a class="stat_sort_opt" name="completed">Completed</a></dd>
 		</dl>
       </dl> 
@@ -19,32 +19,26 @@
 		<?php foreach($taskList as $row): ?> 
       <a href="<?php echo site_url('request/single_task').'/'.$row->repairRequestId; ?>">
 	  <ul class="listing"> <!-- Start single task listing -->
-        <li class="panel">
-          <h5><?php if(!empty($row->title)){ echo $row->title; }else{ echo 'Repair request'; } echo ' - '.date('j/n/o', strtotime($row->dateRequested)); ?></h5>
+        <li class="panel inprogress listingpanel">
+		
 			<div class="row">
-			  <div class="two columns">
-				<p class="status <?php echo $row->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $row->requestStatus)); ?></p>
-			  </div>
-			  <div class="six columns">
-				<strong>Description:</strong>
-				<p><?php echo $row->description; ?></p>
-				<strong>Assigned workers:</strong>
-				<?php if(isset($row->workerName)): ?>
-					<p class="task_details_w_assigned">Task assigned</p>
-					
-				<?php else: ?>
-					<p class="task_details_wn_assigned">No workers assigned</p>
-				<?php endif; ?>
-			  </div>
-			  <div class="two columns">
-				<strong>Starting time:</strong>
-				<p>10/12/2012</p>
-			  </div>
-			  <div class="two columns">
-				<strong>Finishing time:</strong>
-				<p>10/12/2012</p>
-			  </div>
-			</div>
+              <div class="twelve columns">
+                <div id="statuscircle" class="status_<?php echo $row->requestStatus; ?>">
+					<?php echo ucfirst(str_replace("_", " ", $row->requestStatus)); ?>
+				</div>
+				<span class="listingtitle">
+					<?php if(!empty($row->title)){ echo $row->title; }else{ echo 'Repair request'; } echo ' - '.date('j/n/o', strtotime($row->dateRequested)); ?>
+				</span>
+              </div>
+            </div>
+			<div class="row">
+              <div class="six columns">
+                <span><strong>Customer: </strong><?php echo $row->customerName; ?></span>
+              </div>
+              <div class="six columns">
+                <span><strong>Location: </strong><?php echo $row->repairLocation; ?></span>
+              </div>
+            </div>
         </li>
       </ul></a> <!-- End single task listing -->
 		<?php endforeach; ?> 

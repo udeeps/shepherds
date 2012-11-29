@@ -50,10 +50,8 @@ class Request extends CI_Controller
 
 				if($result){
 					$data['msg'] = 'Incorrect orderer name';
-					//$this->load->view('templates/template', $data);
 				}else{
 					$data['msg'] = 'Request saved succesfully';
-					//$this->load->view('templates/template', $data);
 				}
 			}
 			$this->load->view('templates/template', $data);
@@ -90,7 +88,6 @@ class Request extends CI_Controller
 					//$this->load->view('templates/template', $data);
 				}else{
 					$data['msg'] = 'Incorrect orderer name. Report not Saved';
-					//$this->load->view('templates/template', $data);
 				}
 			}
 			$this->load->view('templates/template', $data);
@@ -121,7 +118,6 @@ class Request extends CI_Controller
 		$data['main_content'] = 'request/admin_list_tasks_view';
 
 		if($this->input->post('ajax')){
-			//if($this->input->post('status')){
 				$status = $this->input->post('statusName');
 				if($status == 'requestStatus'){
 					$data['taskList'] = $this->request_model->get_requests($status);
@@ -129,12 +125,8 @@ class Request extends CI_Controller
 					$data['taskList'] = $this->request_model->get_requests_by_status($status);
 				}
 				$this->load->view($data['main_content'], $data);
-
-			//}
-			// IF SORTING WITH OTHERS THAT STATUS: else{$data['taskList'] = $this->request_model->get_requests($sort_by);$this->load->view($data['main_content'], $data);}
 		}else{
 			$data['taskList'] = $this->request_model->get_requests();
-			//print_r($data['taskList']);
 			$this->load->view('templates/template', $data);
 		}
 	}
@@ -146,18 +138,7 @@ class Request extends CI_Controller
 		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
-		/*
-		$config = array(
-				array('field' => 'day','label' => 'Start day','rules' => 'numeric|max_length[2]'),
-				array('field' => 'month','label' => 'Start month','rules' => 'numeric|max_length[2]'),
-				array('field' => 'month','year' => 'Start year','rules' => 'numeric|max_length[4]'),
-			);
-		$this->form_validation->set_rules($config);
-		if($this->form_validation->run() !== FALSE){
-			$result = $this->request_model->
-		}*/
-		
-		//print_r($data['taskData']);
+
 		$this->load->view('templates/template', $data);
 	}
 
@@ -232,7 +213,7 @@ class Request extends CI_Controller
 			$this->load->model('user_model');
 			$userlevel = $this->user_model->add_new_user($this->input->post());
 			if($userlevel){
-				$data['msg'] = "A new user of level $userlevel added succesfully";
+				$data['msg'] = "A new user of level \"$userlevel\" added succesfully";
 			}else{
 				$data['msg'] = "Something went wrong. Data not saved";
 			}

@@ -337,7 +337,7 @@
 						var newstatus = fluc(values.status);
 						$('#status_bar').text(newstatus);
 					
-						var types = ['recorded', 'in_progress', 'stopped', 'completed'];
+						var types = ['recorded', 'in_progress', 'cancelled', 'completed'];
 						var select_html = '<option value="">-- Change status --</option>';
 						for(var i=0; i<types.length; i++){
 							if(types[i] != values.status){
