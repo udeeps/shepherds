@@ -1,20 +1,10 @@
 
 <div class="row header"><!-- Start Header -->
-<div class="five columns">
+<div class="nine columns">
 <?php 
 echo anchor('account', $customerName.' Maintenance');
 ?>
 </div>
-
-<div class="four columns"><!-- Start search -->
-<div class="row collapse">
-<div class="eight mobile-three columns"><input type="text"
-	placeholder="Search" /></div>
-<div class="four mobile-one columns"><a href="#"
-	class="postfix button expand gppbutton">Search</a></div>
-</div>
-</div>
-<!-- End search -->
 
 <div class="three columns">
 <p>Logged in as <?php echo $customerName; ?></p>

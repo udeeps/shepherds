@@ -37,3 +37,15 @@
 
 </head>
 <body>
+<?php if( !isset($customerName) && isset($name)): ?>
+  <div class="row header"> <!-- Start Header -->
+    <div class="nine columns">
+      <?php echo anchor('account', 'GPP Maintenance App');?>
+    </div>
+
+    <div class="three columns">
+      <p>Logged in as <?php echo $name; ?></p>
+      <p><?php echo anchor('login/log_out', 'Log out');?></p>
+    </div>
+  </div> <!-- End Header -->
+<?php endif; ?>

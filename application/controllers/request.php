@@ -30,18 +30,17 @@ class Request extends CI_Controller
 
 			$data['main_content'] = 'request/admin_add_task_view';
 			$config = array(
-			array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
-			array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
-			array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
-			array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
-			array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
-			array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
-			array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
-			array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
-			array('field' => 'work_description','label' => 'Description','rules' => 'required'),
-			array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
+				array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
+				array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
+				array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
+				array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
+				array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
+				array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
+				array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
+				array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
+				array('field' => 'work_description','label' => 'Description','rules' => 'required'),
+				array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
 			);
-
 			$this->form_validation->set_rules($config);
 
 			if($this->form_validation->run() !== FALSE)
@@ -122,15 +121,17 @@ class Request extends CI_Controller
 		$data['main_content'] = 'request/admin_list_tasks_view';
 
 		if($this->input->post('ajax')){
-			if($this->input->post('status')){
+			//if($this->input->post('status')){
 				$status = $this->input->post('statusName');
-				$data['taskList'] = $this->request_model->get_requests_by_status($status);
+				if($status == 'requestStatus'){
+					$data['taskList'] = $this->request_model->get_requests($status);
+				}else{
+					$data['taskList'] = $this->request_model->get_requests_by_status($status);
+				}
 				$this->load->view($data['main_content'], $data);
-			}else{
-				$data['taskList'] = $this->request_model->get_requests($sort_by);
-				$this->load->view($data['main_content'], $data);
-			}
 
+			//}
+			// IF SORTING WITH OTHERS THAT STATUS: else{$data['taskList'] = $this->request_model->get_requests($sort_by);$this->load->view($data['main_content'], $data);}
 		}else{
 			$data['taskList'] = $this->request_model->get_requests();
 			//print_r($data['taskList']);
@@ -145,6 +146,17 @@ class Request extends CI_Controller
 		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
+		/*
+		$config = array(
+				array('field' => 'day','label' => 'Start day','rules' => 'numeric|max_length[2]'),
+				array('field' => 'month','label' => 'Start month','rules' => 'numeric|max_length[2]'),
+				array('field' => 'month','year' => 'Start year','rules' => 'numeric|max_length[4]'),
+			);
+		$this->form_validation->set_rules($config);
+		if($this->form_validation->run() !== FALSE){
+			$result = $this->request_model->
+		}*/
+		
 		//print_r($data['taskData']);
 		$this->load->view('templates/template', $data);
 	}

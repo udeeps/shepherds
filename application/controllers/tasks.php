@@ -12,14 +12,18 @@ class Tasks extends CI_Controller
 		session_start();
 	}
 
-	public function single_task($r_id, $data = '')
+	public function single_task($wid, $rid)
 	{
-		$data = array('title' => 'GPP Maintenance App', 'back' => 'request/list_tasks', 'name' => $_SESSION['name']);
-		$data['main_content'] = 'request/admin_task_details';
-		$data['taskData'] = $this->request_model->get_single_request($r_id);
-		$data['workTypes'] = $this->request_model->get_work_types();
-		$data['statusTypes'] = $this->request_model->get_status_types();
-		//print_r($data['taskData']);
+		if(empty($_SESSION['loggedIn']) || $_SESSION['userLevel'] != 'worker'){
+			redirect('');
+		}
+		$this->load->model('worker_tasks_model');
+		
+		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
+		$data['main_content'] = 'worker/worker_task_details';
+		$data['taskData'] = $this->worker_tasks_model->worker_get_single_task($wid, $rid);
+		$data['workTypes'] = $this->worker_tasks_model->get_work_types();
+		print_r($data['taskData']);
 		$this->load->view('templates/template', $data);
 	}
 	

@@ -26,7 +26,7 @@ class Login extends CI_Controller
 			//show GPP login
 			$formType = 'gpp_login_form';
 			$loginType = '1'; //added by Udeep
-			$this->form_validation->set_rules('email_address', 'Email Address', 'required|valid_email');
+			$this->form_validation->set_rules('email_address', 'Email Address', 'required');
 			$this->form_validation->set_rules('password', 'Password', 'required|min_length[4]');
 		}else{
 			//show client login

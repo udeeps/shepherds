@@ -26,7 +26,7 @@ class Account extends CI_Controller
 				$this->load->view('templates/template', $data);
 				break;
 			case 'worker':
-				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email']);
+				$data = array('title' => 'GPP Maintenance App', 'name' => $_SESSION['name'], 'email' => $_SESSION['email'], 'wid' => $_SESSION['wid']);
 				$data['tasks'] = $this->worker_list_tasks($_SESSION['wid']);
 				$data['main_content'] = 'account/worker_account_view';
 				$this->load->view('templates/template', $data);
@@ -85,7 +85,7 @@ class Account extends CI_Controller
 		$this->load->model('worker_tasks_model');
 		try{
 			if($wid == $_SESSION['wid']){
-				$result = $this->worker_tasks_model->get_tasks_by_id($wid);
+				$result = $this->worker_tasks_model->get_tasks_by_wid($wid);
 				return $result;
 			}else{
 				throw new Exception('This is not the way to list tasks?');

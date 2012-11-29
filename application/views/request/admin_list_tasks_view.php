@@ -1,27 +1,3 @@
-  <div class="row header"> <!-- Start Header -->
-    <div class="five columns">
-      <?php echo anchor('account', 'GPP Maintenance App');?>
-    </div>
-
-    <div class="four columns"> <!-- Start search -->
-      <div class="row collapse">
-        <div class="eight mobile-three columns">
-          <input type="text" placeholder="Search" />
-        </div>
-        <div class="four mobile-one columns">
-          <a href="#" class="postfix button expand gppbutton">Search</a>
-        </div>
-      </div>
-      Search for: <input type="radio" name="group2" value="Wine" checked> Tasks
-      <input type="radio" name="group2" value="Beer"> Users
-    </div> <!-- End search -->
-
-    <div class="three columns">
-      <p>Logged in as <?php echo $name; ?></p>
-      <p><?php echo anchor('login/log_out', 'Log out');?></p>
-    </div>
-  </div> <!-- End Header -->
-
   <div class="row content"> <!-- Start App Content -->
     <hr />
     <div class="twelve columns ">
@@ -29,16 +5,14 @@
       <h4>Tasks in the system</h4> 
 
       <dl class="sub-nav">
-        <dt>Sort by:</dt>
-        <dd class="active gppbg"><a class="req_list_sort" name="requestStatus" href="#">Status</a></dd>
-        <dd><a class="req_list_sort" name="dateRequested" href="#">Date</a></dd>
-        <dd><a class="req_list_sort" name="workerName" href="#">Worker</a></dd>
-		<ul id="status_nav">
-			<li><a class="stat_sort_opt" name="recorded">Recorded</a></li>
-			<li><a class="stat_sort_opt" name="in_progress">In progress</a></li>
-			<li><a class="stat_sort_opt" name="cancelled">Cancelled</a></li>
-			<li><a class="stat_sort_opt" name="completed">Completed</a></li>
-		</ul>
+		<dt>Sort by:</dt>
+		<dl id="status_nav">
+			<dd class="active"><a class="stat_sort_opt" name="all">All</a></dd>
+			<dd><a class="stat_sort_opt" name="recorded">Recorded</a></dd>
+			<dd><a class="stat_sort_opt" name="in_progress">In progress</a></dd>
+			<dd><a class="stat_sort_opt" name="stopped">Stopped</a></dd>
+			<dd><a class="stat_sort_opt" name="completed">Completed</a></dd>
+		</dl>
       </dl> 
 
 	  <?php if(count($taskList) > 0): ?>
@@ -54,12 +28,12 @@
 			  <div class="six columns">
 				<strong>Description:</strong>
 				<p><?php echo $row->description; ?></p>
+				<strong>Assigned workers:</strong>
 				<?php if(isset($row->workerName)): ?>
-				
-				<!-- TODO: IF MANY REQUESTDETAILS WITH SAME REQUEST ID, LOOP THROUGH TO GET ALL WORKERS -->
-				
-				<strong>Workers:</strong>
-				<p><?php echo $row->workerName; ?></p>
+					<p class="task_details_w_assigned">Task assigned</p>
+					
+				<?php else: ?>
+					<p class="task_details_wn_assigned">No workers assigned</p>
 				<?php endif; ?>
 			  </div>
 			  <div class="two columns">
@@ -75,8 +49,11 @@
       </ul></a> <!-- End single task listing -->
 		<?php endforeach; ?> 
 	  <?php endif; ?>
-	<script type="text/javascript">
+  <script type="text/javascript">
 		$(document).ready(function(){
+		
+			/* NO LONGER IN USE. USED WHEN SORTING WITH DATE AND WORKER ALSO
+			
 			$('.req_list_sort').click(function(){
 				if( $(this).attr('name') == 'requestStatus' && $('#status_nav').css('display') == 'none'){
 					$('#status_nav').fadeIn('fast');
@@ -103,12 +80,13 @@
 					}
 				}
 				return false;
-			});
+			});*/
 			
 			$('.stat_sort_opt').click(function(){
+				var dd = $(this);
+				var name = $(this).attr('name');
 				var ajax_data = {
-					status: 1,
-					statusName: $(this).attr('name'),
+					statusName: (name == 'all') ? 'requestStatus' : name,
 					ajax: '1'
 				};
 				
@@ -118,15 +96,14 @@
 					type: 'POST',
 					success: function(data){
 						$('#wrapper').html(data);
+						$('#status_nav dd').removeClass('active');
+						$('a[name="'+name+'"]').parent().addClass('active');
 					}
 				});
-			
+				return false;
 			});
 		});
 	</script>  
-      
-
-
     </div>
     <hr />
   </div> <!-- End App Content -->

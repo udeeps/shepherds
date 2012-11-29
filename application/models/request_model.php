@@ -174,7 +174,7 @@ class Request_model extends CI_Model
 					}else{
 						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
 					}
-					//change status to "in_progress" if forst worker assigned and status is "received"
+					//change status to "in_progress" if forst worker assigned and status is "recorded"
 					if($status == '1'){
 						$this->db->where('Id', $requestId)->update('repairRequests', array('requestStatusId' => '2'));
 					}
@@ -185,22 +185,23 @@ class Request_model extends CI_Model
 			$this->db->insert('repairDetail', array('repairRequestId' => $requestId));
 		}
 	}
-
-	public function get_requests($sort_by = 'dateRequested')
+	
+	public function get_requests($sort_by = 'requestStatus')
 	{
 		//get all request id's
 		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
 								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, customers.customerName, orderer.ordererName')
-		->from('repairRequests rr')
-		->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
-		->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
-		->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
-		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+					->from('repairRequests rr')
+					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
+					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
+					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
+					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
 					->join('orderer', 'rr.ordererId = orderer.ordererId')
 					->join('customers', 'customers.customerId = orderer.customerId')
-		->order_by($sort_by, 'desc')
-		->get();
-
+					->group_by('repairDetail.repairRequestId')
+					->order_by($sort_by, 'desc')
+					->get();
+		
 		if($q->num_rows() > 0 ){
 			return $q->result();
 		}

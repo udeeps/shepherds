@@ -1,24 +1,3 @@
-<div class="row header"> <!-- Start Header -->
-    <div class="five columns">
-      <?php echo anchor('account', 'GPP Maintenance App');?>
-    </div>
-
-    <div class="four columns"> <!-- Start search -->
-      <div class="row collapse">
-        <div class="eight mobile-three columns">
-          <input type="text" placeholder="Search" />
-        </div>
-        <div class="four mobile-one columns">
-          <a href="#" class="postfix button expand gppbutton">Search</a>
-        </div>
-      </div>
-    </div> <!-- End search -->
-
-    <div class="three columns">
-      <p>Logged in as <?php echo $name; ?></p>
-      <p><?php echo anchor('login/log_out', 'Log out'); ?></p>
-    </div>
-  </div> <!-- End Header -->
 
   <div class="row">
     <hr />
@@ -41,7 +20,7 @@
 
 <?php if(!empty($tasks)): ?>
 	<?php foreach($tasks as $row): ?> 
-      <a href="<?php echo site_url('tasks/worker_single_task').'/'.$row->repairRequestId; ?>">
+      <a href="<?php echo site_url('tasks/single_task').'/'.$wid.'/'.$row->repairRequestId; ?>">
 	  <ul class="listing"> <!-- Start single task listing -->
         <li class="panel">
           <h5><?php if(!empty($row->title)){ echo $row->title; }else{ echo 'Repair request'; } echo ' - '.date('j/n/o', strtotime($row->dateRequested)); ?></h5>

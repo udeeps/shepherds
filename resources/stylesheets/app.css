@@ -76,6 +76,7 @@ dl.sub-nav dd.active a {
 background-color: #15bb7e;
 }
 
+
 /* -----------------------------------------
    Listing page styles
 ----------------------------------------- */
@@ -126,22 +127,26 @@ border: none;
 }
 
 #status_nav{
-display: none;
 position: relative;
-margin-top: 25px;
 }
-#status_nav li{
+#status_nav dd{
 float: left;
 margin-left: 10px;
+}
+#status_nav dd a{
 cursor: pointer;
 }
 #add-warranty{
 margin-left: 70px;
 }
 #det-warranty{
-position: relative;
-float: left;
-margin: 0 0 0 97px;
+margin: 0 0 0 50px;
+}
+.task_details_w_assigned{
+color: #078658;
+}
+.task_details_wn_assigned{
+color: red;
 }
 /* -----------------------------------------
    Page Name 2
