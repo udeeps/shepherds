@@ -135,6 +135,7 @@ class Request extends CI_Controller
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'request/list_tasks', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_task_details';
+		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
 
@@ -161,7 +162,6 @@ class Request extends CI_Controller
 			$result = $this->request_model->update_request($this->input->post());
 		}
 		
-		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$this->load->view('templates/template', $data);
 	}
 

@@ -147,9 +147,14 @@ class Request_model extends CI_Model
 
 	public function create_request_detail($requestId, $assigned, $details = '')
 	{
+		$d_id = isset($details['id']) ? $details['id'] : '';
+		$day = isset($details['day']) ? $details['day'] : '';
+		$month = isset($details['month']) ? $details['month'] : '';
+		$year = isset($details['year']) ? $details['year'] : '';
+		
 		$success = 0;
 		$assignees = array();
-		//if give, explode the string of workers to an array
+		//if given, explode the string of workers to an array
 		if(!empty($assigned)){
 			$assigned = str_replace(", ", ",", $assigned);
 			$assignees = explode(",", $assigned);
@@ -166,15 +171,22 @@ class Request_model extends CI_Model
 				if($q->num_rows() > 0){
 					//if worker found, get the id
 					$workerId = $q->row()->workerId;
-					//check if worker id is NULL. If NULL, update the requestdetail to have the worker id. Otherwise create a new detail
-					$detail_exists = $this->db->select('workerID')->where('id', $details['id'])->get('repairDetail');
-
-					if( $detail_exists->num_rows() > 0){
+					//next line gives NULL if detail exists but has no worker, false if not exits and a result if detail with worker exists 
+					$detail_exists = $this->db->select('workerID')->where('id', $d_id)->get('repairDetail');
+					
+					//when creating a new request, $detail_exists results to false beacuse no detail is found.
+					//when updating a detail, check $detail_exists if it's null ( detail with no worker exists ) -> update
+					//if $detail_exists returns rows, go into if statement to create a new detail and also update date
+					if( $detail_exists != null){
 						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
+						if($detail_exists->num_rows() > 0){
+							$this->update_finish_date($requestId, $details);
+						}
 					}else{
-						$success = $this->db->where('id', $details['id'])->update('repairDetail', array('workerID' => $workerId));
+						$success = $this->db->where('id', $d_id)->update('repairDetail', array('workerID' => $workerId));
+						$this->update_finish_date($requestId, $details);
 					}
-					//change status to "in_progress" if forst worker assigned and status is "recorded"
+					//change status to "in_progress" if first worker assigned and status is "recorded"
 					$status = $this->db->select('requestStatusId')->where('Id', $requestId)->get('repairRequests')->row()->requestStatusId;
 					if($status == '1'){
 						$this->db->where('Id', $requestId)->update('repairRequests', array('requestStatusId' => '2'));
@@ -307,17 +319,17 @@ class Request_model extends CI_Model
 
 	public function remove_worker_from_task($r_id, $w_id)
 	{
-		$length = count( $this->db->select('id')->where('repairRequestID', $r_id)->get('repairDetail')->result() );
-		if($length > 1){
+		$q = $this->db->select('id')->where('repairRequestID', $r_id)->get('repairDetail');
+		if($q->num_rows() > 1){
 			return $this->db->where('repairRequestID', $r_id)
 			->where('workerID', $w_id)
 			->delete('repairDetail');
 		}else{
 			$data = array( 'workerID' => null );
-			$this->db->where('Id', $r_id)->update('repairRequests', array('requestStatusId' => '1'));
+			$this->db->where('Id', $r_id)->update('repairRequests', array('requestStatusId' => '1', 'estimatedDateFinish' => '0000-00-00'));
 			return	$this->db->where('repairRequestID', $r_id)
-			->where('workerID', $w_id)
-			->update('repairDetail', $data);
+					->where('workerID', $w_id)
+					->update('repairDetail', $data);
 		}
 	}
 

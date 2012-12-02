@@ -274,11 +274,11 @@ margin-left: 30px;
 }
 
 .status_in_progress {
- background: #15bb7e;
+ background: #988800;
 }
 
 .status_recorded {
-background: #988800;
+background: #3f3f3f;
 }
 
 .status_cancelled {
@@ -286,7 +286,7 @@ background: #bb1529;
 }
 
 .status_completed {
-background: #525252;
+background: #1c900c;
 }
 
 

@@ -334,7 +334,7 @@
 			
 			var values = {
 				requestId: <?php echo $this->uri->segment(3); ?>,
-				assignees: $('#add_worker_text').val(),
+				assignees: $('input[name="worker_input"]').val(),
 				day: $('input[name="day"]').val(),
 				month: $('input[name="month"]').val(),
 				year: $('input[name="year"]').val(),
