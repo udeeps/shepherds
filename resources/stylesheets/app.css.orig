@@ -1,0 +1,354 @@
+/* -------------------------------------------------- 
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Listing page styles
+*/
+
+
+/* -------------------------------------------------- 
+   To-do list and notes for development phase
+-----------------------------------------------------
+:: Find good colours for the statuses
+:: Make login form appear on top on customer login page when viewing on mobile
+:: Make stuff pretty
+:: Find a way to implement the jQuery form adding thing for multi-worker tasks
+:: Fix visibility issues on admin home page (and other admin pages)
+:: Validate all pages (currently listing pages valid 07/10/2012 @ 19:00)
+:: Spider for unused CSS
+:: Fix inconsestincy issues (like different radio button styling for search / add user)
+:: Add prefix to adduser email address field, no need to write @gpp.fi all the time
+:: Make sure there is no dumb text content for the demo!!
+:: Make the form for the worker <- Top priority for thursday..?
+*/
+
+
+/* -----------------------------------------
+   Shared Styles
+----------------------------------------- */
+
+a {
+color: #15bb7e;
+}
+
+a:hover {
+color: #3de1a5;
+}
+
+.gppbutton {
+background-color: #15bb7e;
+border-color: #078658;
+}
+
+.gppbutton:hover {
+background-color: #3de1a5;
+}
+
+.fullwidth {
+width: 100%;
+<<<<<<< HEAD
+}
+
+.header {
+padding: 25px 0px 0px;
+=======
+>>>>>>> auto complete implemented
+}
+
+.header {
+padding: 25px 0px 0px;
+}
+
+.header h2 {
+font-size: 2em;
+}
+
+.header p {
+margin: 0px;
+}
+
+.footer h4 {
+font-size: 1.3em;
+}
+
+.content ul {
+list-style: none;
+}
+
+.listing li {
+color: #000;
+}
+
+.listing h5 {
+color: #15bb7e;
+}
+
+.listing li:hover {
+background-color: #d6d6d6;
+color: #000;
+}
+
+dl.sub-nav dd.active a {
+background-color: #15bb7e;
+}
+
+.verticalalign {
+vertical-align:baseline;
+}
+<<<<<<< HEAD
+
+/* -----------------------------------------
+  Add task page
+----------------------------------------- */
+
+#add_task_errors{
+border: none;
+}
+#add_task_msg{
+border: none;
+}
+#add_task_msg h6{
+color: #078658;
+}
+#add-warranty{
+margin-left: 70px;
+}
+
+/* -----------------------------------------
+  Add user page
+----------------------------------------- */
+
+#add_worker_msg{
+display: none;
+}
+
+#add_worker_msg span{
+padding: 10px;
+text-align: right;
+border: 1px dotted #078658;
+float: right;
+width: 100%;
+color: #078658;
+}
+=======
+>>>>>>> auto complete implemented
+
+/* -----------------------------------------
+   Listing page styles
+----------------------------------------- */
+
+#add-worker-form h4{
+float: left;
+}
+
+.status {
+text-align: center;
+height: 100%;
+padding-top: 15px;
+border: 1px solid #000;
+color: #fff;
+padding: 15px 0px 15px 0px;
+}
+
+.completed {
+background-color: #1c900c;
+}
+
+.in_progress {
+background-color: #988800;
+}
+
+.recorded {
+background-color: #3f3f3f;
+}
+
+.cancelled {
+background-color: #a2490d;
+}
+
+<<<<<<< HEAD
+.add-worker-error{
+width: 600px;
+height: 30px;
+display: inline-block;
+float: right;
+padding: 8px 10px 0 0;
+}
+
+.add-worker-error label{
+float: right;
+margin-left: 20px;
+}
+
+#add-prod{
+height: 36px;
+margin-top: 12px;
+}
+
+/* -----------------------------------------
+   Worker detail page
+----------------------------------------- */
+
+.statuspicker {
+margin-bottom: 30px;
+height: 35px;
+=======
+
+
+/* -----------------------------------------
+   Worker detail page
+----------------------------------------- */
+
+.statuspicker {
+margin-bottom: 30px;
+height: 35px;
+}
+
+/* -----------------------------------------
+   Admin listing page
+----------------------------------------- */
+
+.adminpanel {
+text-align: center;
+}
+
+.adminpanel p {
+font-size: 2em;
+}
+
+.adminpanel:hover {
+background: #d6d6d6;
+>>>>>>> auto complete implemented
+}
+
+/* -----------------------------------------
+   Admin listing page
+----------------------------------------- */
+
+<<<<<<< HEAD
+.adminpanel {
+text-align: center;
+}
+
+.adminpanel:hover {
+background: #d6d6d6;
+}
+
+=======
+>>>>>>> auto complete implemented
+.newannouncement {
+height: 120px;
+}
+
+<<<<<<< HEAD
+
+/* -----------------------------------------
+   New task listing styles
+----------------------------------------- */
+
+#status_nav{
+position: relative;
+=======
+/* -----------------------------------------
+   Worker listing page
+----------------------------------------- */
+
+ul.pagination li.current a {
+background: #15bb7e;
+>>>>>>> auto complete implemented
+}
+
+ul.pagination li.current a:hover {
+background: #15bb7e;
+}
+
+/* -----------------------------------------
+   New task listing styles
+----------------------------------------- */
+
+li.inprogress span {
+color: black; /* text color */
+}
+<<<<<<< HEAD
+#det-warranty{
+margin: 0 0 0 50px;
+=======
+
+.listingtitle {
+font-weight: bold;
+font-size: 16px;
+}
+
+.listingpanel:hover {
+background: #eaeaea;
+>>>>>>> auto complete implemented
+}
+
+#statuscircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.status_in_progress {
+ background: #15bb7e;
+}
+
+.status_recorded {
+background: #988800;
+}
+<<<<<<< HEAD
+
+li.inprogress span {
+color: black; /* text color */
+}
+
+.listingtitle {
+font-weight: bold;
+font-size: 16px;
+}
+
+.listingpanel:hover {
+background: #eaeaea;
+}
+
+.listingpanel .indent-margin{
+margin-left: 30px;
+}
+
+#statuscircle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.status_in_progress {
+ background: #15bb7e;
+}
+
+.status_recorded {
+background: #988800;
+}
+
+.status_cancelled {
+background: #bb1529;
+}
+
+.status_completed {
+background: #525252;
+}
+
+=======
+>>>>>>> auto complete implemented
+
+.status_cancelled {
+background: #bb1529;
+}
+
+.status_completed {
+background: #525252;
+}
