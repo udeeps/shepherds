@@ -3,45 +3,23 @@
     <hr />
     <div class="twelve columns "> <!-- Start breadcrumbs and title -->
       <p><?php echo anchor($back, 'Previous page');?></p>
-      <h3>Title with name and date of task and customer</h3> <hr /><!-- End breadcrumbs and title" -->
+      <h3><?php 
+				if(!empty($taskData['info']->title)){ 
+					echo $taskData['info']->title;
+				}else{ 
+					echo 'Repair request'; 
+				} 
+				echo ' - '.date('j/n/o', strtotime($taskData['info']->dateRequested)); 
+			?></h3> <hr /><!-- End breadcrumbs and title" -->
     </div>
 
     
 <div class="row"> <!-- Start form -->
   <div class="twelve columns">
-<form action="admin_task_listing.html">
-
-
-<div class="row">
-  <div class="seven columns">
-
-    <p>
-		<strong>Type of work:</strong>
-		<?php foreach($workTypes as $type): ?>
-			<?php if($type->workTypeName != $taskData['info']->workTypeName): ?>
-				<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>"> <?php echo ucfirst($type->workTypeName); ?> 
-			<?php else: ?>
-				<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>" checked> <?php echo ucfirst($type->workTypeName); ?> 
-			<?php endif; ?>
-		<?php endforeach; ?>
-		<span id="det-warranty"><input type="checkbox" name="warranty" <?php echo ($taskData['info']->warranty) ? 'checked' : '' ;?>/> Warranty</span>
-	</p>
-
-  </div>
-  <div class="five columns">
-    <p id="status_bar" class="status <?php echo $taskData['info']->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $taskData['info']->requestStatus)); ?></p>
-    <select name="change_status" class="statuspicker">
-		<option>-- Change status --</option>
-            <?php foreach($statusTypes as $type): ?>
-				<?php if($type->requestStatus != $taskData['info']->requestStatus): ?>
-					<option value="<?php echo $type->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $type->requestStatus));  ?></option>
-				<?php endif;?>
-			<?php endforeach; ?> 
-	</select>
-  </div>
-</div>
+<?php echo form_open('', array('id' => 'add-worker-form')); ?>
 		<div class="row panel"> <!-- Workers assigned -->
           <h4>Assigned workers</h4>
+		  <span class="add-worker-error"></span>
           <div class="row">
             <div class="twelve columns">
               <ul>
@@ -59,39 +37,70 @@
           </div>
           <div class="eight columns">
             <label>Add workers</label>
-            <input id="add_worker_text" type="text" placeholder="Start writing to choose from list" />
+            <input id="add_worker_text" name="worker_input" type="text" placeholder="Start writing to choose from list" />
           </div>
 			<div class="four columns">
 			  <label>Estimated date of completion</label>
 			  <div class="row">
 				<div class="four columns">
-				  <input type="text" placeholder="pp" name="day" />
+				  <input type="text" placeholder="<?php if(!empty($taskData['info']->estimatedDateFinish)){ echo date('j', strtotime($taskData['info']->estimatedDateFinish)); }else{echo 'pp';}; ?>" name="day" />
 				</div>
 				<div class="four columns">
-				  <input type="text" placeholder="kk" name="month" />
+				  <input type="text" placeholder="<?php if(!empty($taskData['info']->estimatedDateFinish)){ echo date('n', strtotime($taskData['info']->estimatedDateFinish)); }else{echo 'kk';}; ?>" name="month" />
 				</div>
 				<div class="four columns">
-				  <input type="text" placeholder="vvvv" name="year" />
+				  <input type="text" placeholder="<?php if(!empty($taskData['info']->estimatedDateFinish)){ echo date('o', strtotime($taskData['info']->estimatedDateFinish)); }else{echo 'vvvv';}; ?>" name="year" />
 				</div>
 			  </div>
 			</div>
           <div class="six columns">
-            <input id="add_worker_btn" type="button" class="button gppbutton fullwidth" value="Save worker info" />
+            <input id="add_worker_btn" type="submit" class="button gppbutton" value="Save worker info" />
           </div>
 		  <div id="add_worker_msg" class="six columns"></div>
         </div>
+<?php echo form_close(); ?>
 
         <hr />
-
+		
+<?php echo form_open('request/single_task/'.$this->uri->segment(3), array('id' => 'edit-request')); ?>
+		<div class="row panel">
+		  <div class="seven columns">
+			<p>
+				<strong>Type of work:</strong>
+				<?php foreach($workTypes as $type): ?>
+					<?php if($type->workTypeName != $taskData['info']->workTypeName): ?>
+						<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>"> <?php echo ucfirst($type->workTypeName); ?> 
+					<?php else: ?>
+						<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>" checked> <?php echo ucfirst($type->workTypeName); ?> 
+					<?php endif; ?>
+				<?php endforeach; ?>
+				<span id="det-warranty"><input type="checkbox" name="warranty" <?php echo ($taskData['info']->warranty) ? 'checked' : '' ;?>/> Warranty</span>
+			</p>
+		  </div>
+		  <div class="five columns">
+			<p id="status_bar" class="status <?php echo $taskData['info']->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $taskData['info']->requestStatus)); ?></p>
+			<select name="change_status" class="statuspicker">
+				<option>-- Change status --</option>
+					<?php foreach($statusTypes as $type): ?>
+						<?php if($type->requestStatus != $taskData['info']->requestStatus): ?>
+							<option value="<?php echo $type->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $type->requestStatus));  ?></option>
+						<?php endif;?>
+					<?php endforeach; ?> 
+			</select>
+		  </div>
+		</div>
+		
+		<hr/> 
+		
         <div class="row panel">
           <h4>Customer information</h4>
           <div class="six columns"> <!-- Name -->
             <label>Customer name (company)</label>
-            <input type="text" disabled="disabled" placeholder="Already here from CRM" />
+            <input name="customername" type="text" placeholder="Already here from CRM" />
           </div>
           <div class="six columns">
             <label>Billing address</label>
-            <input type="text" disabled="disabled" placeholder="Already here from CRM" />
+            <input name="billingaddress" type="text" placeholder="Already here from CRM" />
           </div>
         </div>
 
@@ -99,15 +108,15 @@
         <div class="row panel"><!-- Orderer info -->
           <div class="four columns">
             <label>Orderer of work (individual)</label>
-            <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+            <input type="text" name="orderer" placeholder="Already here from CRM" />
           </div>
           <div class="four columns">
             <label>Phone number</label>
-            <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+            <input type="text" name="customerphone" placeholder="Already here from CRM" />
           </div>
           <div class="four columns">
             <label>Email address</label>
-            <input type="text" disabled="disabled" placeholder="Already here from HoM" />
+            <input type="text" name="customeremail" placeholder="Already here from CRM" />
           </div>
         </div>
   
@@ -115,30 +124,16 @@
 
       <div class="row panel"><!-- Task title and description -->
         <h4>Task description</h4>
-        <div class="eight columns">
+        <div class="twelve columns">
           <label>Task title</label>
-          <input type="text" disabled="disabled" placeholder="Already here from HoM" />
-        </div>
-        <div class="four columns">
-          <label>Estimated start date</label>
-          <div class="row">
-            <div class="four columns">
-              <input type="text" placeholder="Day" />
-            </div>
-            <div class="four columns">
-              <input type="text" placeholder="Month" />
-            </div>
-            <div class="four columns">
-              <input type="text" placeholder="Year" />
-            </div>
-          </div>
+          <input type="text" name="tasktitle" placeholder="<?php if(!empty($taskData['info']->title)){ echo $taskData['info']->title;}else{ echo 'Repair request'; }?>" />
         </div>
       </div>
 
       <div class="row panel">
         <div class="twelve columns">
           <label>Description of assignment</label>
-          <textarea name="description" disabled="disabled" class="descriptionform" placeholder="Already here from HoM"></textarea>
+          <textarea name="taskdescription" class="descriptionform" placeholder="<?php echo $taskData['info']->description; ?>"></textarea>
         </div>
       </div>
 
@@ -149,7 +144,7 @@
         <h4>What has been done</h4>
         <div class="twelve columns">
           <label>Actions taken on site</label>
-          <textarea name="description" class="descriptionform" placeholder=""></textarea>
+          <textarea name="taskactions" class="descriptionform" placeholder=""></textarea>
         </div>
       </div>
 
@@ -160,153 +155,63 @@
         <div class="row>">
           <div class="three columns">
             <label>Working hours</label>
-            <input type="text" placeholder="" />
+            <input name="workhours" type="text" placeholder="0,0" />
           </div>
           <div class="three columns">
             <label>Driving hours</label>
-            <input type="text" placeholder="" />
+            <input name="drivehours" type="text" placeholder="0,0" />
           </div>
           <div class="three columns">
             <label>Kilometer compensation</label>
-            <input type="text" placeholder="" />
+            <input name="kmcompensation" type="text" placeholder="11,5" />
           </div>
           <div class="three columns">
             <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatically counted" />
+            <input name="totalworkcost" type="text" placeholder="Automatically counted" />
           </div>
           <hr />
         </div>
 
         <h4>Products and parts</h4>
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
+        <div id="parts-list-parent" class="row"> <!-- Start line of product -->
+			<div class="parts-row">
+			  <div class="three columns">
+				<label>Part product code - <a href="#">Show popular</a></label>
+				<input name="prod_code[]" type="text" placeholder="" />
+			  </div>	
+			  <div class="four columns">
+				<label>Description</label>
+				<input name="prod_desc[]" type="text" placeholder="" />
+			  </div>
+			  <div class="one columns">
+				<label>Quantity</label>
+				<input name="prod_quantity[]" type="text" placeholder="" />
+			  </div>
+			  <div class="one columns">
+				<label>Ordered</label> 
+				<select name="prod_ordered[]" class="orderedornot">
+				  <option value="notordered">No</option>
+				  <option value="ordered">Yes</option>
+				</select>
+			  </div>
+			  <div class="one columns">
+				<label>á price</label>
+				<input name="prod_price[]" type="text" placeholder="CRM" />
+			  </div>
+			  <div class="two columns">
+				<label>Total</label>
+				<input name="prod_total[]" type="text" placeholder="Automatic count" />
+			  </div>
+			</div>
         </div> <!-- End line of product -->
-
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
-        </div> <!-- End line of product -->
-
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
-        </div> <!-- End line of product -->
-
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
-        </div> <!-- End line of product -->
-
-
 
           <div class="row"> <!-- Start total sum -->
             <div class="nine columns">
-              <hr />
+				<input id="add-prod" type="button" class="button gppbutton" value="Add product"/>
             </div>
             <div class="three columns">
               <label><strong>Total sum</strong></label>
-              <input type="text" disabled="disabled" placeholder="Automatic count" />
+              <input name="total" type="text" placeholder="Automatic count" />
             </div>
           </div> <!-- End total sum -->
 
@@ -316,11 +221,50 @@
 <input type="submit" class="button gppbutton fullwidth" value="Save form">
 </div>
 
-</form>
+<?php echo form_close(); ?>
   </div>
 </div> <!-- End form -->
 <script type="text/javascript">
 	$(document).ready(function(){
+	
+		$.validator.addMethod("checkBirthday", function(value, element) {
+			return this.optional(element) || ( value > 0 && value <= 31);
+		}, "Päivämäärä syötetty väärin");
+		
+		$.validator.addMethod("checkMonth", function(value, element) {
+			return this.optional(element) || ( value > 0 && value <= 12);
+		}, "Kuukausi syötetty väärin");
+		
+		$.validator.addMethod("checkYear", function(value, element) {
+			return this.optional(element) || ( value.length == 4 && value > 1900 && value < 2100);
+		}, "Anna vuosi");
+		
+		$('#add-worker-form').validate({
+			rules: {
+				day: 'required checkBirthday',
+				month: {
+					required: true,
+					checkMonth: 'default'
+				},
+				year: {
+					required: true,
+					checkYear: 'default'
+				},
+			},
+			messages: {
+				day: {required: 'Syötä ainakin työn valmistumispäivä'},
+				month: {required: 'Syötä ainakin työn valmistumispäivä'},
+				year: {required: 'Syötä ainakin työn valmistumispäivä'},
+			},
+			errorPlacement: function(error, element){
+				error.appendTo('.add-worker-error');
+			},
+			submitHandler: function(form){
+				add_worker_ajax();
+				return false;
+			}
+		});
+	
 		$("select[name='change_status']").change(function(){
 			var values = {
 				id: <?php echo $taskData['info']->repairRequestId; ?>,
@@ -386,11 +330,14 @@
 			return false;
 		});	
 		
-		$('#add_worker_btn').click(function(){
+		function add_worker_ajax(){
 			
 			var values = {
 				requestId: <?php echo $this->uri->segment(3); ?>,
 				assignees: $('#add_worker_text').val(),
+				day: $('input[name="day"]').val(),
+				month: $('input[name="month"]').val(),
+				year: $('input[name="year"]').val(),
 				detailId: <?php echo $taskData['info']->id; ?>
 			};
 			$.ajax({
@@ -399,12 +346,16 @@
 				data: values,
 				success: function(data){
 					if(data){
-						$('<span />').text('Worker(s) added succesfully').appendTo('#add_worker_msg');
+						$('<span />').text('Task updated succesfully').appendTo('#add_worker_msg');
 						$('#add_worker_msg').fadeIn('800');
 						$('#add_worker_text').val('');
 					}
 				}
 			});
+		}
+		
+		$('#add-prod').click(function(){
+			$('#parts-list-parent > div').first().clone().appendTo('#parts-list-parent');;
 		});
 		
 	});

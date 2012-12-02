@@ -29,6 +29,7 @@
   <!-- Initialize JS Plugins -->
   <script src="<?php echo base_url(); ?>resources/javascripts/app.js"></script>
   <script src="<?php echo base_url(); ?>resources/javascripts/modernizr.foundation.js"></script>
+  <script src="<?php echo base_url(); ?>resources/javascripts/jQuery.validation.js"></script>
   
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>

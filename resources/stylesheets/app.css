@@ -34,6 +34,10 @@ border-color: #078658;
 background-color: #3de1a5;
 }
 
+.fullwidth {
+width: 100%;
+}
+
 .header {
 padding: 25px 0px 0px;
 }
@@ -76,17 +80,59 @@ dl.sub-nav dd.active a {
 background-color: #15bb7e;
 }
 
+.verticalalign {
+vertical-align:baseline;
+}
+
+/* -----------------------------------------
+  Add task page
+----------------------------------------- */
+
+#add_task_errors{
+border: none;
+}
+#add_task_msg{
+border: none;
+}
+#add_task_msg h6{
+color: #078658;
+}
+#add-warranty{
+margin-left: 70px;
+}
+
+/* -----------------------------------------
+  Add user page
+----------------------------------------- */
+
+#add_worker_msg{
+display: none;
+}
+
+#add_worker_msg span{
+padding: 10px;
+text-align: right;
+border: 1px dotted #078658;
+float: right;
+width: 100%;
+color: #078658;
+}
 
 /* -----------------------------------------
    Listing page styles
 ----------------------------------------- */
 
+#add-worker-form h4{
+float: left;
+}
+
 .status {
 text-align: center;
-height: 75px;
+height: 100%;
+padding-top: 15px;
 border: 1px solid #000;
 color: #fff;
-padding: 25px 0px 15px 0px;
+padding: 15px 0px 15px 0px;
 }
 
 .completed {
@@ -105,27 +151,54 @@ background-color: #3f3f3f;
 background-color: #a2490d;
 }
 
-#add_worker_msg{
-display: none;
+.add-worker-error{
+width: 600px;
+height: 30px;
+display: inline-block;
+float: right;
+padding: 8px 10px 0 0;
 }
 
-#add_worker_msg span{
-padding: 10px;
-text-align: right;
-border: 1px dotted #078658;
+.add-worker-error label{
 float: right;
-width: 100%;
-color: #078658;
+margin-left: 20px;
 }
-#add_task_errors{
-border: none;
+
+#add-prod{
+height: 36px;
+margin-top: 12px;
 }
-#add_task_msg{
-border: none;
+
+/* -----------------------------------------
+   Worker detail page
+----------------------------------------- */
+
+.statuspicker {
+margin-bottom: 30px;
+height: 35px;
 }
-#add_task_msg h6{
-color: #078658;
+
+/* -----------------------------------------
+   Admin listing page
+----------------------------------------- */
+
+.adminpanel {
+text-align: center;
 }
+
+.adminpanel:hover {
+background: #d6d6d6;
+}
+
+.newannouncement {
+height: 120px;
+}
+
+
+/* -----------------------------------------
+   New task listing styles
+----------------------------------------- */
+
 #status_nav{
 position: relative;
 }
@@ -135,9 +208,6 @@ margin-left: 10px;
 }
 #status_nav dd a{
 cursor: pointer;
-}
-#add-warranty{
-margin-left: 70px;
 }
 #det-warranty{
 margin: 0 0 0 50px;
@@ -151,8 +221,47 @@ color: red;
 .link-list li{
 float: right !important;
 }
-/* -----------------------------------------
-   Page Name 2
------------------------------------------ */
+
+li.inprogress span {
+color: black; /* text color */
+}
+
+.listingtitle {
+font-weight: bold;
+font-size: 16px;
+}
+
+.listingpanel:hover {
+background: #eaeaea;
+}
+
+.listingpanel .indent-margin{
+margin-left: 30px;
+}
+
+#statuscircle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.status_in_progress {
+ background: #15bb7e;
+}
+
+.status_recorded {
+background: #988800;
+}
+
+.status_cancelled {
+background: #bb1529;
+}
+
+.status_completed {
+background: #525252;
+}
+
 
 

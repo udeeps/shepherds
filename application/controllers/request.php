@@ -19,7 +19,7 @@ class Request extends CI_Controller
 	{
 
 
-		if( !isset($_SESSION['loggedIn'])||($_SESSION['userLevel'] != 'admin'&&$_SESSION['userLevel'] != 'customer'))
+		if( !isset($_SESSION['loggedIn']) || ($_SESSION['userLevel'] != 'admin'&& $_SESSION['userLevel'] != 'customer'))
 		{
 			redirect('login');
 		}
@@ -135,10 +135,33 @@ class Request extends CI_Controller
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'request/list_tasks', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_task_details';
-		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
 
+		$config = array(
+				array('field' => 'customername','label' => 'Customer name','rules' => 'alpha_numeric'),
+				array('field' => 'billingaddress','label' => 'Billing address','rules' => 'alpha_numeric'),
+				array('field' => 'orderer','label' => 'Orderer','rules' => 'alpha'),
+				array('field' => 'customerphone','label' => 'Customer phone','rules' => ''),
+				array('field' => 'customeremail','label' => 'Customer email','rules' => 'valid_email'),
+				array('field' => 'tasktitle','label' => 'Task title','rules' => 'alpha_numeric'),
+				array('field' => 'taskdescription','label' => 'Task description','rules' => 'alpha_numeric'),
+				array('field' => 'taskactions','label' => 'Actions taken','rules' => 'alpha_numeric'),
+				array('field' => 'workhours','label' => 'Work hours','rules' => ''),
+				array('field' => 'drivehours','label' => 'Drive hours','rules' => ''),
+				array('field' => 'kmcompensation','label' => 'Km comp','rules' => ''),
+				array('field' => 'totalworkcost','label' => 'Total sum - work','rules' => ''),
+				array('field' => 'prod_code[]','label' => 'Prod code','rules' => ''),
+				array('field' => 'prod_desc[]','label' => 'Prod derc','rules' => ''),
+				array('field' => 'prod_quantity[]','label' => 'Prod quantity.','rules' => '')
+			);
+		$this->form_validation->set_rules($config);
+		
+		if( $this->form_validation->run() !== FALSE ){
+			$result = $this->request_model->update_request($this->input->post());
+		}
+		
+		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$this->load->view('templates/template', $data);
 	}
 
@@ -152,7 +175,7 @@ class Request extends CI_Controller
 			echo false;
 		}
 	}
-
+	
 	public function remove_from_task($r_id = '', $w_id = '')
 	{
 		$data = array();
@@ -179,9 +202,13 @@ class Request extends CI_Controller
 	{
 		$requestId = $this->input->post('requestId');
 		$assignees = $this->input->post('assignees');
-		$detailId = $this->input->post('detailId');
-
-		$result = $this->request_model->create_request_detail($requestId, $assignees, $detailId);
+		$details = array(
+					'id' => $this->input->post('detailId'),
+					'day' => $this->input->post('day'),
+					'month' => $this->input->post('month'),
+					'year' => $this->input->post('year')
+					);
+		$result = $this->request_model->create_request_detail($requestId, $assignees, $details);
 		echo $result;
 	}
 

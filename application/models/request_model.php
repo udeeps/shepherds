@@ -145,8 +145,9 @@ class Request_model extends CI_Model
 		}
 	}
 
-	public function create_request_detail($requestId, $assigned, $detailId = '')
+	public function create_request_detail($requestId, $assigned, $details = '')
 	{
+		$success = 0;
 		$assignees = array();
 		//if give, explode the string of workers to an array
 		if(!empty($assigned)){
@@ -156,7 +157,6 @@ class Request_model extends CI_Model
 
 		//on each iteration of the loop, check if array value is a worker name in db.
 		if( count($assignees) > 0 ){
-			$success;
 			foreach($assignees as $name){
 				$q = $this->db->select('workerId')
 				->where('workerName', $name)
@@ -167,26 +167,37 @@ class Request_model extends CI_Model
 					//if worker found, get the id
 					$workerId = $q->row()->workerId;
 					//check if worker id is NULL. If NULL, update the requestdetail to have the worker id. Otherwise create a new detail
-					$detail_exists = $this->db->select('workerID')->where('id', $detailId)->get('repairDetail');
-					
+					$detail_exists = $this->db->select('workerID')->where('id', $details['id'])->get('repairDetail');
+
 					if( $detail_exists->num_rows() > 0){
-						$success = $this->db->where('id', $detailId)->update('repairDetail', array('workerID' => $workerId));
-					}else{
-						echo 'elsessä';
 						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
+					}else{
+						$success = $this->db->where('id', $details['id'])->update('repairDetail', array('workerID' => $workerId));
 					}
 					//change status to "in_progress" if forst worker assigned and status is "recorded"
 					$status = $this->db->select('requestStatusId')->where('Id', $requestId)->get('repairRequests')->row()->requestStatusId;
 					if($status == '1'){
 						$this->db->where('Id', $requestId)->update('repairRequests', array('requestStatusId' => '2'));
+						$this->update_finish_date($requestId, $details);
 					}
+				}else{
+					return $success;
 				}
 			}
 			return $success;
 		}else{
-			echo 'lisätään ilman työntekijää';
+			if(!empty($details)){
+				$success = $this->update_finish_date($requestId, $details);
+				return $success;
+			}
 			$this->db->insert('repairDetail', array('repairRequestId' => $requestId));
 		}
+	}
+	
+	public function update_finish_date($requestId, $details)
+	{
+		$the_date = $details['year'].'-'.$details['month'].'-'.$details['day'];
+		return $this->db->where('Id', $requestId)->update('repairRequests', array('estimatedDateFinish' => $the_date));
 	}
 	
 	public function get_requests($sort_by = 'requestStatus')
@@ -212,13 +223,15 @@ class Request_model extends CI_Model
 
 	public function get_requests_by_status($status)
 	{
-		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
-								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, ')
+		$q = $this->db->select('repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, rr.repairLocation, 
+								requestStatuses.requestStatus, workTypes.workTypeName, workers.workerName, customers.customerName, orderer.ordererName')
 		->from('repairRequests rr')
 		->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 		->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 		->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
 		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+		->join('orderer', 'rr.ordererId = orderer.ordererId')
+		->join('customers', 'customers.customerId = orderer.customerId')
 		->where('requestStatuses.requestStatus', $status)
 		->order_by('dateRequested', 'desc')
 		->get();
@@ -233,12 +246,14 @@ class Request_model extends CI_Model
 		$rows = array();
 
 		//get single request data
-		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, 
-								requestStatuses.requestStatus, workTypes.workTypeName')
+		$q = $this->db->select('rr.warranty, repairDetail.id, repairDetail.repairRequestId, rr.dateRequested, rr.title, rr.description, rr.estimatedDateFinish, 
+								requestStatuses.requestStatus, workTypes.workTypeName, orderer.ordererName, customers.customerName')
 		->from('repairRequests rr')
 		->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 		->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
 		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+		->join('orderer', 'rr.ordererId = orderer.ordererId')
+		->join('customers', 'customers.customerId = orderer.customerId')
 		->where('rr.Id', $r_id)
 		->get();
 
@@ -306,6 +321,47 @@ class Request_model extends CI_Model
 		}
 	}
 
+	public function update_request($post_array)
+	{
+		if(isset($post_array)){
+			$type_maintenance = $post_array['type_maintenance'];
+			$warranty = isset($post_array['warranty']) ? 1 : 0;
+			$c_name = $post_array['customername'];
+			$b_address = $post_array['billingaddress'];
+			$orderer = isset($post_array['orderer']) ? $post_array['orderer'] : '';
+			$phone = $post_array['customerphone'];
+			$email = $post_array['customeremail'];
+			$title = $post_array['tasktitle'];
+			$desc = $post_array['taskdescription'];
+			$actions = $post_array['taskactions'];
+			$w_hours = $post_array['workhours'];
+			$d_hours = $post_array['drivehours'];
+			$km_comp = $post_array['kmcompensation'];
+			$totalwork = $post_array['totalworkcost'];
+			$prod_codes = $post_array['prod_code'];
+			$prod_descriptions = $post_array['prod_desc'];
+			$prod_quantity = $post_array['prod_quantity'];
+			$prod_ordered = $post_array['prod_ordered'];
+			$prod_price = $post_array['prod_price'];
+			$prod_total = $post_array['prod_total'];
+			$total = $post_array['total'];
+			
+			$typeId = $this->db->select('workTypeId')
+				->where('workTypeName', $type_maintenance)
+				->limit(1)
+				->get('workTypes')->row()->workTypeId;
+			
+			if(!empty($orderer)){
+				$ordererId = $this->db->select('ordererId')
+					->where('ordererName', $orderer)
+					->limit(1)
+					->get('orderer')->row()->ordererId;
+			}		
+			return true;
+		}
+	}
+	
+	
 	public function get_request_detail($taskId)
 	{
 
