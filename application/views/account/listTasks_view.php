@@ -16,7 +16,7 @@ if($requestlist->num_rows() > 0 )
 			<div class="two columns">'
 			);
 
-			echo('<p class="status '.$row->requestStatus.'">'.$row->requestStatus.'</p>');
+			echo('<p class="status '.$row->requestStatus.'">'.ucfirst(str_replace("_", " ", $row->requestStatus)).'</p>');
 			echo('
 			</div>
 			<div class="six columns"><strong>Description:</strong>

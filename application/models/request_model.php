@@ -209,7 +209,7 @@ class Request_model extends CI_Model
 					->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 					->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 					->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
-					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+					->join('workTypes', 'rr.workTypeId = workTypes.workTypeId', 'left outer')
 					->join('orderer', 'rr.ordererId = orderer.ordererId')
 					->join('customers', 'customers.customerId = orderer.customerId')
 					->group_by('repairDetail.repairRequestId')
@@ -229,7 +229,7 @@ class Request_model extends CI_Model
 		->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 		->join('workers', 'repairDetail.workerID = workers.workerId', 'left outer')
 		->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
-		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId', 'left outer')
 		->join('orderer', 'rr.ordererId = orderer.ordererId')
 		->join('customers', 'customers.customerId = orderer.customerId')
 		->where('requestStatuses.requestStatus', $status)
@@ -251,7 +251,7 @@ class Request_model extends CI_Model
 		->from('repairRequests rr')
 		->join('repairDetail', 'rr.Id = repairDetail.repairRequestID')
 		->join('requestStatuses', 'rr.requestStatusId = requestStatuses.requestStatusId')
-		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId')
+		->join('workTypes', 'rr.workTypeId = workTypes.workTypeId', 'left outer')
 		->join('orderer', 'rr.ordererId = orderer.ordererId')
 		->join('customers', 'customers.customerId = orderer.customerId')
 		->where('rr.Id', $r_id)
@@ -452,6 +452,27 @@ class Request_model extends CI_Model
 
 		return $result;
 
+	}
+	
+	public function get_orderer_names($customerName)
+	{
+		$sql = 'SELECT
+		orderer.ordererName
+		FROM orderer,customers
+		WHERE customers.customerUserName= "'.$customerName.'" 
+		AND customers.customerId =orderer.customerId';
+		$q=$this->db->query($sql);
+		if($q->num_rows<1)
+		$result= FALSE;
+		else
+		{
+			foreach($q->result() as $row)
+			{
+				$result[] = $row->ordererName;
+			}
+		}
+
+		return $result;
 	}
 
 }

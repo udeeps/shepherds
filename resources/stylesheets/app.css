@@ -9,7 +9,17 @@
 /* -------------------------------------------------- 
    To-do list and notes for development phase
 -----------------------------------------------------
-:: Find good colours for the 
+:: Find good colours for the statuses
+:: Make login form appear on top on customer login page when viewing on mobile
+:: Make stuff pretty
+:: Find a way to implement the jQuery form adding thing for multi-worker tasks
+:: Fix visibility issues on admin home page (and other admin pages)
+:: Validate all pages (currently listing pages valid 07/10/2012 @ 19:00)
+:: Spider for unused CSS
+:: Fix inconsestincy issues (like different radio button styling for search / add user)
+:: Add prefix to adduser email address field, no need to write @gpp.fi all the time
+:: Make sure there is no dumb text content for the demo!!
+:: Make the form for the worker <- Top priority for thursday..?
 */
 
 
@@ -38,13 +48,10 @@ background-color: #3de1a5;
 width: 100%;
 }
 
-.header {
-padding: 25px 0px 0px;
 }
 
-.header > div > a{
-font-size: 1.8em;
-font-weight: bold;
+.header {
+padding: 25px 0px 0px;
 }
 
 .header h2 {
@@ -157,22 +164,6 @@ height: 30px;
 display: inline-block;
 float: right;
 padding: 8px 10px 0 0;
-}
-
-.add-worker-error label{
-float: right;
-margin-left: 20px;
-}
-
-#add-prod{
-height: 36px;
-margin-top: 12px;
-}
-
-/* -----------------------------------------
-   Worker detail page
------------------------------------------ */
-
 .statuspicker {
 margin-bottom: 30px;
 height: 35px;
@@ -186,6 +177,28 @@ height: 35px;
 text-align: center;
 }
 
+.adminpanel p {
+font-size: 2em;
+margin-top: 12px;
+}
+
+.adminpanel:hover {
+background: #d6d6d6;
+----------------------------------------- */
+
+.statuspicker {
+margin-bottom: 30px;
+height: 35px;
+}
+
+/* -----------------------------------------
+   Admin listing page
+----------------------------------------- */
+
+.newannouncement {
+height: 120px;
+}
+
 .adminpanel:hover {
 background: #d6d6d6;
 }
@@ -194,36 +207,49 @@ background: #d6d6d6;
 height: 120px;
 }
 
+/* -----------------------------------------
+   Worker listing page
+----------------------------------------- */
+
+ul.pagination li.current a {
+background: #15bb7e;
+}
+
+ul.pagination li.current a:hover {
+background: #15bb7e;
+}
 
 /* -----------------------------------------
    New task listing styles
 ----------------------------------------- */
 
-#status_nav{
-position: relative;
-}
-#status_nav dd{
-float: left;
-margin-left: 10px;
-}
-#status_nav dd a{
-cursor: pointer;
-}
-#det-warranty{
-margin: 0 0 0 50px;
-}
-.task_details_w_assigned{
-color: #078658;
-}
-.task_details_wn_assigned{
-color: red;
-}
-.link-list li{
-float: right !important;
-}
-
 li.inprogress span {
 color: black; /* text color */
+}
+
+.listingtitle {
+font-weight: bold;
+font-size: 16px;
+
+.listingpanel:hover {
+background: #eaeaea;
+}
+
+#statuscircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.status_in_progress {
+ background: #15bb7e;
+}
+
+.status_recorded {
+background: #988800;
+}
 }
 
 .listingtitle {
@@ -264,4 +290,10 @@ background: #525252;
 }
 
 
+.status_cancelled {
+background: #bb1529;
+}
 
+.status_completed {
+background: #525252;
+}

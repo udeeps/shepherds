@@ -15,27 +15,22 @@ echo anchor('account', $customerName.' Maintenance');
 
 <div class="row">
 <hr />
-<div class="twelve columns">
+<div class="nine columns">
 <h5>Welcome <?php echo $customerName; ?>,</h5>
 <p>
 This system helps you to keep track of your maintenance request.<br/> You can file a maintenance 
 request or view status of your request and make comments to the job in this application. 
 </p>
 </div>
-</div>
+    <div class="three columns">
+         <a href="request">
+        <input type="submit" class="button gppbutton verticalalign" value="Send new report to GPP" />
+        </a>
 
+    </div>
+</div>
 <div class="row content"><!-- Start App Content -->
 <hr />
-
-
-
-    <a href="request"><div class="panel" align="center">
-      <p>Add new report</p>
-    </div></a>
-
-
- 
-
 
 
 <div class="twelve columns ">

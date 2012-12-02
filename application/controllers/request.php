@@ -30,16 +30,16 @@ class Request extends CI_Controller
 
 			$data['main_content'] = 'request/admin_add_task_view';
 			$config = array(
-				array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
-				array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
-				array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
-				array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
-				array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
-				array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
-				array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
-				array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
-				array('field' => 'work_description','label' => 'Description','rules' => 'required'),
-				array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
+			array('field' => 'type_maintenance','label' => 'Maintenance type','rules' => 'required'),
+			array('field' => 'customer_name','label' => 'Customer name','rules' => 'required'),
+			array('field' => 'billing_address','label' => 'Billing address','rules' => 'required'),
+			array('field' => 'orderer_of_work','label' => 'Orderer','rules' => 'required'),
+			array('field' => 'task_title','label' => 'Task title','rules' => 'required'),
+			array('field' => 'day','label' => 'Start day','rules' => 'numeric'),
+			array('field' => 'month','label' => 'Start month','rules' => 'numeric'),
+			array('field' => 'year','label' => 'Start year','rules' => 'numeric'),
+			array('field' => 'work_description','label' => 'Description','rules' => 'required'),
+			array('field' => 'assigned_employees','label' => 'Assignees','rules' => 'callback_check_worker')
 			);
 			$this->form_validation->set_rules($config);
 
@@ -82,7 +82,7 @@ class Request extends CI_Controller
 					$message = 'A new Task has been added by '.$_SESSION['customerName'].' in GPP maintanence app';
 					$headers = 'From: GPP maintanence App' . "\r\n" .'X-Mailer: PHP/' . phpversion();
 					ini_set ( "SMTP", "smtp-server.example.com" );
-					ini_set ( "smtp_port", "25" );  
+					ini_set ( "smtp_port", "25" );
 					date_default_timezone_set('Europe/Helsinki');
 					mail($to, $subject, $message, $headers);
 					//$this->load->view('templates/template', $data);
@@ -118,13 +118,13 @@ class Request extends CI_Controller
 		$data['main_content'] = 'request/admin_list_tasks_view';
 
 		if($this->input->post('ajax')){
-				$status = $this->input->post('statusName');
-				if($status == 'requestStatus'){
-					$data['taskList'] = $this->request_model->get_requests($status);
-				}else{
-					$data['taskList'] = $this->request_model->get_requests_by_status($status);
-				}
-				$this->load->view($data['main_content'], $data);
+			$status = $this->input->post('statusName');
+			if($status == 'requestStatus'){
+				$data['taskList'] = $this->request_model->get_requests($status);
+			}else{
+				$data['taskList'] = $this->request_model->get_requests_by_status($status);
+			}
+			$this->load->view($data['main_content'], $data);
 		}else{
 			$data['taskList'] = $this->request_model->get_requests();
 			$this->load->view('templates/template', $data);
@@ -220,22 +220,22 @@ class Request extends CI_Controller
 	}
 
 	public function add_user()
-	{	
+	{
 		// AUTH!!!!!!!!!!!
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
 		$data['main_content'] = 'request/admin_add_user_view';
-		
+
 		$config = array(
-			array('field' => 'firstname','label' => 'First name','rules' => 'required'),
-			array('field' => 'lastname','label' => 'Last name','rules' => 'required'),
-			array('field' => 'email','label' => 'Email','rules' => 'required|valid_email|is_unique[workers.workerEmail]'),
-			array('field' => 'password','label' => 'Password','rules' => 'required|min_length[8]|matches[pass_conf]'),
-			array('field' => 'pass_conf','label' => 'Password conf','rules' => 'required'),
-			array('field' => 'userlevel','label' => 'User level','rules' => 'required'),
+		array('field' => 'firstname','label' => 'First name','rules' => 'required'),
+		array('field' => 'lastname','label' => 'Last name','rules' => 'required'),
+		array('field' => 'email','label' => 'Email','rules' => 'required|valid_email|is_unique[workers.workerEmail]'),
+		array('field' => 'password','label' => 'Password','rules' => 'required|min_length[8]|matches[pass_conf]'),
+		array('field' => 'pass_conf','label' => 'Password conf','rules' => 'required'),
+		array('field' => 'userlevel','label' => 'User level','rules' => 'required'),
 		);
-		
+
 		$this->form_validation->set_rules($config);
-		
+
 		if( $this->form_validation->run() !== FALSE ){
 			$this->load->model('user_model');
 			$userlevel = $this->user_model->add_new_user($this->input->post());
@@ -246,10 +246,10 @@ class Request extends CI_Controller
 			}
 			$this->load->view('templates/template', $data);
 		}
-		
+
 		$this->load->view('templates/template', $data);
 	}
-	
+
 	public function system_announcements()
 	{
 		$data = array('title' => 'GPP Maintenance App', 'back' => 'account', 'name' => $_SESSION['name']);
@@ -343,6 +343,16 @@ class Request extends CI_Controller
 
 	}
 
+
+	public function orderernames()
+	{
+
+		$names = array();
+		$result = $this->request_model->get_orderer_names($_SESSION['customerUserName']);
+		if($result != FALSE)
+		$names = $result;
+		echo json_encode($names);
+	}
 
 
 }

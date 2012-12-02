@@ -19,21 +19,15 @@
   -->
   
   <!-- Included CSS Files (Compressed) -->
- 
-  <link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/foundation.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/foundation.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>resources/stylesheets/app.css">
     
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="<?php echo base_url(); ?>resources/javascripts/jquery-1.8.3.js"></script>
+          <script src="<?php echo base_url(); ?>resources/javascripts/jquery-ui.js"></script>
 
-    <!-- Included JS Files (Compressed) -->
-  <script src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
-  
-  <script src="<?php echo base_url(); ?>resources/javascripts/foundation.min.js"></script>
-  
-  <!-- Initialize JS Plugins -->
-  <script src="<?php echo base_url(); ?>resources/javascripts/app.js"></script>
-  <script src="<?php echo base_url(); ?>resources/javascripts/modernizr.foundation.js"></script>
-  <script src="<?php echo base_url(); ?>resources/javascripts/jQuery.validation.js"></script>
-  
+
+
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
