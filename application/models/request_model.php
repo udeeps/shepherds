@@ -151,7 +151,7 @@ class Request_model extends CI_Model
 		$day = isset($details['day']) ? $details['day'] : '';
 		$month = isset($details['month']) ? $details['month'] : '';
 		$year = isset($details['year']) ? $details['year'] : '';
-		
+
 		$success = 0;
 		$assignees = array();
 		//if given, explode the string of workers to an array
@@ -172,12 +172,12 @@ class Request_model extends CI_Model
 					//if worker found, get the id
 					$workerId = $q->row()->workerId;
 					//next line gives NULL if detail exists but has no worker, false if not exits and a result if detail with worker exists 
-					$detail_exists = $this->db->select('workerID')->where('id', $d_id)->get('repairDetail');
+					$detail_exists = $this->db->select('workerID')->where('id', $d_id)->get('repairDetail')->row()->workerID;
 					
 					//when creating a new request, $detail_exists results to false beacuse no detail is found.
 					//when updating a detail, check $detail_exists if it's null ( detail with no worker exists ) -> update
 					//if $detail_exists returns rows, go into if statement to create a new detail and also update date
-					if( $detail_exists != null){
+					if( $detail_exists !== NULL){
 						$success = $this->db->insert('repairDetail', array('repairRequestID' => $requestId, 'workerId' => $workerId));
 						if($detail_exists->num_rows() > 0){
 							$this->update_finish_date($requestId, $details);
