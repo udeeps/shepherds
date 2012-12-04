@@ -119,8 +119,8 @@ class Request extends CI_Controller
 
 		if($this->input->post('ajax')){
 			$status = $this->input->post('statusName');
-			if($status == 'requestStatus'){
-				$data['taskList'] = $this->request_model->get_requests($status);
+			if($status == 'all'){
+				$data['taskList'] = $this->request_model->get_requests();
 			}else{
 				$data['taskList'] = $this->request_model->get_requests_by_status($status);
 			}
@@ -159,7 +159,10 @@ class Request extends CI_Controller
 		$this->form_validation->set_rules($config);
 		
 		if( $this->form_validation->run() !== FALSE ){
-			$result = $this->request_model->update_request($this->input->post());
+			$result = $this->request_model->update_request($r_id, $this->input->post());
+			if($result){
+				$data['taskData'] = $this->request_model->get_single_request($r_id);
+			}
 		}
 		
 		$this->load->view('templates/template', $data);

@@ -333,7 +333,7 @@ class Request_model extends CI_Model
 		}
 	}
 
-	public function update_request($post_array)
+	public function update_request($r_id, $post_array)
 	{
 		if(isset($post_array)){
 			$type_maintenance = $post_array['type_maintenance'];
@@ -363,13 +363,14 @@ class Request_model extends CI_Model
 				->limit(1)
 				->get('workTypes')->row()->workTypeId;
 			
+			return $this->db->where('Id', $r_id)->update('repairRequests', array('workTypeId' => $typeId));
+			
 			if(!empty($orderer)){
 				$ordererId = $this->db->select('ordererId')
 					->where('ordererName', $orderer)
 					->limit(1)
 					->get('orderer')->row()->ordererId;
-			}		
-			return true;
+			}
 		}
 	}
 	

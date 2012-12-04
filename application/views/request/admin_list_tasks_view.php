@@ -22,18 +22,17 @@
         <li class="panel inprogress listingpanel">
 			
 			<div class="row">
-              <div class="twelve columns">
-				<div id="statuscircle" class="status_<?php echo $row->requestStatus; ?>"></div>
-					<?php //echo ucfirst(str_replace("_", "", $row->requestStatus)); ?>
+				<div class="twelve columns">
+					<div id="statuscircle" class="status_<?php echo $row->requestStatus; ?>"></div>
+						<?php //echo ucfirst(str_replace("_", "", $row->requestStatus)); ?>
+					<span class="listingtitle">
+						<?php if(!empty($row->title)){ echo $row->title; }else{ echo 'Repair request'; } echo ' - '.date('j/n/o', strtotime($row->dateRequested)); ?>
+					</span>
 				</div>
-				<span class="listingtitle">
-					<?php if(!empty($row->title)){ echo $row->title; }else{ echo 'Repair request'; } echo ' - '.date('j/n/o', strtotime($row->dateRequested)); ?>
-				</span>
-              </div>
             </div>
 			<div class="row">
               <div class="six columns">
-                <span><strong>Customer: </strong><?php echo $row->customerName; ?></span>
+                <span class="task-list-customer"><strong>Customer: </strong><?php echo $row->customerName; ?></span>
               </div>
               <div class="six columns">
                 <span><strong>Location: </strong><?php echo $row->repairLocation; ?></span>
@@ -80,7 +79,7 @@
 				var dd = $(this);
 				var name = $(this).attr('name');
 				var ajax_data = {
-					statusName: (name == 'all') ? 'requestStatus' : name,
+					statusName: name,
 					ajax: '1'
 				};
 				

@@ -23,7 +23,7 @@ class Tasks extends CI_Controller
 		$data['main_content'] = 'worker/worker_task_details';
 		$data['taskData'] = $this->worker_tasks_model->worker_get_single_task($wid, $rid);
 		$data['workTypes'] = $this->worker_tasks_model->get_work_types();
-		print_r($data['taskData']);
+		//print_r($data['taskData']);
 		$this->load->view('templates/template', $data);
 	}
 	

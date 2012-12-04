@@ -65,7 +65,6 @@
 <?php echo form_open('request/single_task/'.$this->uri->segment(3), array('id' => 'edit-request')); ?>
 		<div class="row panel">
 		  <div class="seven columns">
-			<p>
 				<strong>Type of work:</strong>
 				<?php foreach($workTypes as $type): ?>
 					<?php if($type->workTypeName != $taskData['info']->workTypeName): ?>
@@ -74,8 +73,7 @@
 						<input type="radio" name="type_maintenance" value="<?php echo $type->workTypeName ?>" checked> <?php echo ucfirst($type->workTypeName); ?> 
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<span id="det-warranty"><input type="checkbox" name="warranty" <?php echo ($taskData['info']->warranty) ? 'checked' : '' ;?>/> Warranty</span>
-			</p>
+			<span id="det-warranty"><input type="checkbox" name="warranty" <?php echo ($taskData['info']->warranty) ? 'checked' : '' ;?>/> Warranty</span>
 		  </div>
 		  <div class="five columns">
 			<p id="status_bar" class="status <?php echo $taskData['info']->requestStatus; ?>"><?php echo ucfirst(str_replace("_", " ", $taskData['info']->requestStatus)); ?></p>
@@ -226,7 +224,9 @@
 </div> <!-- End form -->
 <script type="text/javascript">
 	$(document).ready(function(){
-	
+		
+		$(':input[placeholder]').placeholder();
+		
 		$.validator.addMethod("checkBirthday", function(value, element) {
 			return this.optional(element) || ( value > 0 && value <= 31);
 		}, "Päivämäärä syötetty väärin");

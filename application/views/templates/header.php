@@ -26,8 +26,8 @@
 
     <!-- Included JS Files (Compressed) -->
   <script src="<?php echo base_url(); ?>resources/javascripts/jquery.js"></script>
-  
   <script src="<?php echo base_url(); ?>resources/javascripts/foundation.min.js"></script>
+  <script src="<?php echo base_url(); ?>resources/javascripts/html5placeholder.jquery.min.js"></script>
   
   <!-- Initialize JS Plugins -->
   <script src="<?php echo base_url(); ?>resources/javascripts/app.js"></script>

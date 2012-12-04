@@ -65,23 +65,9 @@
 
       <div class="row panel"><!-- Task title and description -->
         <h4>Task description</h4>
-        <div class="eight columns">
+        <div class="twelve columns">
           <label>Task title</label>
           <input type="text" disabled="disabled" placeholder="" value="<?php echo $taskData->title;?>"/>
-        </div>
-        <div class="four columns">
-          <label>Estimated start date</label>
-          <div class="row">
-            <div class="four columns">
-              <input type="text" placeholder="Day" />
-            </div>
-            <div class="four columns">
-              <input type="text" placeholder="Month" />
-            </div>
-            <div class="four columns">
-              <input type="text" placeholder="Year" />
-            </div>
-          </div>
         </div>
       </div>
 
@@ -128,131 +114,41 @@
         </div>
 
         <h4>Products and parts</h4>
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
+        <div id="parts-list-parent" class="row"> <!-- Start line of product -->
+			<div class="parts-row">
+			  <div class="three columns">
+				<label>Part product code - <a href="#">Show popular</a></label>
+				<input name="prod_code[]" type="text" placeholder="" />
+			  </div>	
+			  <div class="four columns">
+				<label>Description</label>
+				<input name="prod_desc[]" type="text" placeholder="" />
+			  </div>
+			  <div class="one columns">
+				<label>Quantity</label>
+				<input name="prod_quantity[]" type="text" placeholder="" />
+			  </div>
+			  <div class="one columns">
+				<label>Ordered</label> 
+				<select name="prod_ordered[]" class="orderedornot">
+				  <option value="notordered">No</option>
+				  <option value="ordered">Yes</option>
+				</select>
+			  </div>
+			  <div class="one columns">
+				<label>á price</label>
+				<input name="prod_price[]" type="text" placeholder="CRM" />
+			  </div>
+			  <div class="two columns">
+				<label>Total</label>
+				<input name="prod_total[]" type="text" placeholder="Automatic count" />
+			  </div>
+			</div>
         </div> <!-- End line of product -->
-
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
-        </div> <!-- End line of product -->
-
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
-        </div> <!-- End line of product -->
-
-        <div class="row"> <!-- Start line of product -->
-          <div class="three columns">
-            <label>Part product code - <a href="#">Show popular</a></label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="four columns">
-            <label>Description</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Quantity</label>
-            <input type="text" placeholder="" />
-          </div>
-          <div class="one columns">
-            <label>Ordered</label> 
-            <select class="orderedornot">
-              <option value="notordered">No</option>
-              <option value="ordered">Yes</option>
-            </select>
-          </div>
-          <div class="one columns">
-            <label>á price</label>
-            <input type="text" disabled="disabled" placeholder="CRM" />
-          </div>
-          <div class="two columns">
-            <label>Total</label>
-            <input type="text" disabled="disabled" placeholder="Automatic count" />
-          </div> 
-        </div> <!-- End line of product -->
-
-
 
           <div class="row"> <!-- Start total sum -->
             <div class="nine columns">
-              <hr />
+				<input id="add-prod" type="button" class="button gppbutton" value="Add product"/>
             </div>
             <div class="three columns">
               <label><strong>Total sum</strong></label>
@@ -271,7 +167,9 @@
 </div> <!-- End form -->
 <script type="text/javascript">
 	$(document).ready(function(){
-
+		$('#add-prod').click(function(){
+			$('#parts-list-parent > div').first().clone().appendTo('#parts-list-parent');;
+		});
 	});
 </script>
 
