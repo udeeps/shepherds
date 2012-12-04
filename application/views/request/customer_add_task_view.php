@@ -1,18 +1,9 @@
 
 <div class="row header"><!-- Start Header -->
-<div class="five columns"><?php echo anchor('account', $customerName.' Maintenance');?>
+<div class="nine columns"><?php echo anchor('account', $customerName.' Maintenance');?>
 </div>
 
-<div class="four columns"><!-- Start search -->
-<div class="row collapse">
-<div class="eight mobile-three columns"><input type="text"
-	placeholder="Search" /></div>
-<div class="four mobile-one columns"><a href="#"
-	class="postfix button expand gppbutton">Search</a></div>
-</div>
-Search for: <input type="radio" name="group2" value="Wine" checked>
-Tasks <input type="radio" name="group2" value="Beer"> Users</div>
-<!-- End search -->
+
 
 <div class="three columns">
 <p>Logged in as <?php echo $customerName; ?></p>
@@ -50,7 +41,7 @@ echo ('<font color ="red">');
 
 <div class="six columns"><label>Billing address</label> <input
 	type="text" placeholder="Start typing to choose from the list"
-	name="billing_address" /></div>
+	id="billing_address" name="billing_address" /></div>
 </div>
 
 <div class="row"><!-- Orderer info -->
@@ -94,6 +85,22 @@ $(function() {
         	source : function(request, response) {
             $.ajax({
                 url : "<?php echo site_url('request/orderernames'); ?>",
+                dataType : "json",
+                data : {
+                    term : request.term
+                },
+                success : function(data) {
+                    return response(data);
+                }
+            });
+        }
+        });
+
+
+        $( "#billing_address" ).autocomplete({
+        	source : function(request, response) {
+            $.ajax({
+                url : "<?php echo site_url('request/billingaddress'); ?>",
                 dataType : "json",
                 data : {
                     term : request.term

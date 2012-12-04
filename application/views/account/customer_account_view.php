@@ -64,6 +64,8 @@ $this->load->view('account/listTasks_view',$requestlist);
 <!-- End App Content -->
 <script type="text/javascript">
 $('#linkStatus').click(function() {
+	document.getElementById("linkStatus").setAttribute("class", "active gppbg");
+	document.getElementById("linkDate").setAttribute("class", "");
 	var form_data = {
 			ajax: '1'		
 		};
@@ -73,8 +75,7 @@ $('#linkStatus').click(function() {
 		data: form_data,
 		success: function(msg) {
 			$('#task_list').html(msg);
-			document.getElementById("linkStatus").setAttribute("class", "active gppbg");
-			document.getElementById("linkDate").setAttribute("class", "");
+			
 			
 		}
 	});
@@ -83,6 +84,8 @@ $('#linkStatus').click(function() {
 });
 
 $('#linkDate').click(function() {
+	document.getElementById("linkStatus").setAttribute("class", "");
+	document.getElementById("linkDate").setAttribute("class", "active gppbg");
 	var form_data = {
 			ajax: '1'		
 		};
@@ -92,8 +95,7 @@ $('#linkDate').click(function() {
 		data: form_data,
 		success: function(msg) {
 			$('#task_list').html(msg);
-			document.getElementById("linkStatus").setAttribute("class", "");
-			document.getElementById("linkDate").setAttribute("class", "active gppbg");
+			
 			
 		}
 	});

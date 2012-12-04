@@ -77,12 +77,12 @@ class Request extends CI_Controller
 
 				if($result){
 					$data['msg'] = 'Request saved succesfully';
-					$to      = 'shakydeep@gmail.com';
+					$to      = 'diphidden@hotmail.com';
 					$subject = 'New Task added in GPP maintanence app';
 					$message = 'A new Task has been added by '.$_SESSION['customerName'].' in GPP maintanence app';
-					$headers = 'From: GPP maintanence App' . "\r\n" .'X-Mailer: PHP/' . phpversion();
-					ini_set ( "SMTP", "smtp-server.example.com" );
-					ini_set ( "smtp_port", "25" );
+					$headers = 'From: GPP maintanence App';
+					//ini_set ( "SMTP", "smtp-server.example.com" );
+					//ini_set ( "smtp_port", "25" );
 					date_default_timezone_set('Europe/Helsinki');
 					mail($to, $subject, $message, $headers);
 					//$this->load->view('templates/template', $data);
@@ -355,6 +355,16 @@ class Request extends CI_Controller
 		if($result != FALSE)
 		$names = $result;
 		echo json_encode($names);
+	}
+	
+	public function billingaddress()
+	{
+
+		$names = array();
+		$result = $this->request_model->get_billingaddress($_SESSION['customerUserName']);
+		if($result != FALSE)
+		$address = $result;
+		echo json_encode($address);
 	}
 
 

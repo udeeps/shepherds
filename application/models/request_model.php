@@ -487,5 +487,26 @@ class Request_model extends CI_Model
 
 		return $result;
 	}
+	
+	public function get_billingaddress($customerName)
+	{
+		$sql = 'SELECT
+		billingAddresses.billingAddress
+		FROM billingAddresses,customers
+		WHERE customers.customerUserName= "'.$customerName.'" 
+		AND customers.customerId =billingAddresses.customerId';
+		$q=$this->db->query($sql);
+		if($q->num_rows<1)
+		$result= FALSE;
+		else
+		{
+			foreach($q->result() as $row)
+			{
+				$result[] = $row->billingAddress;
+			}
+		}
+
+		return $result;
+	}
 
 }

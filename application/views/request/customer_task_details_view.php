@@ -1,17 +1,9 @@
 <div class="row header"><!-- Start Header -->
-<div class="five columns"><?php 
+<div class="nine columns"><?php 
 echo anchor('account', $customerName.' Maintenance');
 ?></div>
 
-<div class="four columns"><!-- Start search -->
-<div class="row collapse">
-<div class="eight mobile-three columns"><input type="text"
-	placeholder="Search" /></div>
-<div class="four mobile-one columns"><a href="#"
-	class="postfix button expand gppbutton">Search</a></div>
-</div>
-</div>
-<!-- End search -->
+
 
 <div class="three columns">
 <p>Logged in as <?php echo $customerName; ?></p>
@@ -32,7 +24,7 @@ listing</a></p>
 	<!-- Start detailed task info -->
 	<li class="panel">
 	<div class="row">
-	<div class="two columns"><?php echo('<p class="status '.$result['basicInfo']->requestStatus.'">'.$result['basicInfo']->requestStatus.'</p>');?>
+	<div class="two columns"><?php echo('<p class="status '.$result['basicInfo']->requestStatus.'">'.ucfirst(str_replace("_", " ", $result['basicInfo']->requestStatus)).'</p>');?>
 	</div>
 	<div class="six columns"><!--  <p><b>What information can we give to customers?</b></p> -->
 	<p><?php 

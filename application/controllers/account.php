@@ -43,12 +43,12 @@ class Account extends CI_Controller
 		{ redirect(''); }
 		$this->load->model('customer_account_model');
 		$data['requestlist'] = $this->customer_account_model->get_list_by_status($_SESSION['customerUserName']);
-		$data['main_content'] = 'account/customer_account_view';
+
 		if ($this->input->post('ajax')) {
-			$data['main_content'] = 'account/listTasks_view';
-			$this->load->view('templates/template', $data);
+			$this->load->view('account/listTasks_view', $data);
 		}else
 		{
+			$data['main_content'] = 'account/customer_account_view';
 			$data['title']='GPP Maintenance App';
 			$data['customerName']=$_SESSION['customerName'];
 			$data['listByDate']=0;
@@ -62,13 +62,12 @@ class Account extends CI_Controller
 		{ redirect(''); }
 		$this->load->model('customer_account_model');
 		$data['requestlist'] = $this->customer_account_model->get_acccount_data($_SESSION['customerUserName']);
-		$data['main_content'] = 'account/customer_account_view';
 		if ($this->input->post('ajax')) {
-			$data['main_content'] = 'account/listTasks_view';
-			$this->load->view('templates/template', $data);
+			$this->load->view('account/listTasks_view', $data);
 		}
 		else
 		{
+			$data['main_content'] = 'account/customer_account_view';
 			$data['title']='GPP Maintenance App';
 			$data['customerName']=$_SESSION['customerName'];
 			$data['listByDate']=1;
