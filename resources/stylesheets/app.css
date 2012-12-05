@@ -102,23 +102,6 @@ margin-left: 70px;
 }
 
 /* -----------------------------------------
-  Add user page
------------------------------------------ */
-
-#add_worker_msg{
-display: none;
-}
-
-#add_worker_msg span{
-padding: 10px;
-text-align: right;
-border: 1px dotted #078658;
-float: right;
-width: 100%;
-color: #078658;
-}
-
-/* -----------------------------------------
    Listing page styles
 ----------------------------------------- */
 
@@ -164,11 +147,42 @@ float: right;
 margin-left: 20px;
 }
 
+#add_worker_msg, #add_reply_msg{
+display: none;
+}
+
+#add_worker_msg span, #add_reply_msg span{
+padding: 10px;
+text-align: right;
+border: 1px dotted #078658;
+float: right;
+width: 100%;
+color: #078658;
+}
+
 #add-prod{
 height: 36px;
 margin-top: 12px;
 }
 
+#c_from{
+margin: 5px 10px 10px 0;
+}
+
+#c_from span{
+display: block;
+margin: 5px 10px 0 0;
+}
+
+#c_body span{
+display: block;
+margin-bottom: 5px;
+}
+
+#c_reply span{
+display: block;
+margin-bottom: 5px;
+}
 /* -----------------------------------------
    Worker detail page
 ----------------------------------------- */

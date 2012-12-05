@@ -222,6 +222,48 @@
 <?php echo form_close(); ?>
   </div>
 </div> <!-- End form -->
+<!-- Start comments -->
+<div class="row">
+	<div class="twelve columns">
+		<?php echo form_open('', array('id' => 'add-comment-form')); ?>
+			<div class="row panel">
+				<h4>View comments</h4>
+					<?php if(!empty($comments)):?>
+						<?php foreach($comments as $comment):?>
+							<div class="comment">
+								<div id="c_from" class="twelve columns">
+									<span><strong>Author: </strong></span>
+									<span><?php echo $comment->author; ?> <?php echo date('j/n/o', strtotime($comment->date)); ?></span>
+								</div>
+								<div id="c_body" class="twelve columns">
+									<span><strong>Message: </strong></span>
+									<textarea><?php echo $comment->text; ?></textarea>
+								</div>
+							</div>
+							<div id="reply">
+								<div id="c_reply" class="twelve columns">
+									<span><strong>Reply message: </strong></span>
+									<textarea name="admin_reply"></textarea>
+									<input type="hidden" name="commentId" value="<?php echo $comment->commentId; ?>" />
+								</div>
+							</div>
+							<div class="six columns">
+								<input type="submit" class="button gppbutton" name="replysubmit" value="Post reply" />
+							</div>
+							<div id="add_reply_msg" class="six columns"></div>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<div id="no_comments">
+							<div class="twelve columns">
+								<p>No comments on this issue</p>
+							</div>
+						</div>
+					<?php endif; ?>
+			</div>
+		<?php echo form_close(); ?>
+	</div>
+</div>
+<!-- End comments -->
 <script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -356,6 +398,39 @@
 		
 		$('#add-prod').click(function(){
 			$('#parts-list-parent > div').first().clone().appendTo('#parts-list-parent');;
+		});
+		
+		$('#add-comment-form').submit(function(e){
+			e.preventDefault();
+			var values = {
+				commentId: $('input[name="commentId"]').val(),
+				text: $('textarea[name="admin_reply"]').val()
+			};
+			console.log(values.text.length);
+			if(values.text.length > 1 && values.text != ''){
+				$.ajax({
+					url: "<?php echo site_url('request/admin_add_reply'); ?>",
+					type: 'POST',
+					data: values,
+					success: function(data){
+						if(data){
+							$('<span />').text('Reply sent succesfully').appendTo('#add_reply_msg');
+							$('#add_reply_msg').show();
+								setTimeout(function(){
+									$('#add_reply_msg').fadeOut('1000');
+								}, 2000);
+							$('textarea[name="admin_reply"]').val('');
+						}
+					}
+				});
+			}else{
+				$('<span />').text('Reply must be at least 2 characters long').appendTo('#add_reply_msg');
+				$('#add_reply_msg').show();
+					setTimeout(function(){
+						$('#add_reply_msg').fadeOut('1000');
+					}, 2000);
+				$('textarea[name="admin_reply"]').val('');
+			}
 		});
 		
 	});

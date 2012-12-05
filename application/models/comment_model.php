@@ -13,11 +13,17 @@ class Comment_model extends CI_Model
 	public function get_comments($taskId)
 	{
 		$q = $this->db->get_where('comments', array('repairRequestId' => $taskId,'private'=>0));
-		if($q->num_rows<1)
+		if($q->num_rows<1){
 		$comments = 'EMPTY';
-		else
-		foreach($q->result() as $row)
-		$comments[] = $row;
+		}else{
+			foreach($q->result() as $row){
+				$comments['comment'][] = $row;
+				$repl = $this->db->where('commentId', $row->commentId)->get('replies')->result();
+				foreach($repl as $reply){
+					$comments['replies'][] = $reply;
+				}
+			}
+		}
 		return $comments;
 	}
 

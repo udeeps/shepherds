@@ -105,14 +105,19 @@ listing</a></p>
 		<table>
 		<tbody>
 		');
-		foreach($comments as  $comment)
-		echo('
-			<tr>
-			<td>'.$comment->text.'<br/>
-			By '.$comment->author.' on '.$comment->date.'</td>
-			</tr>
-			');
-			
+		foreach($comments['comment'] as  $comment){
+			echo('
+				<tr>
+				<td>'.$comment->text.'<br/>
+				By '.$comment->author.' on '.$comment->date.'</td>
+				</tr>
+				');
+				foreach($comments['replies'] as $reply){
+					if(!empty($reply) && $reply->commentId == $comment->commentId){
+						echo '<tr><td>'.$reply->text.'</td></tr>';
+					}
+				}
+		}	
 		echo('</tbody></table>');
 		if (isset($status))
 		{

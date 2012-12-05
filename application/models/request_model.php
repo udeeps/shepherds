@@ -295,6 +295,22 @@ class Request_model extends CI_Model
 		return $q->result();
 	}
 
+	public function get_admin_comments($r_id)
+	{
+		$q = $this->db->where('repairRequestId', $r_id)->get('comments');
+		return $q->result();
+	}
+	
+	public function add_admin_reply($c_id, $text)
+	{
+		$data = array(
+					'commentId' => $c_id,
+					'author' => $_SESSION['name'],
+					'text' => $text
+				);
+		return $this->db->insert('replies', $data);
+	}
+	
 	public function change_status($r_id, $status)
 	{
 		$q = $this->db->select('requestStatusId')

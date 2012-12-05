@@ -138,6 +138,7 @@ class Request extends CI_Controller
 		$data['taskData'] = $this->request_model->get_single_request($r_id);
 		$data['workTypes'] = $this->request_model->get_work_types();
 		$data['statusTypes'] = $this->request_model->get_status_types();
+		$data['comments'] = $this->request_model->get_admin_comments($r_id);
 
 		$config = array(
 				array('field' => 'customername','label' => 'Customer name','rules' => 'alpha_numeric'),
@@ -213,6 +214,14 @@ class Request extends CI_Controller
 					);
 		$result = $this->request_model->create_request_detail($requestId, $assignees, $details);
 		echo $result;
+	}
+	
+	public function admin_add_reply()
+	{
+		$c_id = $this->input->post('commentId');
+		$text = $this->input->post('text');
+		
+		echo $this->request_model->add_admin_reply($c_id, $text);
 	}
 
 	public function manage_users()
