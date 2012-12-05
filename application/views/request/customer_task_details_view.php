@@ -157,9 +157,8 @@ listing</a></p>
 
 	<?php
 
-	echo(' <div class="two columns">
-				');
-	if($result['basicInfo']->requestStatus != 'cancelled')
+	echo(' <div class="one columns">');
+	/*if($result['basicInfo']->requestStatus != 'cancelled')
 	{
 		echo('<strong>');
 		if($result['basicInfo']->requestStatus == 'recorded')
@@ -173,9 +172,9 @@ listing</a></p>
 		echo($result['basicInfo']->dateAssigned);
 		else
 		echo('Not assigned yet');;
-	}
-	echo('	</div>
-				<div class="two columns">');
+	}*/
+	echo('</div>');
+	echo('<div class="three columns">');
 	
 	if($result['basicInfo']->requestStatus != 'cancelled')
 	{

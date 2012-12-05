@@ -360,7 +360,7 @@ class Request extends CI_Controller
 	public function billingaddress()
 	{
 
-		$names = array();
+		$address = array();
 		$result = $this->request_model->get_billingaddress($_SESSION['customerUserName']);
 		if($result != FALSE)
 		$address = $result;
